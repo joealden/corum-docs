@@ -1,0 +1,6 @@
+[book]
+authors = ["Joe Alden"]
+title = "Corum Project Report"
+description = "The A Level Computing Coursework Project 'Corum' by Joe Alden"
+multilingual = false
+src = "src"
