@@ -54,5 +54,8 @@ project's style. This is done use the `husky` and `lint-staged` packages.
 Note that if the above command is not run, you will most likely get an error
 when attempting to commit to the repo.
 
+To start the `mdbook` development server that will reload when a file is
+changed, run the command `mdbook serve`.
+
 To find out more about mdbook, visit
 [https://github.com/rust-lang-nursery/mdBook](https://github.com/rust-lang-nursery/mdBook).
