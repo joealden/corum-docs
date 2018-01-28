@@ -2,6 +2,8 @@
 
 The Documentation for Corum and its API.
 
+To read this book just on Github, open `src/SUMMARY.md`.
+
 ## Usage
 
 This documentation is designed to be processed by the rust crate, (package)
