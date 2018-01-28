@@ -1,0 +1,24 @@
+{
+  "name": "corum-docs",
+  "version": "0.1.0",
+  "description": "Documentation for Corum and its API.",
+  "author": "Joe Alden <me@joealden.com> (joealden.com)",
+  "license": "MIT",
+  "private": true,
+  "homepage": "https://github.com/joealden/corum-docs",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joealden/corum-docs.git"
+  },
+  "lint-staged": {
+    "*.md": ["prettier --config ./.prettierrc --write", "git add"]
+  },
+  "scripts": {
+    "precommit": "lint-staged"
+  },
+  "devDependencies": {
+    "husky": "0.14.3",
+    "lint-staged": "6.1.0",
+    "prettier": "1.10.2"
+  }
+}
