@@ -14,7 +14,8 @@
     "*.md": ["prettier --config ./.prettierrc --write", "git add"]
   },
   "scripts": {
-    "precommit": "lint-staged"
+    "build": "mdbook build",
+    "precommit": "lint-staged && yarn build"
   },
   "devDependencies": {
     "husky": "0.14.3",

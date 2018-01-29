@@ -29,7 +29,7 @@ didn't work. The issue might be that cargo's install bin is not in your `PATH`
 variable. Add the directory to your `PATH` variable and try again.
 
 Now that `mdbook` has been installed, clone this repo if you haven't already. To
-compile the book, run the command `mdbook build` in the root directory. A `book`
+compile the book, run the command `yarn build` in the root directory. A `book`
 directory will be created, this can now be served statically on any web server.
 
 ## Development
@@ -38,7 +38,7 @@ To ensure consistent formatting of the `md` files, we use the `prettier` tool
 that is built with `nodejs`. If you do not have `node` installed, install it
 now.
 
-This project is setup to use the `yarn` package manager instead of `npm`, the
+This project is set up to use the `yarn` package manager instead of `npm`, the
 package manager that is bundled with node. If you do not have `yarn` installed,
 install it now.
 
@@ -48,11 +48,15 @@ Next, run the following command to install the project's dependencies:
 yarn
 ```
 
-Now, all `md` files will be automatically formatted to be inline with the
-project's style. This is done use the `husky` and `lint-staged` packages.
-
 Note that if the above command is not run, you will most likely get an error
 when attempting to commit to the repo.
+
+Now, all `md` files will be automatically formatted to be inline with the
+project's style. This is done use the `husky` and `lint-staged` packages. There
+is also a precommit hook for building the docs, as currently, netlify, the
+service used to host the docs does not support rust tooling. This precommit hook
+ensures that the most up to date version of the book is built and available in
+the repo.
 
 To start the `mdbook` development server that will reload when a file is
 changed, run the command `mdbook serve`.

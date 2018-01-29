@@ -1,0 +1,292 @@
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Client Architecture - Corum Project Report</title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="The A Level Computing Coursework Project 'Corum' by Joe Alden">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <base href="../../">
+
+        <link rel="stylesheet" href="book.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <link rel="shortcut icon" href="favicon.png">
+
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme -->
+        
+
+        
+
+        <!-- Fetch Clipboard.js from CDN but have a local fallback -->
+        <script src="https://cdn.jsdelivr.net/clipboard.js/1.6.1/clipboard.min.js"></script>
+        <script>
+            if (typeof Clipboard == 'undefined') {
+                document.write(unescape("%3Cscript src='clipboard.min.js'%3E%3C/script%3E"));
+            }
+        </script>
+
+    </head>
+    <body class="light">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { } 
+            if (theme === null || theme === undefined) { theme = 'light'; }
+            document.body.className = theme;
+            document.querySelector('html').className = theme;
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            document.querySelector('html').classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <ol class="chapter"><li><a href="analysis/1-index/index.html"><strong aria-hidden="true">1.</strong> Analysis</a></li><li><ol class="section"><li><a href="analysis/2-idea/1-index.html"><strong aria-hidden="true">1.1.</strong> The Idea</a></li><li><ol class="section"><li><a href="analysis/2-idea/2-redditAlternative.html"><strong aria-hidden="true">1.1.1.</strong> Reddit Alterative</a></li><li><a href="analysis/2-idea/3-selfGoverning.html"><strong aria-hidden="true">1.1.2.</strong> Self Governing</a></li><li><a href="analysis/2-idea/4-openPlatform.html"><strong aria-hidden="true">1.1.3.</strong> Open Platform</a></li><li><a href="analysis/2-idea/5-modernMinimalist.html"><strong aria-hidden="true">1.1.4.</strong> Modern and Minimalist</a></li></ol></li><li><a href="analysis/3-investigation/1-index.html"><strong aria-hidden="true">1.2.</strong> The Investigation</a></li><li><ol class="section"><li><a href="analysis/3-investigation/2-interviews.html"><strong aria-hidden="true">1.2.1.</strong> Interviews</a></li><li><a href="analysis/3-investigation/3-endUser.html"><strong aria-hidden="true">1.2.2.</strong> The End User</a></li><li><a href="analysis/3-investigation/4-focusGroup.html"><strong aria-hidden="true">1.2.3.</strong> The Focus Group</a></li><li><a href="analysis/3-investigation/5-existingSystems.html"><strong aria-hidden="true">1.2.4.</strong> Existing Systems</a></li></ol></li><li><a href="analysis/4-analysis/1-index.html"><strong aria-hidden="true">1.3.</strong> The Analysis</a></li><li><ol class="section"><li><a href="analysis/4-analysis/2-essentialFeatures.html"><strong aria-hidden="true">1.3.1.</strong> Essential Features</a></li><li><a href="analysis/4-analysis/3-computationalMethods.html"><strong aria-hidden="true">1.3.2.</strong> Computational Methods</a></li><li><a href="analysis/4-analysis/4-successCriteria.html"><strong aria-hidden="true">1.3.3.</strong> Success Criteria</a></li><li><a href="analysis/4-analysis/5-limitations.html"><strong aria-hidden="true">1.3.4.</strong> Limitations</a></li><li><a href="analysis/4-analysis/6-hardwareSoftware.html"><strong aria-hidden="true">1.3.5.</strong> Hardware and Software</a></li></ol></li></ol></li><li><a href="design/1-index/index.html"><strong aria-hidden="true">2.</strong> Design</a></li><li><ol class="section"><li><a href="design/2-gui/index.html"><strong aria-hidden="true">2.1.</strong> GUI Design</a></li><li><a href="design/3-components/1-index.html"><strong aria-hidden="true">2.2.</strong> Component Design</a></li><li><ol class="section"><li><a href="design/3-components/2-logo.html"><strong aria-hidden="true">2.2.1.</strong> Logo</a></li><li><a href="design/3-components/3-header.html"><strong aria-hidden="true">2.2.2.</strong> Header</a></li><li><a href="design/3-components/4-navigation.html"><strong aria-hidden="true">2.2.3.</strong> Navigation</a></li><li><a href="design/3-components/5-main.html"><strong aria-hidden="true">2.2.4.</strong> Main Content</a></li><li><a href="design/3-components/6-footer.html"><strong aria-hidden="true">2.2.5.</strong> Footer</a></li></ol></li><li><a href="design/4-api/1-index.html"><strong aria-hidden="true">2.3.</strong> API Design</a></li><li><ol class="section"><li><a href="design/4-api/2-schema.html"><strong aria-hidden="true">2.3.1.</strong> API Schema</a></li></ol></li><li><a href="design/5-route/1-index.html"><strong aria-hidden="true">2.4.</strong> Route Design</a></li><li><ol class="section"><li><a href="design/5-route/2-summary.html"><strong aria-hidden="true">2.4.1.</strong> Route Summary</a></li><li><a href="design/5-route/3-home.html"><strong aria-hidden="true">2.4.2.</strong> Home Page</a></li><li><a href="design/5-route/4-login.html"><strong aria-hidden="true">2.4.3.</strong> Login Page</a></li><li><a href="design/5-route/5-signup.html"><strong aria-hidden="true">2.4.4.</strong> Signup Page</a></li><li><a href="design/5-route/6-subforum.html"><strong aria-hidden="true">2.4.5.</strong> Subforum Page</a></li><li><a href="design/5-route/7-post.html"><strong aria-hidden="true">2.4.6.</strong> Post Page</a></li><li><a href="design/5-route/8-newPost.html"><strong aria-hidden="true">2.4.7.</strong> New Post Page</a></li><li><a href="design/5-route/9-error.html"><strong aria-hidden="true">2.4.8.</strong> Error Page</a></li></ol></li><li><a href="design/6-testing/1-index.html"><strong aria-hidden="true">2.5.</strong> Testing</a></li><li><ol class="section"><li><a href="design/6-testing/2-linter.html"><strong aria-hidden="true">2.5.1.</strong> Linter</a></li><li><a href="design/6-testing/3-plan.html"><strong aria-hidden="true">2.5.2.</strong> Test Plan</a></li><li><a href="design/6-testing/4-data.html"><strong aria-hidden="true">2.5.3.</strong> Test Data</a></li><li><a href="design/6-testing/5-automation.html"><strong aria-hidden="true">2.5.4.</strong> Automated Testing</a></li></ol></li></ol></li><li><a href="development/1-index/index.html"><strong aria-hidden="true">3.</strong> Development</a></li><li><ol class="section"><li><a href="development/2-structure/1-index.html"><strong aria-hidden="true">3.1.</strong> Structure of Corum</a></li><li><ol class="section"><li><a href="development/2-structure/2-monolithMicro.html"><strong aria-hidden="true">3.1.1.</strong> Monolith vs Micro</a></li><li><a href="development/2-structure/3-client.html" class="active"><strong aria-hidden="true">3.1.2.</strong> Client Architecture</a></li><li><a href="development/2-structure/4-api.html"><strong aria-hidden="true">3.1.3.</strong> API Architecture</a></li></ol></li><li><a href="development/3-iterations/1-index.html"><strong aria-hidden="true">3.2.</strong> Iteration Stages</a></li><li><ol class="section"><li><a href="development/3-iterations/2-versionControl.html"><strong aria-hidden="true">3.2.1.</strong> Version Control</a></li><li><a href="development/3-iterations/3-changes.html"><strong aria-hidden="true">3.2.2.</strong> Iteration Stages</a></li><li><a href="development/3-iterations/4-feedback.html"><strong aria-hidden="true">3.2.3.</strong> User Feedback</a></li></ol></li><li><a href="development/4-problems/1-index.html"><strong aria-hidden="true">3.3.</strong> Problems experienced</a></li><li><ol class="section"><li><a href="development/4-problems/2-client.html"><strong aria-hidden="true">3.3.1.</strong> Client Problems</a></li><li><a href="development/4-problems/3-api.html"><strong aria-hidden="true">3.3.2.</strong> API Problems</a></li></ol></li><li><a href="development/5-testing/1-index.html"><strong aria-hidden="true">3.4.</strong> Testing During Development</a></li><li><ol class="section"><li><a href="development/5-testing/2-signup.html"><strong aria-hidden="true">3.4.1.</strong> Signup Page</a></li><li><a href="development/5-testing/3-login.html"><strong aria-hidden="true">3.4.2.</strong> Login Page</a></li><li><a href="development/5-testing/4-navigation.html"><strong aria-hidden="true">3.4.3.</strong> Navigation</a></li><li><a href="development/5-testing/5-subforum.html"><strong aria-hidden="true">3.4.4.</strong> Subforum Page</a></li><li><a href="development/5-testing/6-post.html"><strong aria-hidden="true">3.4.5.</strong> Post Page</a></li><li><a href="development/5-testing/7-newPost.html"><strong aria-hidden="true">3.4.6.</strong> New Post Page</a></li><li><a href="development/5-testing/8-newSubforum.html"><strong aria-hidden="true">3.4.7.</strong> New Subforum Page</a></li></ol></li><li><a href="development/6-codeAnalysis/1-index.html"><strong aria-hidden="true">3.5.</strong> Code Analysis</a></li><li><ol class="section"><li><a href="development/6-codeAnalysis/2-client.html"><strong aria-hidden="true">3.5.1.</strong> Client Analysis</a></li><li><a href="development/6-codeAnalysis/3-api.html"><strong aria-hidden="true">3.5.2.</strong> API Analysis</a></li></ol></li></ol></li></ol>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar" class="menu-bar">
+                    <div id="menu-bar-sticky-container">
+                        <div class="left-buttons">
+                            <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-controls="sidebar">
+                                <i class="fa fa-bars"></i>
+                            </button>
+                            <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                                <i class="fa fa-paint-brush"></i>
+                            </button>
+                            <ul id="theme-list" class="theme-popup" aria-label="submenu">
+                                <li><button class="theme" id="light">Light <span class="default">(default)</span></button></li>
+                                <li><button class="theme" id="rust">Rust</button></li>
+                                <li><button class="theme" id="coal">Coal</button></li>
+                                <li><button class="theme" id="navy">Navy</button></li>
+                                <li><button class="theme" id="ayu">Ayu</button></li>
+                            </ul>
+                        </div>
+
+                        <h1 class="menu-title">Corum Project Report</h1>
+
+                        <div class="right-buttons">
+                            <a href="print.html" title="Print this book">
+                                <i id="print-button" class="fa fa-print"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <a class="header" href="development/2-structure/3-client.html#client-architecture" id="client-architecture"><h1>Client Architecture</h1></a>
+<a class="header" href="development/2-structure/3-client.html#vue" id="vue"><h2>Vue</h2></a>
+<ul>
+<li>Reference analysis and design sections</li>
+<li>Why use Vue over react vs nothing</li>
+</ul>
+<a class="header" href="development/2-structure/3-client.html#why-use-vue" id="why-use-vue"><h3>Why use Vue?</h3></a>
+<ul>
+<li>Abstracts away DOM operations</li>
+<li>Provides prebuilt solutions for common uses:
+<ul>
+<li>Routing (<code>vue-router</code>)</li>
+<li>State Management (<code>vuex</code>)</li>
+</ul>
+</li>
+</ul>
+<a class="header" href="development/2-structure/3-client.html#nuxt" id="nuxt"><h2>Nuxt</h2></a>
+<ul>
+<li>Describe what nuxt is
+<ul>
+<li>Framework built on top of nuxt</li>
+<li>Inspired by next.js for react</li>
+<li>Intends to provide a better developer experience</li>
+</ul>
+</li>
+</ul>
+<a class="header" href="development/2-structure/3-client.html#why-use-nuxt" id="why-use-nuxt"><h3>Why use Nuxt?</h3></a>
+<ul>
+<li>Abstracts away a lot of configuration and boilerplate code</li>
+<li>Bakes in routing and state management</li>
+<li>Provides server side rendering (Makes initial load faster and allows for
+easier SEO)</li>
+</ul>
+<a class="header" href="development/2-structure/3-client.html#how-nuxt-works" id="how-nuxt-works"><h3>How Nuxt Works</h3></a>
+<ul>
+<li>CLI (Command Line Interface)
+<ul>
+<li><code>nuxt</code> - Starts the development server</li>
+<li><code>nuxt build</code> - Builds the client for production</li>
+<li><code>nuxt start</code> - Starts a production server (Files must have been built)</li>
+</ul>
+</li>
+<li>Folders used by nuxt
+<ul>
+<li><code>layouts</code></li>
+<li><code>pages</code></li>
+<li><code>static</code></li>
+<li><code>store</code></li>
+</ul>
+</li>
+<li>nuxt modules
+<ul>
+<li><code>apollo</code></li>
+<li><code>dotenv</code></li>
+<li><code>font-awesome</code></li>
+<li><code>pwa</code></li>
+</ul>
+</li>
+<li>nuxt.config.js</li>
+</ul>
+<p>While nuxt provides a great abstraction on top of Vue and related libraries, it
+is also very customisable and extensible. Nuxt provides a central way to
+configure itself, through a file located at the</p>
+<a class="header" href="development/2-structure/3-client.html#apollo" id="apollo"><h2>Apollo</h2></a>
+<ul>
+<li>Describe what Apollo is (Reference design)
+<ul>
+<li>A GraphQL client that provide the following:
+<ul>
+<li>Middleware hooks (Used to add <code>Authentication</code> header when a user is
+logged in)</li>
+<li>Data caching (Means less network fetches and faster responses)</li>
+<li>Bindings for Vue (with the <code>vue-apollo</code> library)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>The way the client communicate with the API</li>
+</ul>
+<a class="header" href="development/2-structure/3-client.html#production-vs-development" id="production-vs-development"><h2>Production vs Development</h2></a>
+<ul>
+<li>Production vs development settings
+<ul>
+<li>Optimisations
+<ul>
+<li>Code minification</li>
+<li>Turn off dev help
+<ul>
+<li>ESLint overlay (If something breaks, don't say exacting why)</li>
+<li>Vue developer tools (That lets you explore info state)</li>
+<li>Logging errors to the console (Why you don't want that in production)</li>
+<li>Changing error page (Why)</li>
+</ul>
+</li>
+<li>Turn on service worker (With nuxt pwa module)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<a class="header" href="development/2-structure/3-client.html#configuration" id="configuration"><h2>Configuration</h2></a>
+<ul>
+<li>.env file</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="development/2-structure/2-monolithMicro.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="development/2-structure/4-api.html" class="mobile-nav-chapters next" title="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a href="development/2-structure/2-monolithMicro.html" class="nav-chapters previous" title="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a href="development/2-structure/4-api.html" class="nav-chapters next" title="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+
+        <!-- Local fallback for Font Awesome -->
+        <script>
+            if (getComputedStyle(document.querySelector(".fa")).fontFamily !== "FontAwesome") {
+                var link = document.createElement('link');
+                link.rel = 'stylesheet';
+                link.type = 'text/css';
+                link.href = '_FontAwesome/css/font-awesome.css';
+                document.head.insertBefore(link, document.head.firstChild)
+            }
+        </script>
+
+        
+
+        
+
+        
+
+        
+
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS script -->
+        
+
+    </body>
+</html>
