@@ -249,8 +249,6 @@ Variable Reference:
   code.
 * `makeRequest`
 
-**TODO**
-
 ### `initVoteCount`
 
 ```js
