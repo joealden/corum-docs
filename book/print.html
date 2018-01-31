@@ -1869,6 +1869,9 @@ vote. Or that no one it allowed to delete posts.</li>
 </ul>
 <a class="header" href="print.html#iterations-during-development" id="iterations-during-development"><h1>Iterations during Development</h1></a>
 <p>placeholder</p>
+<ul>
+<li>Add screenshots of visual iterations (Tagged in repo)</li>
+</ul>
 <a class="header" href="print.html#version-control" id="version-control"><h1>Version Control</h1></a>
 <ul>
 <li>Used git for version control and uploaded to github</li>
@@ -3241,7 +3244,6 @@ This allows us to send queries and mutations to the API from within the API
 code.</li>
 <li><code>makeRequest</code></li>
 </ul>
-<p><strong>TODO</strong></p>
 <a class="header" href="print.html#initvotecount" id="initvotecount"><h3><code>initVoteCount</code></h3></a>
 <pre><code class="language-js">// Ensures that when a post is created, the vote Count is set to 0
 
@@ -3514,6 +3516,42 @@ export const deleteAllVotesOnPost = async (api, postId) =&gt; {
 <p>placeholder</p>
 <a class="header" href="print.html#evaluation" id="evaluation"><h1>Evaluation</h1></a>
 <p>Placeholder</p>
+<a class="header" href="print.html#structure-idea" id="structure-idea"><h2>Structure Idea</h2></a>
+<ul>
+<li>Move testing section from dev into here
+<ul>
+<li>Flesh out dev section of iteration + tests a lot more</li>
+</ul>
+</li>
+<li>Success of the Solution (With reference to test data)
+<ul>
+<li>Cross reference test evidence with success criteria and evaluate how well
+the criteria has been met. If any have not been fully met, comment on how
+they could be met with further development.</li>
+<li>One major one I can think of now (Not currently in the success criteria) is
+that the ergonomics of deployment is not the best. One solution to this
+would be to move the API to Prisma and offer an option to host the API and
+the client on the same machine with a single command.</li>
+</ul>
+</li>
+<li>Define usability features justify their success
+<ul>
+<li>Quick loading between actions</li>
+<li>Instant search of subforums</li>
+<li>Optimistic UI updates (For example, adding a comment or voting on a post)</li>
+<li>Loading states
+<ul>
+<li>On loading navigation lists</li>
+<li>On loading a subforum or a post</li>
+<li>Signup and login loading states</li>
+</ul>
+</li>
+<li>Helpful error messages</li>
+</ul>
+</li>
+<li>Identify limitations of the solution and possible maintenance issues</li>
+<li>Talk about how these limitations could be fixed</li>
+</ul>
 
                     </main>
 
