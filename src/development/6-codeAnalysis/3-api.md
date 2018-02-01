@@ -481,6 +481,8 @@ export default async event => {
 This is the resolver used to authenticate users that have already created an
 account.
 
+Variable Reference:
+
 ### `signup`
 
 ```js
