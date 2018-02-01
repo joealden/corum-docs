@@ -322,16 +322,15 @@ import {
 */
 
 export default async event => {
-  // Retrieve payload from event
-  const { data } = event
-  const voteId = data.id
-  const voteType = data.vote
-
-  // Create Graphcool API (based on https://github.com/graphcool/graphql-request)
-  const graphcool = fromEvent(event)
-  const api = graphcool.api('simple/v1')
-
   try {
+    // Create Graphcool API (based on https://github.com/graphcool/graphql-request)
+    const api = fromEvent(event).api('simple/v1')
+
+    // Retrieve payload from event
+    const { data } = event
+    const voteId = data.id
+    const voteType = data.vote
+
     const { Vote } = await makeRequest(api, postIdFromVoteQuery, { voteId })
     const postId = Vote.post.id
 
@@ -344,7 +343,7 @@ export default async event => {
     } else if (voteType === 'VOTE_DOWN') {
       newVoteCount = oldVoteCount - 1
     } else {
-      return Promise.reject('voteType is not defined')
+      return Promise.reject('voteType is invalid or is not defined')
     }
 
     if (newVoteCount <= VOTE_COUNT_TO_DELETE_POST) {
@@ -359,10 +358,69 @@ export default async event => {
 }
 ```
 
-* placeholder
-* mention how there are also the other hook functions for delete and update
+As mentioned at the top of this file, this hook function executes every time
+after a `Vote` is created. It updates the `voteCount` field on the post to
+reflect the vote creation. Also, if the new vote count is equal or less than the
+`VOTE_COUNT_TO_DELETE_POST` constant, then the post will be deleted (The
+automated management system)
+
+As this check has to be made on every possible CRUD operation that may modify
+the overall vote count, there are also hook functions for when a vote is updated
+or deleted called `updateVoteCountOnVoteUpdate` and
+`updateVoteCountOnVoteDeletion` respectively. These hook functions are very
+similar, so I will only be analysing the 'creation' version of the hook
+functions as shown above.
+
+Variable Reference:
+
+* `event`this is an object containing all of the information about the query or
+  mutation event we are hooking into.
+* `fromEvent` is a function exposed by the library `graphcool-lib` that
+  constructs a GraphQL client from the `event` data passed into the function.
+  This allows us to send queries and mutations to the API from within the API
+  code.
+* `makeRequest` is an abstraction of a function provided by `graphcool-lib` that
+  allows us to send queries and mutations to the API. The exact implementation
+  of this function is described later on.
+* `deleteAllVotesOnPost` is a function that as the name suggests, deletes all
+  votes on a post. The implementation of this function is described later on.
+* `postIdFromVoteQuery` is GraphQL query that fetches the post's ID that a vote
+  was made on.
+* `currentPostVoteCount` is a GraphQL query that fetches the the current vote
+  count of a post.
+* `getAllVoteIdsOnPost` is a GraphQL query that fetches all votes that exist on
+  a post.
+* `deleteVote` is a GraphQL mutation that deletes a vote.
+* `deletePost` is a GraphQL mutation that deletes a post.
+* `updatePost` is a GraphQL mutation that updates a post with a new post count.
+
+Like the first hook function shown in this section, this function imports what
+it needs and exports a function for graphcool. Also like the first hook
+function, a reference to the API is created and the user data is extracted.
+
+This time, `voteId` and `voteType` are extracted from the data object. Next, a
+request is made to get the post ID using the `voteId` variable. When the API
+responds, the post ID fetched is used to fetch the current vote count on that
+post.
+
+Then, depending on how the user voted, (determined by the contents of the
+`voteType` variable) A new vote count is created. If the user upvoted the post,
+the vote count is increment by 1. If the user downvoted the post, the vote count
+is decremented by 1. There is also error handling if they somehow submitted an
+incorrect vote type.
+
+If `voteType` was defined, the function continues and goes on to update the post
+data stored in the database. This is where the automated management system
+works. If the new vote count is less than or equal to the defined threshold
+stored in `VOTE_COUNT_TO_DELETE_POST`, the post is deleted along with all of the
+votes that were linked to it. Otherwise, the post is updated with the new vote
+count.
 
 ## Resolvers
+
+Resolvers are the most powerful way to extend grapcool. They make it so that you
+can add extra queries and mutations to the API. In the case of Corum, only two
+custom resolvers are needed. One to sign up users and one to authenticate users.
 
 ### `authenticate`
 
@@ -420,7 +478,8 @@ export default async event => {
 }
 ```
 
-placeholder
+This is the resolver used to authenticate users that have already created an
+account.
 
 ### `signup`
 
