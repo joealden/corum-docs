@@ -1,5 +1,7 @@
 # GUI Design
 
+Here are some sketches that I have created for the GUI of Corum
+
 ## Sub-forum not selected (Logged in) UI
 
 ![Sub-forum not selected](images/sub-forum-not-selected.jpg)

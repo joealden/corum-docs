@@ -15,7 +15,9 @@
   },
   "scripts": {
     "build": "mdbook build",
-    "precommit": "lint-staged && yarn build"
+    "precommit": "lint-staged && yarn build",
+    "dev":
+      "echo '\nIf an error occurs, please ensure you have mdbook installed!\n' && mdbook serve"
   },
   "devDependencies": {
     "husky": "0.14.3",

@@ -205,15 +205,14 @@ query FavoriteQuery($userId: ID!, $subforumId: ID!) {
 `
 
 export default async event => {
-  // Retrieve payload from event
-  const { data } = event
-  const { userId, subforumId } = data
-
-  // Create Graphcool API (based on https://github.com/graphcool/graphql-request)
-  const graphcool = fromEvent(event)
-  const api = graphcool.api('simple/v1')
-
   try {
+    // Create Graphcool API (based on https://github.com/graphcool/graphql-request)
+    const api = fromEvent(event).api('simple/v1')
+
+    // Retrieve payload from event
+    const { data } = event
+    const { userId, subforumId } = data
+
     const { allFavorites } = await makeRequest(api, favoriteQuery, {
       userId,
       subforumId
@@ -234,20 +233,53 @@ As mentioned in the comment at the top of this file, This hook function ensures
 that only 1 favorite of a subforum by a single user can happen, and it is run
 every time before a favorite is created. There is also a hook function called
 `userAndPostIsUnique` is very similar. Instead of ensuring that only unique
-favourites can be added, it ensures that only unique votes can be made on a
-post. As this hook function is so similar, I will only analyse this hook
-function.
+favorites can be added, it ensures that only unique votes can be made on a post.
+As this hook function is so similar, I will only analyse this hook function.
 
 Variable Reference:
 
 * `favoriteQuery` is the GraphQL query used to check if the user has already
   favorited of this subforum.
-* `event`
+* `event`this is an object containing all of the information about the query or
+  mutation event we are hooking into.
 * `fromEvent` is a function exposed by the library `graphcool-lib` that
   constructs a GraphQL client from the `event` data passed into the function.
   This allows us to send queries and mutations to the API from within the API
   code.
-* `makeRequest`
+* `makeRequest` is an abstraction of a function provided by `graphcool-lib` that
+  allows us to send queries and mutations to the API. The exact implementation
+  of this function is described later on.
+
+First, `fromEvent` and `makeRequest` are imported so that they can be used in
+this file. Next, we export a function that expects the `event` argument. The
+reason we do this is because graphcool expects hook function files to export a
+function that it can call when needed.
+
+Within this function, using the `fromEvent` function, a reference to the API is
+created from the `event` data and assigned to the variable `api`. This variable
+will be passed into the `makeRequest` function so that it knows what API to make
+the request to.
+
+Next, the data the client submitted to the API is extracted from the `data`
+property of the `event` argument. For this hook function, we extract `userId`
+and `subforumId`. Then, a call to the `makeRequest` function is made, passing in
+the API reference created earlier, the GraphQL query that we want to execute,
+along with the variable needed to perform the query. In this case, both the
+`userId` and `subforumId` are passed as variables to the query.
+
+Once the query has successfully been executed, the function will return the data
+response. In this case, we are only interested in the `allFavorites` value that
+is returned. This is an array of `Favorite` objects that belong to the user and
+match the subforum they are attempting to create a favorite for. This means that
+if the array has any `Favorite` objects in it, the user has already favorited
+this subforum.
+
+This check is made by checking if the length of the array is 0. (empty) If the
+array is empty, then the user has not favorited this subforum already, so they
+should allow to favorite it. In this case, the data submitted by the user is
+saved to the database. If the length of the array is anything other than 0, then
+user should not be allowed to create a favorite. An error is returned to the
+user and the data is not saved.
 
 ### `initVoteCount`
 
@@ -261,7 +293,10 @@ export default event => {
 }
 ```
 
-placeholder
+This is the simplest hook function used in Corum. As mentioned in the code
+comment, when a `Post` is created, the `voteCount` field on it is set to 0. This
+is so that malicious users cannot initialise a post with however many votes they
+want.
 
 ### `updateVoteCountOnVoteCreation`
 
