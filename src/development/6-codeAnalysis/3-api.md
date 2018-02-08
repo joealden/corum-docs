@@ -418,70 +418,10 @@ count.
 
 ## Resolvers
 
-Resolvers are the most powerful way to extend grapcool. They make it so that you
-can add extra queries and mutations to the API. In the case of Corum, only two
-custom resolvers are needed. One to sign up users and one to authenticate users.
-
-### `authenticate`
-
-```js
-import { fromEvent } from 'graphcool-lib'
-import * as bcryptjs from 'bcryptjs'
-import { makeRequest } from '../../utils/common'
-
-const userQuery = `
-  query UserQuery($email: String!) {
-    User(email: $email) {
-      id
-      password
-      username
-    }
-  }
-`
-
-export default async event => {
-  try {
-    // Retrieve payload from event
-    const { email, password } = event.data
-
-    // Create Graphcool API (based on https://github.com/graphcool/graphql-request)
-    const graphcool = fromEvent(event)
-    const api = graphcool.api('simple/v1')
-
-    // Check if a user exists with the email entered
-    const { User } = await makeRequest(api, userQuery, { email })
-    if (!User) {
-      return { error: 'Invalid credentials!' }
-    }
-
-    // Check if the user entered the correct password for the user
-    const passwordIsCorrect = await bcryptjs.compare(password, User.password)
-    if (!passwordIsCorrect) {
-      return { error: 'Invalid credentials!' }
-    }
-
-    // Generate auth token
-    const { id, username } = User
-    const token = await graphcool.generateAuthToken(id, 'User')
-
-    // Return the payload the user asked for
-    return {
-      data: {
-        id,
-        username,
-        token
-      }
-    }
-  } catch (error) {
-    return { error }
-  }
-}
-```
-
-This is the resolver used to authenticate users that have already created an
-account.
-
-Variable Reference:
+Resolvers are the most powerful way to extend graphcool. They make it so that
+you can add extra queries and mutations to the API. In the case of Corum, only
+two custom resolvers are needed. One to sign up users and one to authenticate
+users.
 
 ### `signup`
 
@@ -495,7 +435,6 @@ const userQuery = `
   query UserQuery($email: String!, $username: String!) {
     allUsers(filter: { OR: [{ email: $email }, { username: $username }] }) {
       id
-      password
       email
       username
     }
@@ -515,16 +454,14 @@ const createUserMutation = `
 `
 
 export default async event => {
-  // Retrieve payload from event
-  const { username, email, password } = event.data
-
-  // Create Graphcool API (based on https://github.com/graphcool/graphql-request)
-  const graphcool = fromEvent(event)
-  const api = graphcool.api('simple/v1')
-
-  const SALT_ROUNDS = 10
-
   try {
+    // Create Graphcool API (based on https://github.com/graphcool/graphql-request)
+    const graphcool = fromEvent(event)
+    const api = graphcool.api('simple/v1')
+
+    // Retrieve payload from event
+    const { username, email, password } = event.data
+
     // Check is email is valid
     if (validator.isEmail(email) === false) {
       return { error: 'The email address entered is not valid' }
@@ -535,6 +472,8 @@ export default async event => {
 
     // If no users exists with the same details, create the user
     if (allUsers.length === 0) {
+      const SALT_ROUNDS = 10
+
       // Generate the password hash that will be stored in the DB
       const passwordHash = await bcryptjs.hash(password, SALT_ROUNDS)
 
@@ -569,7 +508,7 @@ export default async event => {
     } else if (allUsers[0].username === username) {
       return { error: 'The username is in use' }
     } else {
-      return { error: 'An unknown error occured' }
+      return { error: 'An unknown error occurred' }
     }
   } catch (error) {
     return { error }
@@ -577,7 +516,209 @@ export default async event => {
 }
 ```
 
-placeholder
+This is the resolver that is used to create a new user account.
+
+Variable Reference:
+
+* `event`this is an object containing all of the information about the query or
+  mutation event we are hooking into.
+* `fromEvent` is a function exposed by the library `graphcool-lib` that
+  constructs a GraphQL client from the `event` data passed into the function.
+  This allows us to send queries and mutations to the API from within the API
+  code.
+* `makeRequest` is an abstraction of a function provided by `graphcool-lib` that
+  allows us to send queries and mutations to the API. The exact implementation
+  of this function is described later on.
+* `bcryptjs` is a hashing library implementing the bcrypt hashing function
+  design. In this resolver, only the `hash` function exposed by it is used. The
+  use of this function will explained below.
+* `validator` is a library that can validate many types of data such as emails,
+  passwords, credit card numbers etc. In this resolver, only the `isEmail`
+  function is used.
+* `userQuery` is a GraphQL query that fetches a users details. (Their account
+  ID, email and username)
+* `createUserMutation` is a GraphQL mutation that creates a user.
+
+Like the first hook function shown in this section, this function imports what
+it needs and exports a function for graphcool. Also like the hook functions, a
+reference to the API is created and the user data is extracted.
+
+This time, `username`, `email` and `password` are extracted from the data
+object. Next, using the `isEmail` function found in the `validator` library, the
+email the user entered is checked to be valid. Internally, the `isEmail`
+function is probably using regular expressions to ensure that it contains things
+such as an `@` symbol etc. The `isEmail` function returns a boolean value. If it
+returns `true`, the email passed to it is valid. If it returns `false`, the
+email passed to it is not valid. In this case, an error is returned telling the
+user that '`The email address entered is not valid`'.
+
+Next, a request is made using the `userQuery` query passing in the email and
+username the user entered. This will return an array of `User` objects that have
+either the same email or username that the user inputted. If the array returned
+is empty, (length equals 0) then no users exists with either the same email or
+username. This means that a new account can be created with these details.
+
+First, a variable called `SALT_ROUNDS` is initialised to the value `10`. This is
+created because the bcrypt hashing function has a built in salt. This is helpful
+for security reasons as it means that passwords hashed with bcrypt can easily be
+protected against rainbow table attacks.
+
+Then the hash is created from the password with the `hash` function. This
+expects two arguments. The first argument being the string to hash, and the
+second being the number of times to run the salt. Once the function finishes,
+the function returns the hash.
+
+Next, a request is made using the `createUserMutation` mutation passing in the
+email and the username the user entered, as well as the newly created password
+hash. This mutation will create a new user record with these details.
+
+After that, we extract the user's ID from the above mutation response. Then we
+generate an authentication token for the user using the `generateAuthToken` on
+the `graphcool` object that was created using the `fromEvent` function earlier.
+This token will allow the user perform protected actions such as creating posts
+etc.
+
+Then finally, we return the data the user wanted.
+
+In the case that the array returned from the `userQuery` request is not empty,
+this means that a user exists with some of the same data the user entered. In
+order to return a useful error message to the user, a few checks are made.
+
+These checks are pretty self explanatory, however, I will list the cases that
+these checks cover:
+
+* When both the username and password are in use, then the following could be
+  possible:
+  * There are 2 separate accounts, one with the same email and another with the
+    same username
+  * There is 1 account with the same email and the same username
+* When only the email is in use, there could only be 1 account with the same
+  email
+* When only the username is in use, there could only be 1 account with the same
+  username
+* There is also an else statement at the end in case something that I haven't
+  thought of occurs
+
+Also, if any other error occurred in the function, this is caught with the
+surrounding `try / catch` statement, then returned to the user.
+
+### `authenticate`
+
+```js
+import { fromEvent } from 'graphcool-lib'
+import * as bcryptjs from 'bcryptjs'
+import { makeRequest } from '../../utils/common'
+
+const userQuery = `
+  query UserQuery($email: String!) {
+    User(email: $email) {
+      id
+      password
+      username
+    }
+  }
+`
+
+export default async event => {
+  try {
+    // Create Graphcool API (based on https://github.com/graphcool/graphql-request)
+    const graphcool = fromEvent(event)
+    const api = graphcool.api('simple/v1')
+
+    // Retrieve payload from event
+    const { email, password } = event.data
+
+    // Check if a user exists with the email entered
+    const { User } = await makeRequest(api, userQuery, { email })
+    if (!User) {
+      return { error: 'Invalid credentials' }
+    }
+
+    // Check if the user entered the correct password for the user
+    const passwordIsCorrect = await bcryptjs.compare(password, User.password)
+    if (!passwordIsCorrect) {
+      return { error: 'Invalid credentials' }
+    }
+
+    // Generate auth token
+    const { id, username } = User
+    const token = await graphcool.generateAuthToken(id, 'User')
+
+    // Return the payload the user asked for
+    return {
+      data: {
+        id,
+        username,
+        token
+      }
+    }
+  } catch (error) {
+    return { error }
+  }
+}
+```
+
+This is the resolver that is used to authenticate users that have already
+created an account. (Through the `signup` resolver)
+
+Variable Reference:
+
+* `event`this is an object containing all of the information about the query or
+  mutation event we are hooking into.
+* `fromEvent` is a function exposed by the library `graphcool-lib` that
+  constructs a GraphQL client from the `event` data passed into the function.
+  This allows us to send queries and mutations to the API from within the API
+  code.
+* `makeRequest` is an abstraction of a function provided by `graphcool-lib` that
+  allows us to send queries and mutations to the API. The exact implementation
+  of this function is described later on.
+* `bcryptjs` is a hashing library implementing the bcrypt hashing function
+  design. In this resolver, only the `compare` function exposed by it is used.
+  The use of this function will explained below.
+* `userQuery` is a GraphQL query that fetches a users details. (Their account
+  ID, username and password)
+
+Like the first hook function shown in this section, this function imports what
+it needs and exports a function for graphcool. Also like the hook functions, a
+reference to the API is created and the user data is extracted.
+
+This time, `email` and `password` are extracted from the data object. Next, a
+request is made using the `userQuery` query to fetch the users details from the
+email address the user inputted. When the API responds, a check is made to
+ensure that a user with the email the user typed in actually exists. If a user
+doesn't exist, a generic '`Invalid Credentials`' error is thrown. This means
+that the API sends back this error message to the client for it to display it to
+the user.
+
+If a user does exist with the email the user specified, then we can continue to
+make further checks. Next, using the `bcryptjs.compare` function, the password
+the user entered is checked against the hash that was fetched earlier from the
+database. The `compare` function takes two arguments. The first argument being
+the raw password that hasn't been hashed. The second argument being the password
+to check against that has been hashed. Internally, the function hashes the
+password and then compares it against the second argument. If they match, the
+function will return `true`, if the hashes don't match, the function will return
+`false`.
+
+This comparison function is asynchronous, so we must `await` the return value.
+Once the function returns the boolean value, another check is made. If the
+function returned false, meaning the password the user entered wasn't correct,
+then the same generic '`Invalid Credentials`' error. The reason we throw the
+same error on both cases is because it makes it harder for an attacker to gain
+unauthorised accessed to another users account. This is because they can't tell
+if the user or password is the thing they have got incorrect.
+
+If a user exists with both the email and password the user specified, we have a
+high degree of confidence that the user is who they say they are. This means
+that we can start to construct the information to return to the user. First, we
+extract the user's ID and username off of the `User` object. Then we generate an
+authentication token for the user using the `generateAuthToken` on the
+`graphcool` object that was created using the `fromEvent` function earlier. This
+token will allow the user perform protected actions such as creating posts etc.
+
+Then finally, we return the data the user wanted. Also, if any other error
+occurred in the function, this is caught with the surrounding `try / catch`
+statement, then returned to the user.
 
 ## Utility Functions and Constants
 
@@ -608,7 +749,19 @@ export const makeRequest = async (api, query, variables) => {
 }
 ```
 
-placeholder
+As explained in the code comment, this is simply a wrapper around the function
+`request` that is on the object returned by the `fromEvent` function. The reason
+this function was created was so that I didn't have to rewrite the same error
+checking functionality with every request made.
+
+It accepts the following arguments:
+
+* `api` is a reference to the API object created from the `fromEvent` function
+* `query` is the GraphQL query or mutation to execute against the API
+* `variables` is an object of variables that are used in the query or mutation
+
+It returns a promise that is either resolved with the result, or rejected with
+the error.
 
 ### `deleteAllVotesOnPost`
 
@@ -641,4 +794,40 @@ export const deleteAllVotesOnPost = async (api, postId) => {
 }
 ```
 
-placeholder
+The reason for this function is best explained in the code comment above.
+
+Variable Reference:
+
+* `getAllVoteIdsOnPost` is a GraphQL query that gets all the `Vote` object IDs
+  that are associated with the post specified.
+
+It accepts the following arguments:
+
+* `api` is a reference to the API object created from the `fromEvent` function
+* `postId` is the post's ID to delete the votes on
+
+It returns a promise that is resolved with the array of the deleted vote IDs.
+
+First, a request is made using the `getAllVoteIdsOnPost` query passing in
+`postId` as the queries variables. As mentioned above, this returns an array of
+`Vote` objects each with an `id` property.
+
+Then, using JavaScript built in `map` method present on the `Array` prototype,
+an array is created of just the ID strings. If you do not know what a map
+function does, it takes an array as input, performs an arbitrary action on each
+item of the array, and then returns a new array of length. The JavaScript
+implementation expects a function as input. This function will be executed on
+each item of the array. To find out more about the `map` function, visit the MDN
+(Mozilla Developer Network) website and search for `Array.prototype.map`.
+
+Finally, a call to `Promise.all` is made. This function takes in an array of
+promises and returns a promise. The array of promises are executed in parallel,
+and the promise only resolves when all items in the promise array have resolved.
+If any of the promises reject, the returned promise will reject with that
+promises rejection error. To find out more about the `map` function, visit the
+MDN website and search for `Promise.all`.
+
+In this function, the array of vote IDs are mapped to an array of promises that
+will make a request to delete the vote in the database with the corresponding
+ID. This array is used as the argument to `Promise.all`. This means that This
+function will resolve when all of the votes in the array have been deleted.
