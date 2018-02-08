@@ -3218,65 +3218,10 @@ stored in <code>VOTE_COUNT_TO_DELETE_POST</code>, the post is deleted along with
 votes that were linked to it. Otherwise, the post is updated with the new vote
 count.</p>
 <a class="header" href="print.html#resolvers" id="resolvers"><h2>Resolvers</h2></a>
-<p>Resolvers are the most powerful way to extend grapcool. They make it so that you
-can add extra queries and mutations to the API. In the case of Corum, only two
-custom resolvers are needed. One to sign up users and one to authenticate users.</p>
-<a class="header" href="print.html#authenticate" id="authenticate"><h3><code>authenticate</code></h3></a>
-<pre><code class="language-js">import { fromEvent } from 'graphcool-lib'
-import * as bcryptjs from 'bcryptjs'
-import { makeRequest } from '../../utils/common'
-
-const userQuery = `
-  query UserQuery($email: String!) {
-    User(email: $email) {
-      id
-      password
-      username
-    }
-  }
-`
-
-export default async event =&gt; {
-  try {
-    // Retrieve payload from event
-    const { email, password } = event.data
-
-    // Create Graphcool API (based on https://github.com/graphcool/graphql-request)
-    const graphcool = fromEvent(event)
-    const api = graphcool.api('simple/v1')
-
-    // Check if a user exists with the email entered
-    const { User } = await makeRequest(api, userQuery, { email })
-    if (!User) {
-      return { error: 'Invalid credentials!' }
-    }
-
-    // Check if the user entered the correct password for the user
-    const passwordIsCorrect = await bcryptjs.compare(password, User.password)
-    if (!passwordIsCorrect) {
-      return { error: 'Invalid credentials!' }
-    }
-
-    // Generate auth token
-    const { id, username } = User
-    const token = await graphcool.generateAuthToken(id, 'User')
-
-    // Return the payload the user asked for
-    return {
-      data: {
-        id,
-        username,
-        token
-      }
-    }
-  } catch (error) {
-    return { error }
-  }
-}
-</code></pre>
-<p>This is the resolver used to authenticate users that have already created an
-account.</p>
-<p>Variable Reference:</p>
+<p>Resolvers are the most powerful way to extend graphcool. They make it so that
+you can add extra queries and mutations to the API. In the case of Corum, only
+two custom resolvers are needed. One to sign up users and one to authenticate
+users.</p>
 <a class="header" href="print.html#signup" id="signup"><h3><code>signup</code></h3></a>
 <pre><code class="language-js">import { fromEvent } from 'graphcool-lib'
 import * as bcryptjs from 'bcryptjs'
@@ -3287,7 +3232,6 @@ const userQuery = `
   query UserQuery($email: String!, $username: String!) {
     allUsers(filter: { OR: [{ email: $email }, { username: $username }] }) {
       id
-      password
       email
       username
     }
@@ -3307,16 +3251,14 @@ const createUserMutation = `
 `
 
 export default async event =&gt; {
-  // Retrieve payload from event
-  const { username, email, password } = event.data
-
-  // Create Graphcool API (based on https://github.com/graphcool/graphql-request)
-  const graphcool = fromEvent(event)
-  const api = graphcool.api('simple/v1')
-
-  const SALT_ROUNDS = 10
-
   try {
+    // Create Graphcool API (based on https://github.com/graphcool/graphql-request)
+    const graphcool = fromEvent(event)
+    const api = graphcool.api('simple/v1')
+
+    // Retrieve payload from event
+    const { username, email, password } = event.data
+
     // Check is email is valid
     if (validator.isEmail(email) === false) {
       return { error: 'The email address entered is not valid' }
@@ -3327,6 +3269,8 @@ export default async event =&gt; {
 
     // If no users exists with the same details, create the user
     if (allUsers.length === 0) {
+      const SALT_ROUNDS = 10
+
       // Generate the password hash that will be stored in the DB
       const passwordHash = await bcryptjs.hash(password, SALT_ROUNDS)
 
@@ -3361,14 +3305,199 @@ export default async event =&gt; {
     } else if (allUsers[0].username === username) {
       return { error: 'The username is in use' }
     } else {
-      return { error: 'An unknown error occured' }
+      return { error: 'An unknown error occurred' }
     }
   } catch (error) {
     return { error }
   }
 }
 </code></pre>
-<p>placeholder</p>
+<p>This is the resolver that is used to create a new user account.</p>
+<p>Variable Reference:</p>
+<ul>
+<li><code>event</code>this is an object containing all of the information about the query or
+mutation event we are hooking into.</li>
+<li><code>fromEvent</code> is a function exposed by the library <code>graphcool-lib</code> that
+constructs a GraphQL client from the <code>event</code> data passed into the function.
+This allows us to send queries and mutations to the API from within the API
+code.</li>
+<li><code>makeRequest</code> is an abstraction of a function provided by <code>graphcool-lib</code> that
+allows us to send queries and mutations to the API. The exact implementation
+of this function is described later on.</li>
+<li><code>bcryptjs</code> is a hashing library implementing the bcrypt hashing function
+design. In this resolver, only the <code>hash</code> function exposed by it is used. The
+use of this function will explained below.</li>
+<li><code>validator</code> is a library that can validate many types of data such as emails,
+passwords, credit card numbers etc. In this resolver, only the <code>isEmail</code>
+function is used.</li>
+<li><code>userQuery</code> is a GraphQL query that fetches a users details. (Their account
+ID, email and username)</li>
+<li><code>createUserMutation</code> is a GraphQL mutation that creates a user.</li>
+</ul>
+<p>Like the first hook function shown in this section, this function imports what
+it needs and exports a function for graphcool. Also like the hook functions, a
+reference to the API is created and the user data is extracted.</p>
+<p>This time, <code>username</code>, <code>email</code> and <code>password</code> are extracted from the data
+object. Next, using the <code>isEmail</code> function found in the <code>validator</code> library, the
+email the user entered is checked to be valid. Internally, the <code>isEmail</code>
+function is probably using regular expressions to ensure that it contains things
+such as an <code>@</code> symbol etc. The <code>isEmail</code> function returns a boolean value. If it
+returns <code>true</code>, the email passed to it is valid. If it returns <code>false</code>, the
+email passed to it is not valid. In this case, an error is returned telling the
+user that '<code>The email address entered is not valid</code>'.</p>
+<p>Next, a request is made using the <code>userQuery</code> query passing in the email and
+username the user entered. This will return an array of <code>User</code> objects that have
+either the same email or username that the user inputted. If the array returned
+is empty, (length equals 0) then no users exists with either the same email or
+username. This means that a new account can be created with these details.</p>
+<p>First, a variable called <code>SALT_ROUNDS</code> is initialised to the value <code>10</code>. This is
+created because the bcrypt hashing function has a built in salt. This is helpful
+for security reasons as it means that passwords hashed with bcrypt can easily be
+protected against rainbow table attacks.</p>
+<p>Then the hash is created from the password with the <code>hash</code> function. This
+expects two arguments. The first argument being the string to hash, and the
+second being the number of times to run the salt. Once the function finishes,
+the function returns the hash.</p>
+<p>Next, a request is made using the <code>createUserMutation</code> mutation passing in the
+email and the username the user entered, as well as the newly created password
+hash. This mutation will create a new user record with these details.</p>
+<p>After that, we extract the user's ID from the above mutation response. Then we
+generate an authentication token for the user using the <code>generateAuthToken</code> on
+the <code>graphcool</code> object that was created using the <code>fromEvent</code> function earlier.
+This token will allow the user perform protected actions such as creating posts
+etc.</p>
+<p>Then finally, we return the data the user wanted.</p>
+<p>In the case that the array returned from the <code>userQuery</code> request is not empty,
+this means that a user exists with some of the same data the user entered. In
+order to return a useful error message to the user, a few checks are made.</p>
+<p>These checks are pretty self explanatory, however, I will list the cases that
+these checks cover:</p>
+<ul>
+<li>When both the username and password are in use, then the following could be
+possible:
+<ul>
+<li>There are 2 separate accounts, one with the same email and another with the
+same username</li>
+<li>There is 1 account with the same email and the same username</li>
+</ul>
+</li>
+<li>When only the email is in use, there could only be 1 account with the same
+email</li>
+<li>When only the username is in use, there could only be 1 account with the same
+username</li>
+<li>There is also an else statement at the end in case something that I haven't
+thought of occurs</li>
+</ul>
+<p>Also, if any other error occurred in the function, this is caught with the
+surrounding <code>try / catch</code> statement, then returned to the user.</p>
+<a class="header" href="print.html#authenticate" id="authenticate"><h3><code>authenticate</code></h3></a>
+<pre><code class="language-js">import { fromEvent } from 'graphcool-lib'
+import * as bcryptjs from 'bcryptjs'
+import { makeRequest } from '../../utils/common'
+
+const userQuery = `
+  query UserQuery($email: String!) {
+    User(email: $email) {
+      id
+      password
+      username
+    }
+  }
+`
+
+export default async event =&gt; {
+  try {
+    // Create Graphcool API (based on https://github.com/graphcool/graphql-request)
+    const graphcool = fromEvent(event)
+    const api = graphcool.api('simple/v1')
+
+    // Retrieve payload from event
+    const { email, password } = event.data
+
+    // Check if a user exists with the email entered
+    const { User } = await makeRequest(api, userQuery, { email })
+    if (!User) {
+      return { error: 'Invalid credentials' }
+    }
+
+    // Check if the user entered the correct password for the user
+    const passwordIsCorrect = await bcryptjs.compare(password, User.password)
+    if (!passwordIsCorrect) {
+      return { error: 'Invalid credentials' }
+    }
+
+    // Generate auth token
+    const { id, username } = User
+    const token = await graphcool.generateAuthToken(id, 'User')
+
+    // Return the payload the user asked for
+    return {
+      data: {
+        id,
+        username,
+        token
+      }
+    }
+  } catch (error) {
+    return { error }
+  }
+}
+</code></pre>
+<p>This is the resolver that is used to authenticate users that have already
+created an account. (Through the <code>signup</code> resolver)</p>
+<p>Variable Reference:</p>
+<ul>
+<li><code>event</code>this is an object containing all of the information about the query or
+mutation event we are hooking into.</li>
+<li><code>fromEvent</code> is a function exposed by the library <code>graphcool-lib</code> that
+constructs a GraphQL client from the <code>event</code> data passed into the function.
+This allows us to send queries and mutations to the API from within the API
+code.</li>
+<li><code>makeRequest</code> is an abstraction of a function provided by <code>graphcool-lib</code> that
+allows us to send queries and mutations to the API. The exact implementation
+of this function is described later on.</li>
+<li><code>bcryptjs</code> is a hashing library implementing the bcrypt hashing function
+design. In this resolver, only the <code>compare</code> function exposed by it is used.
+The use of this function will explained below.</li>
+<li><code>userQuery</code> is a GraphQL query that fetches a users details. (Their account
+ID, username and password)</li>
+</ul>
+<p>Like the first hook function shown in this section, this function imports what
+it needs and exports a function for graphcool. Also like the hook functions, a
+reference to the API is created and the user data is extracted.</p>
+<p>This time, <code>email</code> and <code>password</code> are extracted from the data object. Next, a
+request is made using the <code>userQuery</code> query to fetch the users details from the
+email address the user inputted. When the API responds, a check is made to
+ensure that a user with the email the user typed in actually exists. If a user
+doesn't exist, a generic '<code>Invalid Credentials</code>' error is thrown. This means
+that the API sends back this error message to the client for it to display it to
+the user.</p>
+<p>If a user does exist with the email the user specified, then we can continue to
+make further checks. Next, using the <code>bcryptjs.compare</code> function, the password
+the user entered is checked against the hash that was fetched earlier from the
+database. The <code>compare</code> function takes two arguments. The first argument being
+the raw password that hasn't been hashed. The second argument being the password
+to check against that has been hashed. Internally, the function hashes the
+password and then compares it against the second argument. If they match, the
+function will return <code>true</code>, if the hashes don't match, the function will return
+<code>false</code>.</p>
+<p>This comparison function is asynchronous, so we must <code>await</code> the return value.
+Once the function returns the boolean value, another check is made. If the
+function returned false, meaning the password the user entered wasn't correct,
+then the same generic '<code>Invalid Credentials</code>' error. The reason we throw the
+same error on both cases is because it makes it harder for an attacker to gain
+unauthorised accessed to another users account. This is because they can't tell
+if the user or password is the thing they have got incorrect.</p>
+<p>If a user exists with both the email and password the user specified, we have a
+high degree of confidence that the user is who they say they are. This means
+that we can start to construct the information to return to the user. First, we
+extract the user's ID and username off of the <code>User</code> object. Then we generate an
+authentication token for the user using the <code>generateAuthToken</code> on the
+<code>graphcool</code> object that was created using the <code>fromEvent</code> function earlier. This
+token will allow the user perform protected actions such as creating posts etc.</p>
+<p>Then finally, we return the data the user wanted. Also, if any other error
+occurred in the function, this is caught with the surrounding <code>try / catch</code>
+statement, then returned to the user.</p>
 <a class="header" href="print.html#utility-functions-and-constants" id="utility-functions-and-constants"><h2>Utility Functions and Constants</h2></a>
 <a class="header" href="print.html#vote_count_to_delete_post" id="vote_count_to_delete_post"><h3><code>VOTE_COUNT_TO_DELETE_POST</code></h3></a>
 <pre><code class="language-js">export const VOTE_COUNT_TO_DELETE_POST = -1
@@ -3390,7 +3519,18 @@ export const makeRequest = async (api, query, variables) =&gt; {
   }
 }
 </code></pre>
-<p>placeholder</p>
+<p>As explained in the code comment, this is simply a wrapper around the function
+<code>request</code> that is on the object returned by the <code>fromEvent</code> function. The reason
+this function was created was so that I didn't have to rewrite the same error
+checking functionality with every request made.</p>
+<p>It accepts the following arguments:</p>
+<ul>
+<li><code>api</code> is a reference to the API object created from the <code>fromEvent</code> function</li>
+<li><code>query</code> is the GraphQL query or mutation to execute against the API</li>
+<li><code>variables</code> is an object of variables that are used in the query or mutation</li>
+</ul>
+<p>It returns a promise that is either resolved with the result, or rejected with
+the error.</p>
 <a class="header" href="print.html#deleteallvotesonpost" id="deleteallvotesonpost"><h3><code>deleteAllVotesOnPost</code></h3></a>
 <pre><code class="language-js">/*
   Currently, the CRUD API generated by graphcool does not expose a
@@ -3419,7 +3559,38 @@ export const deleteAllVotesOnPost = async (api, postId) =&gt; {
   )
 }
 </code></pre>
-<p>placeholder</p>
+<p>The reason for this function is best explained in the code comment above.</p>
+<p>Variable Reference:</p>
+<ul>
+<li><code>getAllVoteIdsOnPost</code> is a GraphQL query that gets all the <code>Vote</code> object IDs
+that are associated with the post specified.</li>
+</ul>
+<p>It accepts the following arguments:</p>
+<ul>
+<li><code>api</code> is a reference to the API object created from the <code>fromEvent</code> function</li>
+<li><code>postId</code> is the post's ID to delete the votes on</li>
+</ul>
+<p>It returns a promise that is resolved with the array of the deleted vote IDs.</p>
+<p>First, a request is made using the <code>getAllVoteIdsOnPost</code> query passing in
+<code>postId</code> as the queries variables. As mentioned above, this returns an array of
+<code>Vote</code> objects each with an <code>id</code> property.</p>
+<p>Then, using JavaScript built in <code>map</code> method present on the <code>Array</code> prototype,
+an array is created of just the ID strings. If you do not know what a map
+function does, it takes an array as input, performs an arbitrary action on each
+item of the array, and then returns a new array of length. The JavaScript
+implementation expects a function as input. This function will be executed on
+each item of the array. To find out more about the <code>map</code> function, visit the MDN
+(Mozilla Developer Network) website and search for <code>Array.prototype.map</code>.</p>
+<p>Finally, a call to <code>Promise.all</code> is made. This function takes in an array of
+promises and returns a promise. The array of promises are executed in parallel,
+and the promise only resolves when all items in the promise array have resolved.
+If any of the promises reject, the returned promise will reject with that
+promises rejection error. To find out more about the <code>map</code> function, visit the
+MDN website and search for <code>Promise.all</code>.</p>
+<p>In this function, the array of vote IDs are mapped to an array of promises that
+will make a request to delete the vote in the database with the corresponding
+ID. This array is used as the argument to <code>Promise.all</code>. This means that This
+function will resolve when all of the votes in the array have been deleted.</p>
 <a class="header" href="print.html#evaluation" id="evaluation"><h1>Evaluation</h1></a>
 <p>In this section of the report, I will be doing the following:</p>
 <ul>
@@ -3719,21 +3890,6 @@ have broke any other code depending on them.</li>
             }
         </script>
 
-        
-        <!-- Livereload script (if served using the cli tool) -->
-        <script type="text/javascript">
-            var socket = new WebSocket("ws://localhost:3001");
-            socket.onmessage = function (event) {
-                if (event.data === "reload") {
-                    socket.close();
-                    location.reload(true); // force reload from server (not from cache)
-                }
-            };
-
-            window.onbeforeunload = function() {
-                socket.close();
-            }
-        </script>
         
 
         
