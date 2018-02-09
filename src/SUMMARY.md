@@ -41,7 +41,7 @@
     * [Test Plan](./design/6-testing/3-plan.md)
     * [Test Data](./design/6-testing/4-data.md)
     * [Automated Testing](./design/6-testing/5-automation.md)
-* [Development](./development/1-index/index.md)
+* [Implementation](./development/1-index/index.md)
   * [Structure of Corum](./development/2-structure/1-index.md)
     * [Monolith vs Micro](./development/2-structure/2-monolithMicro.md)
     * [Client Architecture](./development/2-structure/3-client.md)

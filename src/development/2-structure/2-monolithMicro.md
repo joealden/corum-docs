@@ -1,7 +1,27 @@
 # Monolith vs Micro
 
-* Talk about how at the start, the API and the client were going to be built as
-  a monolith project
+## At the Start of Development
+
+At the start of the project, I was pretty certain that I would develop both the
+client and the API as one project. This kind of structure is very common when
+developing with languages with such as PHP. This kind of structure is known as a
+'monolith system'.
+
+This structure has the benefit of being conceptually simpler to think about and
+easier to actually implement in the first place. However, monolith projects do
+have drawbacks. It is harder to test conceptually different components of a
+system as they are all interwoven, and it is harder to make large refactor as
+the changes might break other parts of the system.
+
+Developing in a 'micro service' mindset lends to code being more testable and
+reusable, as components of a system that are conceptually separate are developed
+in isolation from each other. Another benefit of developing micro services are
+that the services can be deployed separately, even on different machines.
+
+**START HERE**
+
+## Decision to Separate Parts of the Project
+
 * When I got further into development, I decided to separate the API and the
   client because:
   * Separation of concerns
