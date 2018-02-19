@@ -273,47 +273,56 @@ can compose scripts together. This is useful because it means that individual
 scripts can be reused and it can abstract the implementation of the scripts
 away. For example, it is quite evident that the <code>deploy</code> script tests and starts
 the project just from the names of the scripts it is running.</p>
-<p>From the sections above, I hope you can understand why NPM scripts are very
-useful in any type of JavaScript project. The problem is that when there are a
-lot of scripts, it is a lot harder to reason about them when reading
-<code>package.json</code>. This issue showed itself when developing Corum as a monolith
-system as I had scripts for both the client and the API, and sometimes I wanted
+<a class="header" href="development/2-structure/2-monolithMicro.html#the-problem" id="the-problem"><h4>The Problem</h4></a>
+<p>From the sections above, I hope you can see why NPM scripts are very useful in
+any type of JavaScript project. The problem is that when there are a lot of
+scripts, it is a lot harder to reason about them when reading <code>package.json</code>.
+This issue showed itself when developing Corum as a monolith system as I had
+scripts for both the client and the API in the same file and sometimes I wanted
 to call the scripts by the same name. For example, I wanted a <code>&quot;start&quot;</code> script
 for both the client and the API. The client one would start the production ready
-server and the API one would start a production ready docker cluster. Because
-you can't have multiple scripts with the same name for obvious reasons, I had to
-start prefixing scripts with what part of the system it started. For example, I
-had two scripts called <code>&quot;client:start&quot;</code> and <code>&quot;api:start&quot;</code>. This was fine for a
-few scripts but it got out of hand as more scripts were added.</p>
-<p><strong>START HERE</strong></p>
-<ul>
-<li>NPM scripts, the task runner of my choice. (located under the <code>scripts</code>
-section of <code>package.json</code>) When I ran a task such as <code>test</code>, I want different
-tests to be ran between projects.</li>
-<li>node_modules bundling issue
-<ul>
-<li>Javascript handles dependencies in the following way:
+web server and the API one would start a production ready docker cluster running
+the backing database and the graphcool service. Because you can't have multiple
+scripts with the same name for obvious reasons, I had to start prefixing scripts
+with what part of the system it started. For example, I had scripts called
+<code>&quot;client:start&quot;</code> and <code>&quot;api:start&quot;</code> as well as <code>&quot;client:test&quot;</code> and <code>&quot;api:test&quot;</code>.
+This was fine for a few scripts but it got out of hand as more scripts were
+added.</p>
+<p>When switching to a micro service architecture, there was a separate
+<code>package.json</code> file for the client and the API. This meant that I could get rid
+of the prefixes that I had given to most scripts. This in turn made it a lot
+easier to understand the file and the scripts that could be run at a glance.</p>
+<a class="header" href="development/2-structure/2-monolithMicro.html#dependency-and-bundling-issue" id="dependency-and-bundling-issue"><h4>Dependency and Bundling Issue</h4></a>
+<p>JavaScript handles dependencies in the following way:</p>
 <ul>
 <li>The file <code>package.json</code> contains information about the project</li>
 <li>An important piece of information is the project dependencies</li>
-<li>When installing the dependencies, (with the <code>yarn</code> command) they are
-placed in the <code>node_modules</code> folder</li>
+<li>When installing the dependencies, (with the <code>yarn</code> command) they are placed in
+the <code>node_modules</code> folder</li>
 </ul>
-</li>
-<li>The API framework I am using, (graphcool) currently bundles the entire
-contents of the <code>node_modules</code> folder with the deployed code. This means
-that when the project was a monolith, all of the dependencies for the client
-were also being bundled with the API code. This was an issue because of the
-following:
+<p>The API framework I am using, (graphcool) currently bundles the entire contents
+of the <code>node_modules</code> folder with the deployed code. This means that when the
+project was a monolith, all of the dependencies for the client were also being
+bundled with the API code. This was an issue for the following reasons:</p>
 <ul>
 <li>The API would take up more storage space on the deployed server</li>
 <li>It would take significantly more time to bundle the API before it was
 deployed. This meant that I was wasting time.</li>
 </ul>
-</li>
-</ul>
-</li>
-</ul>
+<p>By switching to a micro service architecture, the client and the API had
+separate dependencies, and therefore had separate <code>node_modules</code> directories.
+This meant that graphcool was only bundling the code that it needed to. This did
+indeed reduce the amount of storage space the API service used as well as
+reduced the built time of the API service considerably. (From about around 30
+seconds to roughly 5 seconds, a 600% decrease) This reduced built time meant
+that I could spend more time coding rather than waiting around.</p>
+<a class="header" href="development/2-structure/2-monolithMicro.html#conclusion" id="conclusion"><h2>Conclusion</h2></a>
+<p>From the evidence above of implementing this architecture I would say that it
+was a success, and it suited Corum more than a monolith structure. While Corum
+suits this paradigm, other projects may not suit it as well, so it was important
+that I tried developing a monolith system first. It would have been a lot harder
+to start building in a micro service architecture if I hadn't felt the pain
+points of building as a monolith system.</p>
 
                     </main>
 
