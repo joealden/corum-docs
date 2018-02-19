@@ -234,6 +234,35 @@ reduced the built time of the API service considerably. (From about around 30
 seconds to roughly 5 seconds, a 600% decrease) This reduced built time meant
 that I could spend more time coding rather than waiting around.
 
+## Downsides Compared to Developing as a Monolith
+
+While developing Corum in a micro service architecture has a lot of benefits,
+there are of course at least some trade offs to be made. Luckily so far, I have
+only encountered one issue so far.
+
+### Repeated Prettier Configuration
+
+Developing in a micro service architecture means that each service can have its
+own configuration file. As evident from the above sections, this is usually a
+good thing. However, when a configuration file is the same between services,
+there is little you can do to deduplicate and share them.
+
+The tool that I ran into configuration problems because of this is called
+'prettier'. Prettier is a tool that automatically formats you code to conform to
+an opinionated style guide that they determine. This is incredibly useful as it
+means that code styling is kept consistent and I don't have to spend any time
+formatting the code manually. Prettier does allow some configuration for
+controversial styling decisions. For example, I like indenting with 2 spaces, I
+prefer writing JavaScript without semicolons, and I prefer strings in JavaScript
+to be written only using single quotes.
+
+To keep both projects consistent, I want to have the same styling in both the
+client and the API code. To achieve this consistency I need to have two
+identical configuration files in each service directory. The issue with this is
+that if I want to make a change to my prettier configuration I have to remember
+to change it in both services. This problem could be worse if I had more
+services as it would have to be changed for each of them.
+
 ## Conclusion
 
 From the evidence above of implementing this architecture I would say that it

@@ -1,5 +1,7 @@
 # Summary
 
+[Foreword](./index.md)
+
 * [Analysis](./analysis/1-index/index.md)
   * [The Idea](./analysis/2-idea/1-index.md)
     * [Reddit Alterative](./analysis/2-idea/2-redditAlternative.md)
