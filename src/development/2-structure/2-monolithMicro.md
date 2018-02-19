@@ -186,35 +186,59 @@ scripts can be reused and it can abstract the implementation of the scripts
 away. For example, it is quite evident that the `deploy` script tests and starts
 the project just from the names of the scripts it is running.
 
-From the sections above, I hope you can understand why NPM scripts are very
-useful in any type of JavaScript project. The problem is that when there are a
-lot of scripts, it is a lot harder to reason about them when reading
-`package.json`. This issue showed itself when developing Corum as a monolith
-system as I had scripts for both the client and the API, and sometimes I wanted
+#### The Problem
+
+From the sections above, I hope you can see why NPM scripts are very useful in
+any type of JavaScript project. The problem is that when there are a lot of
+scripts, it is a lot harder to reason about them when reading `package.json`.
+This issue showed itself when developing Corum as a monolith system as I had
+scripts for both the client and the API in the same file and sometimes I wanted
 to call the scripts by the same name. For example, I wanted a `"start"` script
 for both the client and the API. The client one would start the production ready
-server and the API one would start a production ready docker cluster. Because
-you can't have multiple scripts with the same name for obvious reasons, I had to
-start prefixing scripts with what part of the system it started. For example, I
-had two scripts called `"client:start"` and `"api:start"`. This was fine for a
-few scripts but it got out of hand as more scripts were added.
+web server and the API one would start a production ready docker cluster running
+the backing database and the graphcool service. Because you can't have multiple
+scripts with the same name for obvious reasons, I had to start prefixing scripts
+with what part of the system it started. For example, I had scripts called
+`"client:start"` and `"api:start"` as well as `"client:test"` and `"api:test"`.
+This was fine for a few scripts but it got out of hand as more scripts were
+added.
 
-**START HERE**
+When switching to a micro service architecture, there was a separate
+`package.json` file for the client and the API. This meant that I could get rid
+of the prefixes that I had given to most scripts. This in turn made it a lot
+easier to understand the file and the scripts that could be run at a glance.
 
-* NPM scripts, the task runner of my choice. (located under the `scripts`
-  section of `package.json`) When I ran a task such as `test`, I want different
-  tests to be ran between projects.
-* node_modules bundling issue
-  * Javascript handles dependencies in the following way:
-    * The file `package.json` contains information about the project
-    * An important piece of information is the project dependencies
-    * When installing the dependencies, (with the `yarn` command) they are
-      placed in the `node_modules` folder
-  * The API framework I am using, (graphcool) currently bundles the entire
-    contents of the `node_modules` folder with the deployed code. This means
-    that when the project was a monolith, all of the dependencies for the client
-    were also being bundled with the API code. This was an issue because of the
-    following:
-    * The API would take up more storage space on the deployed server
-    * It would take significantly more time to bundle the API before it was
-      deployed. This meant that I was wasting time.
+#### Dependency and Bundling Issue
+
+JavaScript handles dependencies in the following way:
+
+* The file `package.json` contains information about the project
+* An important piece of information is the project dependencies
+* When installing the dependencies, (with the `yarn` command) they are placed in
+  the `node_modules` folder
+
+The API framework I am using, (graphcool) currently bundles the entire contents
+of the `node_modules` folder with the deployed code. This means that when the
+project was a monolith, all of the dependencies for the client were also being
+bundled with the API code. This was an issue for the following reasons:
+
+* The API would take up more storage space on the deployed server
+* It would take significantly more time to bundle the API before it was
+  deployed. This meant that I was wasting time.
+
+By switching to a micro service architecture, the client and the API had
+separate dependencies, and therefore had separate `node_modules` directories.
+This meant that graphcool was only bundling the code that it needed to. This did
+indeed reduce the amount of storage space the API service used as well as
+reduced the built time of the API service considerably. (From about around 30
+seconds to roughly 5 seconds, a 600% decrease) This reduced built time meant
+that I could spend more time coding rather than waiting around.
+
+## Conclusion
+
+From the evidence above of implementing this architecture I would say that it
+was a success, and it suited Corum more than a monolith structure. While Corum
+suits this paradigm, other projects may not suit it as well, so it was important
+that I tried developing a monolith system first. It would have been a lot harder
+to start building in a micro service architecture if I hadn't felt the pain
+points of building as a monolith system.
