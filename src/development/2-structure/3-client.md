@@ -259,24 +259,159 @@ This section will explain how Nuxt works in the context of Corum.
 
 #### The Command Line Interface (CLI)
 
-* `nuxt` - Starts the development server
-* `nuxt build` - Builds the client for production
-* `nuxt start` - Starts a production server (Files must have been built)
+Nuxt is actually just a CLI tool that exposes 3 important commands:
+
+##### `nuxt`
+
+This command starts the Nuxt development server.
+
+The following happens in development mode:
+
+* The server is reloaded every time a file changes
+* Errors are logged to the console and on an overlay
+
+These features are useful when developing but are not needed or wanted when
+deploying the site to production.
+
+#####`nuxt build`
+
+This builds and bundles all of the sites files. This makes it ready to be hosted
+on the production server.
+
+##### `nuxt start`
+
+This starts the production server. Before executing this command, it is
+important that the site has been build with the `nuxt build` command.
+
+The following happens in production mode:
+
+* All errors are suppressed so that it is harder for an attacker to exploit a
+  possible bug
+* the files are minified and optimised.
+* Vue developer tools are disabled for better performance
+* The service worker added by the PWA module is turned on
+
+This makes the production site faster and more refined.
 
 #### The Directory Structure
 
-* `layouts`
-* `pages`
-* `static`
-* `store`
+Nuxt utilises a file based API system. Each of the following sections explains
+what each directory means to Nuxt.
+
+##### `layouts`
+
+Nuxt has a concept of 'layouts'. A layout is a Vue SFC that can be used to make
+multiple pages have the same base layout. When a page is rendered, Nuxt looks at
+what layout it specifies and then renders the page inside of the specified
+layout. You can choose where the page renders in the layout using the `nuxt` Vue
+component.
+
+As mentioned above, pages can say what layout they want to use. This is done in
+the page's SFC under the `"layout"` property. For example, if a page specified
+`"layout": "test"` then the page would use the `test.vue` SFC found in the
+`layouts` directory. The `"layout"` property defaults to `default` if it is not
+otherwise specified. Because Corum has a single consistent layout, only a single
+`default.vue` exists. This means that all pages default to use this layout.
+
+From the sketch shown in the 'Component Design' sub section of the Design
+section, it is clear what components should be kept in this file:
+
+* The `Logo` component
+* The `Header` component
+* The `Navigation` component
+
+Then where the `Main Content` section is in the UI design sketch is where the
+`nuxt` Vue component should be used to render the actual page.
+
+##### `pages`
+
+This directory contains all of the sites pages as Vue SFCs. Here is a diagram of
+the structure of Corum's `pages` directory:
+
+```
+pages
+├── index.vue
+├── login.vue
+├── new-subforum.vue
+├── signup.vue
+└── subforum
+    └── _subforum
+        ├── index.vue
+        ├── new.vue
+        └── post
+            └── _post.vue
+```
+
+This directory acts as a file based router. This means that when Nuxt builds the
+files for either development or production mode, it reads the structure of this
+directory and creates pages accordingly. For example, the `index.vue` file would
+map to the route `/`, the `signup.vue` file would map to the route `/signup` and
+the `subforum/_subforum/index.vue` would map to the route `/subforum/:subforum`.
+
+From the examples given above, you can see that you can use directories within
+the `pages` directory to create deeper routes. Also, it is important to note
+that any file prefixed with a `_` means that the value of this part of the route
+is dynamic.
+
+For example, in the final example above that maps to `/subforum/:subforum`, the
+`:subforum` part of the route can be any string such as `/subforum/programming`.
+The dynamic variable can be accessed from within the page SFC, meaning that the
+page can dynamically show different content from the same route depending on the
+content of the dynamic part of it.
+
+If you look back at the 'Route Design' sub section in the Design section of this
+report, you can see from the diagram above that the files shown map to all of
+the routes that are needed for Corum.
+
+##### `static`
+
+This directory is a place to store any asset that is linked statically in the
+site in its HTML. The only thing Corum uses this directory for it to store the
+favicon of the site.
+
+##### `store`
+
+This directory is used to store JavaScript files that are used to create the
+global state store using `vuex`. This directory is optional. If the directory is
+empty, then Nuxt will intelligently exclude `vuex` as a dependency, as if the
+directory is empty, the global state store is not being used, and therefore is
+not needed.
+
+In the context of Corum, only a single `index.js` file is contained within it.
+This file creates and exports a store that is used to keep track of the user's
+data. A detailed explanation of this file can be found in the later sub section
+named 'Client Analysis'.
 
 #### Nuxt modules used by Corum
 
-* `apollo`
-  * adds graphql-loader automatically
-* `dotenv`
-* `font-awesome`
-* `pwa`
+As mentioned above, Nuxt provides an extension point through the use of 'Nuxt
+modules'. These are the modules that Corum uses that have been published by
+others.
+
+##### `apollo`
+
+This will only make complete sense once you have read the section below titled
+'Apollo'. In short, this module provides a very simple way to setup the Apollo
+library that I am using to fetch data from the GraphQL API.
+
+##### `dotenv`
+
+This allows Corum to read in configuration options from a file named `.env` at
+the root of the project though a global variable called `process.env`. There is
+also a section below that will explain this in more detail named
+'Configuration'.
+
+##### `font-awesome`
+
+This module injects a CSS library called 'Font Awesome'. This library provides a
+large collection of SVG icons that Corum uses. These can be seen in a lot of
+places, for example in the `login` and `signup` buttons.
+
+##### `pwa`
+
+This module provides a zero configuration Progressive Web App experience. This
+includes things like adding a service worker to the site when in production mode
+and more.
 
 #### Nuxt Configuration (`nuxt.config.js`)
 
@@ -302,18 +437,6 @@ configure itself, through a file located at the root of the project called
 * Why using stylus as a pre-processor
 * Used by putting `lang="stylus"` as an attribute in `style` tag of Vue SFCs
 * stylus-loader configured automatically by Nuxt
-
-## Production vs Development
-
-* Production vs development settings
-  * Optimisations
-    * Code minification
-    * Turn off dev help
-      * ESLint overlay (If something breaks, don't say exacting why)
-      * Vue developer tools (That lets you explore info state)
-      * Logging errors to the console (Why you don't want that in production)
-      * Changing error page (Why)
-    * Turn on service worker (With nuxt pwa module)
 
 ## Configuration
 

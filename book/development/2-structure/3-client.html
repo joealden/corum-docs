@@ -330,18 +330,74 @@ Corum uses.</p>
 <a class="header" href="development/2-structure/3-client.html#how-nuxt-works" id="how-nuxt-works"><h3>How Nuxt Works</h3></a>
 <p>This section will explain how Nuxt works in the context of Corum.</p>
 <a class="header" href="development/2-structure/3-client.html#the-command-line-interface-cli" id="the-command-line-interface-cli"><h4>The Command Line Interface (CLI)</h4></a>
+<p>Nuxt is actually just a CLI tool that exposes 3 important commands:</p>
+<a class="header" href="development/2-structure/3-client.html#nuxt-1" id="nuxt-1"><h5><code>nuxt</code></h5></a>
+<p>This command starts the Nuxt development server.</p>
+<p>The following happens in development mode:</p>
 <ul>
-<li><code>nuxt</code> - Starts the development server</li>
-<li><code>nuxt build</code> - Builds the client for production</li>
-<li><code>nuxt start</code> - Starts a production server (Files must have been built)</li>
+<li>The server is reloaded every time a file changes</li>
+<li>Errors are logged to the console and on an overlay</li>
 </ul>
+<p>These features are useful when developing but are not needed or wanted when
+deploying the site to production.</p>
+<p>#####<code>nuxt build</code></p>
+<p>This builds and bundles all of the sites files. This makes it ready to be hosted
+on the production server.</p>
+<a class="header" href="development/2-structure/3-client.html#nuxt-start" id="nuxt-start"><h5><code>nuxt start</code></h5></a>
+<p>This starts the production server. Before executing this command, it is
+important that the site has been build with the <code>nuxt build</code> command.</p>
+<p>The following happens in production mode:</p>
+<ul>
+<li>All errors are suppressed so that it is harder for an attacker to exploit a
+possible bug</li>
+<li>the files are minified and optimised.</li>
+<li>Vue developer tools are disabled for better performance</li>
+<li>The service worker added by the PWA module is turned on</li>
+</ul>
+<p>This makes the production site faster and more refined.</p>
 <a class="header" href="development/2-structure/3-client.html#the-directory-structure" id="the-directory-structure"><h4>The Directory Structure</h4></a>
+<p>Nuxt utilises a file based API system. Each of the following sections explains
+what each directory means to Nuxt.</p>
+<a class="header" href="development/2-structure/3-client.html#layouts" id="layouts"><h5><code>layouts</code></h5></a>
+<p>Nuxt has a concept of 'layouts'. A layout is a Vue SFC that can be used to make
+multiple pages have the same base layout. When a page is rendered, Nuxt looks at
+what layout it specifies and then renders the page inside of the specified
+layout. You can choose where the page renders in the layout using the <code>nuxt</code> Vue
+component.</p>
+<p>As mentioned above, pages can say what layout they want to use. This is done in
+the page's SFC under the <code>&quot;layout&quot;</code> property. For example, if a page specified
+<code>&quot;layout&quot;: &quot;test&quot;</code> then the page would use the <code>test.vue</code> SFC found in the
+<code>layouts</code> directory. The <code>&quot;layout&quot;</code> property defaults to <code>default</code> if it is not
+otherwise specified. Because Corum has a single consistent layout, only a single
+<code>default.vue</code> exists. This means that all pages default to use this layout.</p>
+<p>From the sketch shown in the 'Component Design' sub section of the Design
+section, it is clear what components should be kept in this file:</p>
 <ul>
-<li><code>layouts</code></li>
-<li><code>pages</code></li>
-<li><code>static</code></li>
-<li><code>store</code></li>
+<li>The <code>Logo</code> component</li>
+<li>The <code>Header</code> component</li>
+<li>The <code>Navigation</code> component</li>
 </ul>
+<p>Then where the <code>Main Content</code> section is in the UI design sketch is where the
+<code>nuxt</code> Vue component should be used to render the actual page.</p>
+<a class="header" href="development/2-structure/3-client.html#pages" id="pages"><h5><code>pages</code></h5></a>
+<p>This directory contains all of the sites pages as Vue SFCs. Here is a diagram of
+the structure of Corum's <code>pages</code> directory;</p>
+<pre><code>pages
+├── index.vue
+├── login.vue
+├── new-subforum.vue
+├── signup.vue
+└── subforum
+    └── _subforum
+        ├── index.vue
+        ├── new.vue
+        └── post
+            └── _post.vue
+</code></pre>
+<a class="header" href="development/2-structure/3-client.html#static" id="static"><h5><code>static</code></h5></a>
+<p>placeholder</p>
+<a class="header" href="development/2-structure/3-client.html#store" id="store"><h5><code>store</code></h5></a>
+<p>placeholder</p>
 <a class="header" href="development/2-structure/3-client.html#nuxt-modules-used-by-corum" id="nuxt-modules-used-by-corum"><h4>Nuxt modules used by Corum</h4></a>
 <ul>
 <li><code>apollo</code>
@@ -380,27 +436,6 @@ logged in)</li>
 <li>Why using stylus as a pre-processor</li>
 <li>Used by putting <code>lang=&quot;stylus&quot;</code> as an attribute in <code>style</code> tag of Vue SFCs</li>
 <li>stylus-loader configured automatically by Nuxt</li>
-</ul>
-<a class="header" href="development/2-structure/3-client.html#production-vs-development" id="production-vs-development"><h2>Production vs Development</h2></a>
-<ul>
-<li>Production vs development settings
-<ul>
-<li>Optimisations
-<ul>
-<li>Code minification</li>
-<li>Turn off dev help
-<ul>
-<li>ESLint overlay (If something breaks, don't say exacting why)</li>
-<li>Vue developer tools (That lets you explore info state)</li>
-<li>Logging errors to the console (Why you don't want that in production)</li>
-<li>Changing error page (Why)</li>
-</ul>
-</li>
-<li>Turn on service worker (With nuxt pwa module)</li>
-</ul>
-</li>
-</ul>
-</li>
 </ul>
 <a class="header" href="development/2-structure/3-client.html#configuration" id="configuration"><h2>Configuration</h2></a>
 <ul>
@@ -456,6 +491,21 @@ logged in)</li>
             }
         </script>
 
+        
+        <!-- Livereload script (if served using the cli tool) -->
+        <script type="text/javascript">
+            var socket = new WebSocket("ws://localhost:3001");
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload(true); // force reload from server (not from cache)
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
         
 
         
