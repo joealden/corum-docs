@@ -2322,7 +2322,7 @@ section, it is clear what components should be kept in this file:</p>
 <code>nuxt</code> Vue component should be used to render the actual page.</p>
 <a class="header" href="print.html#pages" id="pages"><h5><code>pages</code></h5></a>
 <p>This directory contains all of the sites pages as Vue SFCs. Here is a diagram of
-the structure of Corum's <code>pages</code> directory;</p>
+the structure of Corum's <code>pages</code> directory:</p>
 <pre><code>pages
 ├── index.vue
 ├── login.vue
@@ -2335,28 +2335,65 @@ the structure of Corum's <code>pages</code> directory;</p>
         └── post
             └── _post.vue
 </code></pre>
+<p>This directory acts as a file based router. This means that when Nuxt builds the
+files for either development or production mode, it reads the structure of this
+directory and creates pages accordingly. For example, the <code>index.vue</code> file would
+map to the route <code>/</code>, the <code>signup.vue</code> file would map to the route <code>/signup</code> and
+the <code>subforum/_subforum/index.vue</code> would map to the route <code>/subforum/:subforum</code>.</p>
+<p>From the examples given above, you can see that you can use directories within
+the <code>pages</code> directory to create deeper routes. Also, it is important to note
+that any file prefixed with a <code>_</code> means that the value of this part of the route
+is dynamic.</p>
+<p>For example, in the final example above that maps to <code>/subforum/:subforum</code>, the
+<code>:subforum</code> part of the route can be any string such as <code>/subforum/programming</code>.
+The dynamic variable can be accessed from within the page SFC, meaning that the
+page can dynamically show different content from the same route depending on the
+content of the dynamic part of it.</p>
+<p>If you look back at the 'Route Design' sub section in the Design section of this
+report, you can see from the diagram above that the files shown map to all of
+the routes that are needed for Corum.</p>
 <a class="header" href="print.html#static" id="static"><h5><code>static</code></h5></a>
-<p>placeholder</p>
+<p>This directory is a place to store any asset that is linked statically in the
+site in its HTML. The only thing Corum uses this directory for it to store the
+favicon of the site.</p>
 <a class="header" href="print.html#store" id="store"><h5><code>store</code></h5></a>
-<p>placeholder</p>
+<p>This directory is used to store JavaScript files that are used to create the
+global state store using <code>vuex</code>. This directory is optional. If the directory is
+empty, then Nuxt will intelligently exclude <code>vuex</code> as a dependency, as if the
+directory is empty, the global state store is not being used, and therefore is
+not needed.</p>
+<p>In the context of Corum, only a single <code>index.js</code> file is contained within it.
+This file creates and exports a store that is used to keep track of the user's
+data. A detailed explanation of this file can be found in the later sub section
+named 'Client Analysis'.</p>
 <a class="header" href="print.html#nuxt-modules-used-by-corum" id="nuxt-modules-used-by-corum"><h4>Nuxt modules used by Corum</h4></a>
-<ul>
-<li><code>apollo</code>
-<ul>
-<li>adds graphql-loader automatically</li>
-</ul>
-</li>
-<li><code>dotenv</code></li>
-<li><code>font-awesome</code></li>
-<li><code>pwa</code></li>
-</ul>
+<p>As mentioned above, Nuxt provides an extension point through the use of 'Nuxt
+modules'. These are the modules that Corum uses that have been published by
+others.</p>
+<a class="header" href="print.html#apollo" id="apollo"><h5><code>apollo</code></h5></a>
+<p>This will only make complete sense once you have read the section below titled
+'Apollo'. In short, this module provides a very simple way to setup the Apollo
+library that I am using to fetch data from the GraphQL API.</p>
+<a class="header" href="print.html#dotenv" id="dotenv"><h5><code>dotenv</code></h5></a>
+<p>This allows Corum to read in configuration options from a file named <code>.env</code> at
+the root of the project though a global variable called <code>process.env</code>. There is
+also a section below that will explain this in more detail named
+'Configuration'.</p>
+<a class="header" href="print.html#font-awesome" id="font-awesome"><h5><code>font-awesome</code></h5></a>
+<p>This module injects a CSS library called 'Font Awesome'. This library provides a
+large collection of SVG icons that Corum uses. These can be seen in a lot of
+places, for example in the <code>login</code> and <code>signup</code> buttons.</p>
+<a class="header" href="print.html#pwa" id="pwa"><h5><code>pwa</code></h5></a>
+<p>This module provides a zero configuration Progressive Web App experience. This
+includes things like adding a service worker to the site when in production mode
+and more.</p>
 <a class="header" href="print.html#nuxt-configuration-nuxtconfigjs" id="nuxt-configuration-nuxtconfigjs"><h4>Nuxt Configuration (<code>nuxt.config.js</code>)</h4></a>
 <p>While nuxt provides a great abstraction on top of Vue and related libraries, it
 is also very customisable and extensible. Nuxt provides a central way to
 configure itself, through a file located at the root of the project called
 <code>nuxt.config.js</code>.</p>
 <p>...</p>
-<a class="header" href="print.html#apollo" id="apollo"><h2>Apollo</h2></a>
+<a class="header" href="print.html#apollo-1" id="apollo-1"><h2>Apollo</h2></a>
 <ul>
 <li>Describe what Apollo is (Reference design)
 <ul>
@@ -2617,7 +2654,7 @@ are packages that features to Nuxt just by installing them and telling nuxt to
 use them.</p>
 <p>The modules used by Corum and why they are used can be found in the code
 comments below.</p>
-<a class="header" href="print.html#apollo-1" id="apollo-1"><h3><code>apollo</code></h3></a>
+<a class="header" href="print.html#apollo-2" id="apollo-2"><h3><code>apollo</code></h3></a>
 <p>This is exposed by the <code>@nuxtjs/apollo</code> module, and requires you to specify
 where the Apollo Client configuration file resides.</p>
 <a class="header" href="print.html#apollo-configuration" id="apollo-configuration"><h2>Apollo Configuration</h2></a>
@@ -4412,21 +4449,6 @@ have broke any other code depending on them.</li>
             }
         </script>
 
-        
-        <!-- Livereload script (if served using the cli tool) -->
-        <script type="text/javascript">
-            var socket = new WebSocket("ws://localhost:3001");
-            socket.onmessage = function (event) {
-                if (event.data === "reload") {
-                    socket.close();
-                    location.reload(true); // force reload from server (not from cache)
-                }
-            };
-
-            window.onbeforeunload = function() {
-                socket.close();
-            }
-        </script>
         
 
         
