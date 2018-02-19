@@ -1,6 +1,8 @@
-# Summary
+# Contents Page
 
 [Foreword](./index.md)
+
+[Contents Page](./SUMMARY.md)
 
 * [Analysis](./analysis/1-index/index.md)
   * [The Idea](./analysis/2-idea/1-index.md)

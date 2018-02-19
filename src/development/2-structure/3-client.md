@@ -255,7 +255,7 @@ Corum uses.
 
 ### How Nuxt Works
 
-This section will explain how to use Nuxt in the context of Corum.
+This section will explain how Nuxt works in the context of Corum.
 
 #### The Command Line Interface (CLI)
 
