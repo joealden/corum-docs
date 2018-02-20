@@ -2409,7 +2409,8 @@ clients to choose from. Some libraries target specific view libraries, most
 notably React as it is the most popular (Such as <code>urql</code>). I will be excluding
 these options as I want to be able to have a nice interface to the client though
 Vue.</p>
-<p>Here is a short list of the choices that I wnet</p>
+<p>Here is a short list of the choices that I considered:</p>
+<p><strong>Start here -&gt; graphql-request, relay, apollo</strong></p>
 <ul>
 <li>Describe what Apollo is (Reference design)
 <ul>
@@ -4465,21 +4466,6 @@ have broke any other code depending on them.</li>
             }
         </script>
 
-        
-        <!-- Livereload script (if served using the cli tool) -->
-        <script type="text/javascript">
-            var socket = new WebSocket("ws://localhost:3001");
-            socket.onmessage = function (event) {
-                if (event.data === "reload") {
-                    socket.close();
-                    location.reload(true); // force reload from server (not from cache)
-                }
-            };
-
-            window.onbeforeunload = function() {
-                socket.close();
-            }
-        </script>
         
 
         
