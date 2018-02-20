@@ -343,19 +343,19 @@ pages
 ```
 
 This directory acts as a file based router. This means that when Nuxt builds the
-files for either development or production mode, it reads the structure of this
-directory and creates pages accordingly. For example, the `index.vue` file would
+site for either development or production mode, it reads the structure of this
+directory and creates page accordingly. For example, the `index.vue` file would
 map to the route `/`, the `signup.vue` file would map to the route `/signup` and
 the `subforum/_subforum/index.vue` would map to the route `/subforum/:subforum`.
 
-From the examples given above, you can see that you can use directories within
-the `pages` directory to create deeper routes. Also, it is important to note
-that any file prefixed with a `_` means that the value of this part of the route
-is dynamic.
+From the examples given above, you can see that you can nest directories in the
+`pages` directory to create deeper routes. Also, it is important to note that
+any file prefixed with a `_` means that the value of this part of the route is
+dynamic.
 
 For example, in the final example above that maps to `/subforum/:subforum`, the
 `:subforum` part of the route can be any string such as `/subforum/programming`.
-The dynamic variable can be accessed from within the page SFC, meaning that the
+The dynamic variable can be accessed from within the pages SFC, meaning that the
 page can dynamically show different content from the same route depending on the
 content of the dynamic part of it.
 
@@ -417,12 +417,34 @@ and more.
 
 While nuxt provides a great abstraction on top of Vue and related libraries, it
 is also very customisable and extensible. Nuxt provides a central way to
-configure itself, through a file located at the root of the project called
+configure itself through a file located at the root of the project called
 `nuxt.config.js`.
 
-...
+The details of Corum's Nuxt config are explained in the client's code analysis
+section.
 
 ## Apollo
+
+As mentioned in the Design section of this report, the API is a GraphQL server.
+This is instead of a similar comparable technique such as REST. To find out more
+about the benefits of GraphQL, have a look at 'API Design' sub section in the
+Design section.
+
+Because the API is a GraphQL server, the client needs a GraphQL client library
+to communicate with the server. Communication with the server could be done
+manually with `GET` and `POST` JSON requests to the API endpoint. However, just
+like Vue provides a declarative interface to the DOM, GraphQL clients provide a
+declarative interface to fetching data.
+
+Even though GraphQL is a relatively new technology, there are quite a few
+clients to choose from. Some libraries target specific view libraries, most
+notably React as it is the most popular (Such as `urql`). I will be excluding
+these options as I want to be able to have a nice interface to the client though
+Vue.
+
+Here is a short list of the choices that I considered:
+
+**Start here -> graphql-request, relay, apollo**
 
 * Describe what Apollo is (Reference design)
   * A GraphQL client that provide the following:

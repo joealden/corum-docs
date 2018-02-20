@@ -2336,17 +2336,17 @@ the structure of Corum's <code>pages</code> directory:</p>
             └── _post.vue
 </code></pre>
 <p>This directory acts as a file based router. This means that when Nuxt builds the
-files for either development or production mode, it reads the structure of this
-directory and creates pages accordingly. For example, the <code>index.vue</code> file would
+site for either development or production mode, it reads the structure of this
+directory and creates page accordingly. For example, the <code>index.vue</code> file would
 map to the route <code>/</code>, the <code>signup.vue</code> file would map to the route <code>/signup</code> and
 the <code>subforum/_subforum/index.vue</code> would map to the route <code>/subforum/:subforum</code>.</p>
-<p>From the examples given above, you can see that you can use directories within
-the <code>pages</code> directory to create deeper routes. Also, it is important to note
-that any file prefixed with a <code>_</code> means that the value of this part of the route
-is dynamic.</p>
+<p>From the examples given above, you can see that you can nest directories in the
+<code>pages</code> directory to create deeper routes. Also, it is important to note that
+any file prefixed with a <code>_</code> means that the value of this part of the route is
+dynamic.</p>
 <p>For example, in the final example above that maps to <code>/subforum/:subforum</code>, the
 <code>:subforum</code> part of the route can be any string such as <code>/subforum/programming</code>.
-The dynamic variable can be accessed from within the page SFC, meaning that the
+The dynamic variable can be accessed from within the pages SFC, meaning that the
 page can dynamically show different content from the same route depending on the
 content of the dynamic part of it.</p>
 <p>If you look back at the 'Route Design' sub section in the Design section of this
@@ -2390,10 +2390,26 @@ and more.</p>
 <a class="header" href="print.html#nuxt-configuration-nuxtconfigjs" id="nuxt-configuration-nuxtconfigjs"><h4>Nuxt Configuration (<code>nuxt.config.js</code>)</h4></a>
 <p>While nuxt provides a great abstraction on top of Vue and related libraries, it
 is also very customisable and extensible. Nuxt provides a central way to
-configure itself, through a file located at the root of the project called
+configure itself through a file located at the root of the project called
 <code>nuxt.config.js</code>.</p>
-<p>...</p>
+<p>The details of Corum's Nuxt config are explained in the client's code analysis
+section.</p>
 <a class="header" href="print.html#apollo-1" id="apollo-1"><h2>Apollo</h2></a>
+<p>As mentioned in the Design section of this report, the API is a GraphQL server.
+This is instead of a similar comparable technique such as REST. To find out more
+about the benefits of GraphQL, have a look at 'API Design' sub section in the
+Design section.</p>
+<p>Because the API is a GraphQL server, the client needs a GraphQL client library
+to communicate with the server. Communication with the server could be done
+manually with <code>GET</code> and <code>POST</code> JSON requests to the API endpoint. However, just
+like Vue provides a declarative interface to the DOM, GraphQL clients provide a
+declarative interface to fetching data.</p>
+<p>Even though GraphQL is a relatively new technology, there are quite a few
+clients to choose from. Some libraries target specific view libraries, most
+notably React as it is the most popular (Such as <code>urql</code>). I will be excluding
+these options as I want to be able to have a nice interface to the client though
+Vue.</p>
+<p>Here is a short list of the choices that I wnet</p>
 <ul>
 <li>Describe what Apollo is (Reference design)
 <ul>
@@ -4449,6 +4465,21 @@ have broke any other code depending on them.</li>
             }
         </script>
 
+        
+        <!-- Livereload script (if served using the cli tool) -->
+        <script type="text/javascript">
+            var socket = new WebSocket("ws://localhost:3001");
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload(true); // force reload from server (not from cache)
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
         
 
         
