@@ -423,28 +423,44 @@ configure itself through a file located at the root of the project called
 The details of Corum's Nuxt config are explained in the client's code analysis
 section.
 
-## Apollo
+## Fetching Data with Apollo
 
 As mentioned in the Design section of this report, the API is a GraphQL server.
 This is instead of a similar comparable technique such as REST. To find out more
-about the benefits of GraphQL, have a look at 'API Design' sub section in the
-Design section.
+about the benefits of GraphQL, have a look at the 'API Design' sub section in
+the Design section.
 
 Because the API is a GraphQL server, the client needs a GraphQL client library
 to communicate with the server. Communication with the server could be done
-manually with `GET` and `POST` JSON requests to the API endpoint. However, just
+manually with `GET` and `POST` JSON requests to the API endpoint, however, just
 like Vue provides a declarative interface to the DOM, GraphQL clients provide a
-declarative interface to fetching data.
+declarative interface for fetching data.
 
 Even though GraphQL is a relatively new technology, there are quite a few
-clients to choose from. Some libraries target specific view libraries, most
-notably React as it is the most popular (Such as `urql`). I will be excluding
-these options as I want to be able to have a nice interface to the client though
-Vue.
+clients to choose from. Some libraries target React as it is the most popular
+view library (Such as `urql`). I will be excluding these options as I want to be
+able to have a nice interface to the client through Vue.
 
-Here is a short list of the choices that I considered:
+Here is the list of the choices that I considered:
 
-**Start here -> graphql-request, relay, apollo**
+* `graphql-request`
+* `relay`
+* `apollo`
+
+The following sub sections will give a brief explanation of the pros and cons of
+each library.
+
+### `graphql-request`
+
+placeholder
+
+### `relay`
+
+placeholder
+
+### `apollo`
+
+placeholder
 
 * Describe what Apollo is (Reference design)
   * A GraphQL client that provide the following:
