@@ -2406,47 +2406,110 @@ like Vue provides a declarative interface to the DOM, GraphQL clients provide a
 declarative interface for fetching data.</p>
 <p>Even though GraphQL is a relatively new technology, there are quite a few
 clients to choose from. Some libraries target React as it is the most popular
-view library (Such as <code>urql</code>). I will be excluding these options as I want to be
-able to have a nice interface to the client through Vue.</p>
-<p>Here is the list of the choices that I considered:</p>
+view library (Such as <code>urql</code> or <code>relay</code>). I will be excluding these options as I
+want to be able to have a nice interface to the client through Vue.</p>
+<p>These are the two choices that I considered:</p>
 <ul>
 <li><code>graphql-request</code></li>
-<li><code>relay</code></li>
 <li><code>apollo</code></li>
 </ul>
 <p>The following sub sections will give a brief explanation of the pros and cons of
 each library.</p>
 <a class="header" href="print.html#graphql-request" id="graphql-request"><h3><code>graphql-request</code></h3></a>
-<p>placeholder</p>
-<a class="header" href="print.html#relay" id="relay"><h3><code>relay</code></h3></a>
-<p>placeholder</p>
+<p>This is the most lightweight option of the three. This is a benefit as the user
+will have less code to download, parse and execute, however, this comes at the
+cost of less features. Unlike the other two options, <code>graphql-request</code> doesn't
+have cache implementation.</p>
+<p>This is an issue for Corum as I want the data fetched to be cached so that if a
+user requests the same data multiple times, multiple network requests are not
+made. For example, if the user visits a post, goes to another subforum then
+returns to the previous post, the post data would have to be fetched again even
+though it hasn't changed. This is only an issue in <code>graphql-request</code>.</p>
+<p>If I want to have a cache and use <code>graphql-request</code> then I would have to create
+a wrapper around the library, however it would be wiser to just use another
+library that has caching built in. This is because not only would it take time
+to create the cache implementation that I could spend on other things, it would
+also take away from how simple and lightweight the library is.</p>
 <a class="header" href="print.html#apollo-1" id="apollo-1"><h3><code>apollo</code></h3></a>
-<p>placeholder</p>
-<ul>
-<li>Describe what Apollo is (Reference design)
-<ul>
-<li>A GraphQL client that provide the following:
-<ul>
-<li>Middleware hooks (Used to add <code>Authentication</code> header when a user is
-logged in)</li>
-<li>Data caching (Means less network fetches and faster responses)</li>
-<li>Bindings for Vue (with the <code>vue-apollo</code> library)</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>The way the client communicate with the API</li>
-</ul>
+<p>This is currently the most popular GraphQL client library. I mentioned briefly
+in the design section of this report that I was likely going to be using this
+library.</p>
+<p>Like <code>graphql-request</code>, Apollo Client is not bound to a specific framework (It
+is framework agnostic). However, unlike <code>graphql-request</code>, it provides libraries
+with bindings to popular view libraries such as React, Angular and Vue. This
+makes it much more ergonomic to work with the library within the supported view
+libraries. As I am using Vue as the view library for Corum, I will be using the
+Vue bindings named <code>vue-apollo</code>.</p>
+<p>Also, Apollo Client provides built in support for caching. This is good for the
+reason stated above in the <code>graphql-request</code> sub section above. The way this
+works in Apollo is described in the code analysis section of this report.</p>
+<p>Another nicety that Apollo Client provides is the concept of middleware hooks.
+In simple terms, middleware hooks allows the developer to execute arbitrary code
+and to modify the data that passes through the library on a request or response.
+This concept is used within Corum to add an <code>Authorization</code> header to every HTTP
+request sent to the API server (If the user is logged in). This allows the API
+server to verify that the user is allowed to execute protected queries and
+mutations. The implementation code for this can be found in the code analysis
+section.</p>
 <a class="header" href="print.html#css" id="css"><h2>CSS</h2></a>
-<ul>
-<li>Why using stylus as a pre-processor</li>
-<li>Used by putting <code>lang=&quot;stylus&quot;</code> as an attribute in <code>style</code> tag of Vue SFCs</li>
-<li>stylus-loader configured automatically by Nuxt</li>
-</ul>
+<p>As mentioned previously, Vue allows you to develop in a format know as Single
+File Components (SFC). These files are the ones with a <code>.vue</code> extension. They
+basically allow you to write HTML, JavaScript and CSS in a single file. During
+the build process, these files are compiled into plain JavaScript files that
+browsers can understand. The way the file is written is like a HTML document.
+The three top level elements that can exist in an Vue SFC are <code>template</code> (HTML),
+<code>script</code> (JavaScript), and <code>style</code> (CSS). All of these tags allow for attributes
+like normal HTML tags.</p>
+<p>The two attributes that we are interested in are <code>lang</code> and <code>scoped</code>. These two
+attributes are described in the following sub sections.</p>
+<a class="header" href="print.html#lang" id="lang"><h3><code>lang</code></h3></a>
+<p>This attribute allows you to specify what language the code inside of the
+element is written in. This attribute is allowed on all top level elements.</p>
+<p>For example, you may want to use a HTML pre-processor such as Pug. This will
+work by adding <code>lang=&quot;pug&quot;</code> to the <code>template</code> tag, as well as installing the
+correct package to process the code inside the element (In this case, the <code>pug</code>
+package).</p>
+<p>For an example for the <code>script</code> tag, you may want to use a compile-to-JS
+language such as TypeScript. This will work by adding <code>lang=&quot;ts&quot;</code> to the
+<code>script</code> tag, as well as installing the correct package to process the code
+inside the element (In this case, the <code>ts-loader</code> package).</p>
+<p>For an example for the <code>style</code> tag, you may want to use a CSS pre-processor
+language such as SASS. This will work by adding <code>lang=&quot;sass&quot;</code> to the <code>style</code>
+tag, as well as installing the correct package to process the code inside the
+element (In this case, the <code>sass-loader</code> package).</p>
+<a class="header" href="print.html#scoped" id="scoped"><h3><code>scoped</code></h3></a>
+<p>This attribute is only allow to be placed on <code>style</code> elements. This attribute
+scopes the CSS inside the element to this component only. This means that if a
+class is specified that changes the background colour, if it is applied outside
+of this component, it will not get this styling. This works by adding a prefix
+to the class name that ensures that it is only scoped the HTML inside the
+component. This means that I don't have to think about CSS rules clashing with
+each other and causing unwanted styling.</p>
+<a class="header" href="print.html#in-the-context-of-corum" id="in-the-context-of-corum"><h3>In the Context of Corum</h3></a>
+<p>In the context of Corum, I apply the <code>scoped</code> attribute to most of my <code>style</code>
+blocks. Also, I use a CSS pre-processor called Stylus. This is achieved by
+adding <code>lang=&quot;stylus&quot;</code> to the <code>style</code> tag and installing the <code>stylus-loader</code>
+package. The reason I use a CSS pre-processor is because regular CSS has
+problems that I don't want to deal with. This includes things like allowing
+nested rules and auto-prefixing rules so that Corum works correctly in older
+browsers.</p>
 <a class="header" href="print.html#configuration" id="configuration"><h2>Configuration</h2></a>
-<ul>
-<li>.env file</li>
-</ul>
+<p>Certain settings for Corum exist in the file named <code>.env</code> at the root of the
+client project. The variables in this file can be accessed from any file through
+<code>process.env</code>. During the build process, these variable values are inlined into
+the files so that there is no performance hit. The following sub sections
+describe what the two variable in this file do.</p>
+<a class="header" href="print.html#api_endpoint" id="api_endpoint"><h3>API_ENDPOINT</h3></a>
+<p>This setting used when setting up Apollo Client. This expect the URL of the API
+endpoint. This has been abstracted up into this file so that if someone else
+wants to run a separate instance of Corum, the can easily change what API server
+it points to.</p>
+<p>Example: <code>API_ENDPOINT=https://api.graph.cool/simple/v1/corum</code></p>
+<a class="header" href="print.html#prod" id="prod"><h3>PROD</h3></a>
+<p>This setting is used a function called <code>logIfDev</code>. This function reads the value
+of this variable and logs details to the console depending on if the value is
+<code>true</code> or <code>false</code>. This code can be found in the code analysis section.</p>
+<p>Example: <code>PROD=true</code></p>
 <a class="header" href="print.html#api-architecture" id="api-architecture"><h1>API Architecture</h1></a>
 <a class="header" href="print.html#graphcool" id="graphcool"><h2>Graphcool</h2></a>
 <ul>
