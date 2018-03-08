@@ -438,13 +438,12 @@ declarative interface for fetching data.
 
 Even though GraphQL is a relatively new technology, there are quite a few
 clients to choose from. Some libraries target React as it is the most popular
-view library (Such as `urql`). I will be excluding these options as I want to be
-able to have a nice interface to the client through Vue.
+view library (Such as `urql` or `relay`). I will be excluding these options as I
+want to be able to have a nice interface to the client through Vue.
 
-Here is the list of the choices that I considered:
+These are the two choices that I considered:
 
 * `graphql-request`
-* `relay`
 * `apollo`
 
 The following sub sections will give a brief explanation of the pros and cons of
@@ -452,30 +451,124 @@ each library.
 
 ### `graphql-request`
 
-placeholder
+This is the most lightweight option of the three. This is a benefit as the user
+will have less code to download, parse and execute, however, this comes at the
+cost of less features. Unlike the other two options, `graphql-request` doesn't
+have cache implementation.
 
-### `relay`
+This is an issue for Corum as I want the data fetched to be cached so that if a
+user requests the same data multiple times, multiple network requests are not
+made. For example, if the user visits a post, goes to another subforum then
+returns to the previous post, the post data would have to be fetched again even
+though it hasn't changed. This is only an issue in `graphql-request`.
 
-placeholder
+If I want to have a cache and use `graphql-request` then I would have to create
+a wrapper around the library, however it would be wiser to just use another
+library that has caching built in. This is because not only would it take time
+to create the cache implementation that I could spend on other things, it would
+also take away from how simple and lightweight the library is.
 
 ### `apollo`
 
-placeholder
+This is currently the most popular GraphQL client library. I mentioned briefly
+in the design section of this report that I was likely going to be using this
+library.
 
-* Describe what Apollo is (Reference design)
-  * A GraphQL client that provide the following:
-    * Middleware hooks (Used to add `Authentication` header when a user is
-      logged in)
-    * Data caching (Means less network fetches and faster responses)
-    * Bindings for Vue (with the `vue-apollo` library)
-* The way the client communicate with the API
+Like `graphql-request`, Apollo Client is not bound to a specific framework (It
+is framework agnostic). However, unlike `graphql-request`, it provides libraries
+with bindings to popular view libraries such as React, Angular and Vue. This
+makes it much more ergonomic to work with the library within the supported view
+libraries. As I am using Vue as the view library for Corum, I will be using the
+Vue bindings named `vue-apollo`.
+
+Also, Apollo Client provides built in support for caching. This is good for the
+reason stated above in the `graphql-request` sub section above. The way this
+works in Apollo is described in the code analysis section of this report.
+
+Another nicety that Apollo Client provides is the concept of middleware hooks.
+In simple terms, middleware hooks allows the developer to execute arbitrary code
+and to modify the data that passes through the library on a request or response.
+This concept is used within Corum to add an `Authorization` header to every HTTP
+request sent to the API server (If the user is logged in). This allows the API
+server to verify that the user is allowed to execute protected queries and
+mutations. The implementation code for this can be found in the code analysis
+section.
 
 ## CSS
 
-* Why using stylus as a pre-processor
-* Used by putting `lang="stylus"` as an attribute in `style` tag of Vue SFCs
-* stylus-loader configured automatically by Nuxt
+As mentioned previously, Vue allows you to develop in a format know as Single
+File Components (SFC). These files are the ones with a `.vue` extension. They
+basically allow you to write HTML, JavaScript and CSS in a single file. During
+the build process, these files are compiled into plain JavaScript files that
+browsers can understand. The way the file is written is like a HTML document.
+The three top level elements that can exist in an Vue SFC are `template` (HTML),
+`script` (JavaScript), and `style` (CSS). All of these tags allow for attributes
+like normal HTML tags.
+
+The two attributes that we are interested in are `lang` and `scoped`. These two
+attributes are described in the following sub sections.
+
+### `lang`
+
+This attribute allows you to specify what language the code inside of the
+element is written in. This attribute is allowed on all top level elements.
+
+For example, you may want to use a HTML pre-processor such as Pug. This will
+work by adding `lang="pug"` to the `template` tag, as well as installing the
+correct package to process the code inside the element (In this case, the `pug`
+package).
+
+For an example for the `script` tag, you may want to use a compile-to-JS
+language such as TypeScript. This will work by adding `lang="ts"` to the
+`script` tag, as well as installing the correct package to process the code
+inside the element (In this case, the `ts-loader` package).
+
+For an example for the `style` tag, you may want to use a CSS pre-processor
+language such as SASS. This will work by adding `lang="sass"` to the `style`
+tag, as well as installing the correct package to process the code inside the
+element (In this case, the `sass-loader` package).
+
+### `scoped`
+
+This attribute is only allow to be placed on `style` elements. This attribute
+scopes the CSS inside the element to this component only. This means that if a
+class is specified that changes the background colour, if it is applied outside
+of this component, it will not get this styling. This works by adding a prefix
+to the class name that ensures that it is only scoped the HTML inside the
+component. This means that I don't have to think about CSS rules clashing with
+each other and causing unwanted styling.
+
+### In the Context of Corum
+
+In the context of Corum, I apply the `scoped` attribute to most of my `style`
+blocks. Also, I use a CSS pre-processor called Stylus. This is achieved by
+adding `lang="stylus"` to the `style` tag and installing the `stylus-loader`
+package. The reason I use a CSS pre-processor is because regular CSS has
+problems that I don't want to deal with. This includes things like allowing
+nested rules and auto-prefixing rules so that Corum works correctly in older
+browsers.
 
 ## Configuration
 
-* .env file
+Certain settings for Corum exist in the file named `.env` at the root of the
+client project. The variables in this file can be accessed from any file through
+`process.env`. During the build process, these variable values are inlined into
+the files so that there is no performance hit. The following sub sections
+describe what the two variable in this file do.
+
+### API_ENDPOINT
+
+This setting used when setting up Apollo Client. This expect the URL of the API
+endpoint. This has been abstracted up into this file so that if someone else
+wants to run a separate instance of Corum, the can easily change what API server
+it points to.
+
+Example: `API_ENDPOINT=https://api.graph.cool/simple/v1/corum`
+
+### PROD
+
+This setting is used a function called `logIfDev`. This function reads the value
+of this variable and logs details to the console depending on if the value is
+`true` or `false`. This code can be found in the code analysis section.
+
+Example: `PROD=true`
