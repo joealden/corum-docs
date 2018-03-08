@@ -259,7 +259,7 @@ This section will explain how Nuxt works in the context of Corum.
 
 #### The Command Line Interface (CLI)
 
-Nuxt is actually just a CLI tool that exposes 3 important commands:
+Nuxt provides a CLI tool that exposes 3 important commands:
 
 ##### `nuxt`
 
