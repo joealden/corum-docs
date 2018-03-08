@@ -1,5 +1,11 @@
 # Iteration Stages
 
+## Evidence of Iteration Stages (Visual)
+
+* Screenshot of tagged git commits
+
+## Stages of Corum's Implementation
+
 * Talk about iterative development style
 * Talk about each develop cycle as a 'module' (testing at the end of each)
 * Implementing a dumb frontend (Mostly coding with just HTML and CSS at that
