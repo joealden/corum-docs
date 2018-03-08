@@ -2271,7 +2271,7 @@ Corum uses.</p>
 <a class="header" href="print.html#how-nuxt-works" id="how-nuxt-works"><h3>How Nuxt Works</h3></a>
 <p>This section will explain how Nuxt works in the context of Corum.</p>
 <a class="header" href="print.html#the-command-line-interface-cli" id="the-command-line-interface-cli"><h4>The Command Line Interface (CLI)</h4></a>
-<p>Nuxt is actually just a CLI tool that exposes 3 important commands:</p>
+<p>Nuxt provides a CLI tool that exposes 3 important commands:</p>
 <a class="header" href="print.html#nuxt-1" id="nuxt-1"><h5><code>nuxt</code></h5></a>
 <p>This command starts the Nuxt development server.</p>
 <p>The following happens in development mode:</p>
@@ -2512,40 +2512,70 @@ of this variable and logs details to the console depending on if the value is
 <p>Example: <code>PROD=true</code></p>
 <a class="header" href="print.html#api-architecture" id="api-architecture"><h1>API Architecture</h1></a>
 <a class="header" href="print.html#graphcool" id="graphcool"><h2>Graphcool</h2></a>
-<ul>
-<li>A way to quickly create a production ready GraphQL server</li>
-<li>Acts almost like a database, as it provides CRUD operation on the data</li>
-<li>The way this works is that it generates a CRUD API with GraphQL queries and
-mutations based on the schema you give it</li>
-</ul>
+<p>As mentioned before in both the analysis and design sections, I am using the
+library and service known as Graphcool. Graphcool provides an easily way to
+create production ready GraphQL servers in a small amount of time. It acts
+almost like a database, in that it provides a permanent data store as well as
+CRUD operations to access and modify the data.</p>
+<p>These CRUD operations are exposed through a GraphQL API. The way this works is
+that it generates a CRUD API with GraphQL queries and mutations based on the
+schema you give it. The schema can be found in the design section of the API.</p>
 <a class="header" href="print.html#why-graphcool" id="why-graphcool"><h3>Why Graphcool?</h3></a>
-<ul>
-<li>Kind of like how Nuxt is the Vue, Graphcool is to a GraphQL server</li>
-<li>Means I do not have to reinvent the wheel.</li>
-</ul>
+<p>Graphcool is like Nuxt for a GraphQL server. Nuxt provides useful abstractions
+on top of Vue to provide a better developer experience and a faster development
+cycle. Graphcool abstracts away a lot of the implementation details of the
+GraphQL API and allows you to declaratively specify what data you want to store.</p>
+<p>This means that I don't have to reinvent the wheel, and I have more development
+time to spend on other things.</p>
 <a class="header" href="print.html#how-graphcool-works" id="how-graphcool-works"><h3>How Graphcool Works</h3></a>
-<ul>
-<li>CLI (Command Line Interface)
-<ul>
-<li><code>gcf</code> (Stands from Graphcool Framework)</li>
-<li><code>gcf deploy</code> - Deploys the API to a graphcool server</li>
-<li><code>gcf playground</code> - Opens a web browser on a page that lets you explore and
-test your API</li>
-</ul>
-</li>
-<li>Configuring Graphcool (Through the <code>graphcool.yml</code> file)
-<ul>
-<li><code>types</code> - Provide the location of the API schema</li>
-<li><code>functions</code> - Define resolvers and hook functions</li>
-<li><code>rootTokens</code> - Define what functions have root privileges, this is used to
-perform further data mutations and querying data normal users can't (User
-password hash etc.)</li>
-<li><code>permissions</code> - Define permissions for data CRUD operations, for example,
-specify that only logged in users can create posts, create comments and
-vote. Or that no one it allowed to delete posts.</li>
-</ul>
-</li>
-</ul>
+<a class="header" href="print.html#the-command-line-interface-cli-1" id="the-command-line-interface-cli-1"><h4>The Command Line Interface (CLI)</h4></a>
+<p>Like Nuxt, Graphcool provides a CLI (called <code>gcf</code>) that expose two important
+commands:</p>
+<a class="header" href="print.html#gcf-deploy" id="gcf-deploy"><h5><code>gcf deploy</code></h5></a>
+<p>This command deploys the API to one of the available public Graphcool servers.
+Under the hood, graphcool reads a file named <code>graphcool.yml</code> and builds the API
+using it, then it sends this build bundle up to the server.</p>
+<a class="header" href="print.html#gcf-playground" id="gcf-playground"><h5><code>gcf playground</code></h5></a>
+<p>This commands opens a web browser at the URL of the deployed service and lets
+you explore and test your API.</p>
+<a class="header" href="print.html#configuring-graphcool" id="configuring-graphcool"><h4>Configuring Graphcool</h4></a>
+<p>When running the <code>gcf deploy</code> command, Graphcool looks and reads a file named
+<code>graphcool.yml</code>. This file contains all of the information Graphcool needs to
+create the API server. The following sub sections will described what each top
+level property does. For brevity, the entire contents of Corum's <code>graphcool.yml</code>
+file is not shown in the code analysis section, however, like anything in Corum,
+the full file can be found at the projects Github repository.</p>
+<a class="header" href="print.html#types" id="types"><h5><code>types</code></h5></a>
+<p>This property expects a string containing the relative path of the <code>.graphql</code>
+file that contains the API schema. This file must be write in the Schema
+Definition Language (SDL) that is part of the official GraphQL specification.</p>
+<a class="header" href="print.html#functions" id="functions"><h5><code>functions</code></h5></a>
+<p>This is where you specify custom resolvers and hook functions that are needed
+for the API. The property expects an array of objects that describe what the
+function does and where to find the code for it. Every function object should
+have a <code>type</code> and a <code>handler</code> property. The <code>type</code> property is used to tell
+Graphcool if the function is a resolver or a hook function. The <code>handler</code>
+property tells Graphcool where to find the code for the function.</p>
+<p>If the type of the function is a resolver, the function object should also
+specify a <code>schema</code> string that points to the file that contains what data types
+the resolver should expect and what data types it should return.</p>
+<p>If the type of the function is a hook function, the function object should also
+specify a <code>operation</code> property. This expect a string that tells Graphcool what
+data type and what CRUD operation to trigger on. For example, Corum has a simple
+hook function that initializes the vote count of a post to 0 when it is created.
+The operation property of this hook function is <code>Post.create</code>.</p>
+<a class="header" href="print.html#roottokens" id="roottokens"><h5><code>rootTokens</code></h5></a>
+<p>The property expects an array of strings. Each string should map to an existing
+function that was defined in the <code>functions</code> property. If the function is listed
+under this property, the function is given the highest level of permissions
+(Also known as root). This allows the functions to perform queries and mutations
+to the API that even authenticated users cannot such as getting the password
+hash for a user. This is needed because functions such as the <code>login</code> resolver
+need to access this kind of sensitive data to work.</p>
+<a class="header" href="print.html#permissions" id="permissions"><h5><code>permissions</code></h5></a>
+<p>As the permissions section of the <code>graphcool.yml</code> file is explained in the code
+analysis section, I will not repeat the same information. For this reason, look
+at the code analysis section for an explanation of how permissions work.</p>
 <a class="header" href="print.html#iterations-during-development" id="iterations-during-development"><h1>Iterations during Development</h1></a>
 <p>placeholder</p>
 <ul>
@@ -3619,12 +3649,7 @@ very important part of this file is the <code>permissions</code> section.</p>
 <p>This section allows you to define exactly who can do what with the API. This is
 crucial to the proper functioning of Corum as it stops non authenticated users
 from doing things like creating posts, creating comments and voting on posts.</p>
-<p>This configuration file is written in <code>yml</code>, which you may not be that familiar
-with. Here are the basics that are put to use in this file:</p>
-<ul>
-<li><code>#</code> starts a comment</li>
-<li><code>-</code> starts an object</li>
-</ul>
+<p>This configuration file is written in <code>yml</code>.</p>
 <p>So in this file, <code>permissions</code> is a list of objects. Each object in the
 <code>permissions</code> array specifies the <code>operation</code> to configure. The operations that
 can be configured are derived from the API schema. (Linked above)</p>
