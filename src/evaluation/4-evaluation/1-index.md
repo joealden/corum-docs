@@ -26,4 +26,7 @@
   robust tests. This will impact maintenance because when refactoring, adding
   and features and code, it will not be nearly as easy to tell if those changes
   have broke any other code depending on them.
+* Talk about good code comments
+* Talk about how this report itself could be used by myself and others to get
+  familiar with the project.
 * Talk about how these limitations could be fixed
