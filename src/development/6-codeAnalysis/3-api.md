@@ -141,11 +141,7 @@ This section allows you to define exactly who can do what with the API. This is
 crucial to the proper functioning of Corum as it stops non authenticated users
 from doing things like creating posts, creating comments and voting on posts.
 
-This configuration file is written in `yml`, which you may not be that familiar
-with. Here are the basics that are put to use in this file:
-
-* `#` starts a comment
-* `-` starts an object
+This configuration file is written in `yml`.
 
 So in this file, `permissions` is a list of objects. Each object in the
 `permissions` array specifies the `operation` to configure. The operations that
