@@ -5,3 +5,4 @@
 * Ensuring a user could only favorite a subforum once
 * Ensuring a user could only vote once on a post
 * Figuring out permissions
+* Adding extra fields to data types when I realised while developing frontend
