@@ -83,7 +83,8 @@ fact I hadn't thought about everything I needed to.
 This is what Corum looks like in its current state. Here you can see the client
 correctly communicating with the API. By this stage all of the success criteria
 set out had been met. To find out more about the final build of Corum visit the
-evaluation's testing section where I have recordings for every feature of Corum.
+evaluation's testing section where I have recordings for every feature of Corum,
+showing that it all works as expected.
 
 ## A Detailed Explanation of each Iteration Stage
 
@@ -92,16 +93,50 @@ development, this section explains these iterations in detail.
 
 ### Implementing a Dumb Frontend
 
-* Implementing a dumb frontend (Mostly coding with just HTML and CSS at that
-  point)
-  * The landing page
-  * The signup and login page
-  * The subforum page
-  * The post page
-  * The new post page
-  * The new subforum page
+First of all I needed to develop a dumb frontend for the site. This would mean
+that I wouldn't have to think about the layout and styling of the site as much
+when this iteration was complete. Instead I could just focus on the logic of
+making the site actually function. The first stages of this iteration can be
+seen in the 1st prototype I made.
+
+This meant that in the following stages I could easily just connect HTML
+elements such as buttons and links to JavaScript functions.
+
+In the following sub sections I will explain the goals of this iteration stage
+on a page by page basis.
+
+#### The Landing Page
+
+placeholder
+
+#### The Signup and Login Page
+
+placeholder
+
+#### The Subforum Page
+
+placeholder
+
+#### The Post Page
+
+placeholder
+
+#### The New Post Page
+
+placeholder
+
+#### The New Subforum Page
+
+placeholder
 
 ### Implementing the API
+
+Next, I needed to implement the API that Corum's client relied on for data.
+Because I was using Graphcool it meant that I didn't need to worry about setting
+up things like a database and a web sever. Graphcool handled all of that for me.
+Instead I had to think about...
+
+**START HERE**
 
 * Implementing the API
   * The `Subforum` datatype
