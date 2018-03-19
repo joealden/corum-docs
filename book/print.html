@@ -127,6 +127,10 @@
 <li>Candidate Number: <strong>????</strong></li>
 <li>Centre Number: <strong>????</strong></li>
 </ul>
+<p><strong>NOTE:</strong> If you are viewing this in PDF form the GIFs will not play and will
+instead look like static images. Above each GIF will be a line in the format
+'Location: <code>PATH</code>'. <code>PATH</code> is the path of where the image can be found relative
+to the PDF document.</p>
 <a class="header" href="print.html#contents-page" id="contents-page"><h1>Contents Page</h1></a>
 <p><a href="./index.md">Foreword</a></p>
 <p><a href="./SUMMARY.md">Contents Page</a></p>
@@ -2697,10 +2701,27 @@ correctly communicating with the API. By this stage all of the success criteria
 set out had been met. To find out more about the final build of Corum visit the
 evaluation's testing section where I have recordings for every feature of Corum,
 showing that it all works as expected.</p>
-<a class="header" href="print.html#a-detailed-explanation-of-each-iteration-stage" id="a-detailed-explanation-of-each-iteration-stage"><h2>A Detailed Explanation of each Iteration Stage</h2></a>
+<a class="header" href="print.html#an-explanation-of-each-iteration-stage" id="an-explanation-of-each-iteration-stage"><h2>An Explanation of each Iteration Stage</h2></a>
 <p>Due to the fact that I cannot show the iterations visually of non visual
-development, this section explains these iterations in detail.</p>
-<a class="header" href="print.html#implementing-a-dumb-frontend" id="implementing-a-dumb-frontend"><h3>Implementing a Dumb Frontend</h3></a>
+development, this section explains these iterations in more detail.</p>
+<p>I decided to split up the implementation stage of build Corum up into 3 main
+parts.</p>
+<p>The first stage was to implement the frontend code up to the point until it
+needed to interface with the API. This meant doing things like working out where
+things should go on each page and what they should look like.</p>
+<p>The second stage was to implement the API. This included writing the code for
+the signup and login resolvers. Due to the fact that the API and the frontend
+are independent services I did not need to think that much about the
+implications of the API design might have on the frontend.</p>
+<p>The third stage was to connect the client to the API. This involved writing the
+code that made queries to the API and made mutations to the data. For example on
+the signup page, when the user pressed submit, the frontend needed to send a
+mutation to the API in order to create the account. I also needed to handle how
+the frontend would handle the data returned from the API, for example if there
+was an error (Maybe the email address the user entered is already being used).</p>
+<p>The following three sub sections will describe each of these stages in more
+detail.</p>
+<a class="header" href="print.html#implementing-a-dumb-frontend-stage-1" id="implementing-a-dumb-frontend-stage-1"><h3>Implementing a Dumb Frontend (Stage 1)</h3></a>
 <p>First of all I needed to develop a dumb frontend for the site. This would mean
 that I wouldn't have to think about the layout and styling of the site as much
 when this iteration was complete. Instead I could just focus on the logic of
@@ -2708,39 +2729,32 @@ making the site actually function. The first stages of this iteration can be
 seen in the 1st prototype I made.</p>
 <p>This meant that in the following stages I could easily just connect HTML
 elements such as buttons and links to JavaScript functions.</p>
-<p>In the following sub sections I will explain the goals of this iteration stage
-on a page by page basis.</p>
-<a class="header" href="print.html#the-landing-page" id="the-landing-page"><h4>The Landing Page</h4></a>
-<p>placeholder</p>
-<a class="header" href="print.html#the-signup-and-login-page" id="the-signup-and-login-page"><h4>The Signup and Login Page</h4></a>
-<p>placeholder</p>
-<a class="header" href="print.html#the-subforum-page" id="the-subforum-page"><h4>The Subforum Page</h4></a>
-<p>placeholder</p>
-<a class="header" href="print.html#the-post-page" id="the-post-page"><h4>The Post Page</h4></a>
-<p>placeholder</p>
-<a class="header" href="print.html#the-new-post-page" id="the-new-post-page"><h4>The New Post Page</h4></a>
-<p>placeholder</p>
-<a class="header" href="print.html#the-new-subforum-page" id="the-new-subforum-page"><h4>The New Subforum Page</h4></a>
-<p>placeholder</p>
-<a class="header" href="print.html#implementing-the-api" id="implementing-the-api"><h3>Implementing the API</h3></a>
-<p>Next, I needed to implement the API that Corum's client relied on for data.
+<p>There was must to test at this stage, all of the page looked how I wanted them
+to look, and of of the links worked correctly. The majority of the testing for
+Corum needed to be done when implementing the API and connecting it to the
+frontend.</p>
+<a class="header" href="print.html#implementing-the-api-stage-2" id="implementing-the-api-stage-2"><h3>Implementing the API (Stage 2)</h3></a>
+<p>Next, I needed to implement the API that Corum's client relies on for data.
 Because I was using Graphcool it meant that I didn't need to worry about setting
-up things like a database and a web sever. Graphcool handled all of that for me.
-Instead I had to think about...</p>
-<p><strong>START HERE</strong></p>
-<ul>
-<li>Implementing the API
-<ul>
-<li>The <code>Subforum</code> datatype</li>
-<li>The <code>Post</code> datatype</li>
-<li>The <code>User</code> datatype</li>
-<li>The <code>Comment</code> datatype</li>
-<li>The <code>Vote</code> datatype</li>
-<li>The <code>Favorite</code> datatype</li>
-</ul>
-</li>
-</ul>
-<a class="header" href="print.html#connecting-the-client-to-the-api" id="connecting-the-client-to-the-api"><h3>Connecting the Client to the API</h3></a>
+up things like a database or a web sever, Graphcool handled all of that for me
+by abstracting them away.</p>
+<p>Instead, I had to think about how the data model defined in the design section
+of this report would interface with the JavaScript code I needed to write to get
+functionality like signup and login working. This was done by using hook
+functions and custom resolvers.</p>
+<p>The exact code for this iteration stage can be found in the API code analysis
+section of this report.</p>
+<p>To test the API I used a tool called <code>graphql-playground</code>. This tool is
+available standalone but it also comes bundles with Graphcool. This meant that I
+didn't have to set it up to test the API. When visiting the API endpoint
+returned by Graphcool in a web browser it displays the <code>graphql-playground</code>
+interface. This interface allows you to make queries and mutations to the API
+without writing any code.</p>
+<p>The following GIF shows how it works.</p>
+<p><strong>(images/gifs/iterations/graphql-playground.gif)</strong></p>
+<p><img src="images/gifs/iterations/graphql-playground.gif" alt="graphql-playground example" /></p>
+<a class="header" href="print.html#connecting-the-client-to-the-api-stage-3" id="connecting-the-client-to-the-api-stage-3"><h3>Connecting the Client to the API (Stage 3)</h3></a>
+<p>After implementing the API and testing that it</p>
 <ul>
 <li>Implement the logic of the frontend to communicate with the API
 <ul>
@@ -2754,10 +2768,6 @@ Instead I had to think about...</p>
 <li>The new subforum page creates a new subforum and updates the navigation</li>
 </ul>
 </li>
-</ul>
-<a class="header" href="print.html#" id=""><h2>??</h2></a>
-<ul>
-<li>Ensure that the moderator knows that it all works as it should</li>
 </ul>
 <a class="header" href="print.html#user-and-stakeholder-feedback" id="user-and-stakeholder-feedback"><h1>User and Stakeholder Feedback</h1></a>
 <p>placeholder</p>
@@ -4408,11 +4418,6 @@ and its possible maintenance issues</li>
 <li>Say that these manual tests could have been automated with e2e / cypress</li>
 <li>However, they do not mean unit tests are pointless</li>
 </ul>
-<p>TODO: Add name of file so that people reading PDF can view the GIFS</p>
-<p>NOTE: These images are GIFs. If these do not play, they can be found in <code>images</code>
-folder that is supplied along with the PDF. These GIFs will also play if the
-report is viewed in Github, or at
-<a href="https://corum.joealden.com/">https://corum.joealden.com/</a>.</p>
 <a class="header" href="print.html#signup-page-2" id="signup-page-2"><h1>Signup Page</h1></a>
 <p>These also show the following:</p>
 <ul>
@@ -4426,6 +4431,7 @@ report is viewed in Github, or at
 <li>The logged in state has been changed (Show in navigation and header)</li>
 <li>It is assumed that the email and username are not already taken</li>
 </ul>
+<p>Location: <strong><code>images/gifs/signup/correct.gif</code></strong></p>
 <p><img src="images/gifs/signup/correct.gif" alt="Successful Signup Attempt GIF" /></p>
 <a class="header" href="print.html#input-validation" id="input-validation"><h2>Input validation</h2></a>
 <ul>
@@ -4439,6 +4445,7 @@ report is viewed in Github, or at
 <li>In this GIF, it can be seen that the passwords do not match, as they of
 different length</li>
 </ul>
+<p>Location: <strong><code>images/gifs/signup/input-validation.gif</code></strong></p>
 <p><img src="images/gifs/signup/input-validation.gif" alt="Input validation GIF" /></p>
 <a class="header" href="print.html#email-is-already-taken" id="email-is-already-taken"><h2>Email is Already Taken</h2></a>
 <ul>
@@ -4446,6 +4453,7 @@ different length</li>
 <li>It is assumed that the email <code>test@test.com</code> is already taken</li>
 <li>It is assumed that the username <code>test12345</code> is not taken</li>
 </ul>
+<p>Location: <strong><code>images/gifs/signup/email-taken.gif</code></strong></p>
 <p><img src="images/gifs/signup/email-taken.gif" alt="Username taken GIF" /></p>
 <a class="header" href="print.html#username-is-already-taken" id="username-is-already-taken"><h2>Username is Already Taken</h2></a>
 <ul>
@@ -4453,6 +4461,7 @@ different length</li>
 <li>It is assumed that the username <code>test</code> is already taken</li>
 <li>It is assumed that the email <code>test123@test.com</code> is not taken</li>
 </ul>
+<p>Location: <strong><code>images/gifs/signup/username-taken.gif</code></strong></p>
 <p><img src="images/gifs/signup/username-taken.gif" alt="Username taken GIF" /></p>
 <a class="header" href="print.html#email-and-username-are-already-taken" id="email-and-username-are-already-taken"><h2>Email and Username are Already Taken</h2></a>
 <ul>
@@ -4460,11 +4469,13 @@ different length</li>
 <li>It is assumed that the email <code>test@test.com</code> is already taken</li>
 <li>It is assumed that the username <code>test</code> is already taken</li>
 </ul>
+<p>Location: <strong><code>images/gifs/signup/both-taken.gif</code></strong></p>
 <p><img src="images/gifs/signup/both-taken.gif" alt="Both taken GIF" /></p>
 <a class="header" href="print.html#navigating-to-the-login-page" id="navigating-to-the-login-page"><h2>Navigating to the Login Page</h2></a>
 <ul>
 <li>The link provided on the signup page to the login page works</li>
 </ul>
+<p>Location: <strong><code>images/gifs/signup/login-link.gif</code></strong></p>
 <p><img src="images/gifs/signup/login-link.gif" alt="Successful Login Attempt GIF" /></p>
 <a class="header" href="print.html#login-page-2" id="login-page-2"><h1>Login Page</h1></a>
 <p>These also show the following:</p>
@@ -4479,18 +4490,21 @@ different length</li>
 <li>The user is redirected to the page they were on before if successful</li>
 <li>The logged in state has been changed (Show in navigation and header)</li>
 </ul>
+<p>Location: <strong><code>images/gifs/login/correct.gif</code></strong></p>
 <p><img src="images/gifs/login/correct.gif" alt="Successful Login Attempt GIF" /></p>
 <a class="header" href="print.html#unsuccessful-login-attempt" id="unsuccessful-login-attempt"><h2>Unsuccessful Login Attempt</h2></a>
 <ul>
 <li>The error message is displayed to the user when an attempt is not successful</li>
 <li>Once the user dismisses the error, (With the button or the enter key) they are
-free to tr again</li>
+free to try again</li>
 </ul>
+<p>Location: <strong><code>images/gifs/login/invalid-credentials.gif</code></strong></p>
 <p><img src="images/gifs/login/invalid-credentials.gif" alt="Unsuccessful Login Attempt GIF" /></p>
 <a class="header" href="print.html#navigating-to-the-signup-page" id="navigating-to-the-signup-page"><h2>Navigating to the Signup Page</h2></a>
 <ul>
 <li>The link provided on the login page to the signup page works</li>
 </ul>
+<p>Location: <strong><code>images/gifs/login/signup-link.gif</code></strong></p>
 <p><img src="images/gifs/login/signup-link.gif" alt="Navigating to the Signup Page GIF" /></p>
 <a class="header" href="print.html#navigation-1" id="navigation-1"><h1>Navigation</h1></a>
 <a class="header" href="print.html#links-to-subforums-work" id="links-to-subforums-work"><h2>Links to Subforums Work</h2></a>
@@ -4498,6 +4512,7 @@ free to tr again</li>
 <li>The links navigate to the correct subforum page</li>
 <li>When on a subforum, it is highlighted in the navigation</li>
 </ul>
+<p>Location: <strong><code>images/gifs/navigation/links.gif</code></strong></p>
 <p><img src="images/gifs/navigation/links.gif" alt="Links to Subforums Work GIF" /></p>
 <a class="header" href="print.html#search-functionality-works" id="search-functionality-works"><h2>Search Functionality Works</h2></a>
 <ul>
@@ -4506,18 +4521,21 @@ free to tr again</li>
 <li>Mention the filtering code below (Link)</li>
 <li>When no items match the search term, show a message</li>
 </ul>
+<p>Location: <strong><code>images/gifs/navigation/search.gif</code></strong></p>
 <p><img src="images/gifs/navigation/search.gif" alt="Search Functionality Works GIF" /></p>
 <ul>
 <li>If the user is logged in and no items match, show a slightly different message
 with a link to create a subforum</li>
 <li>Link to the create a subforum page works</li>
 </ul>
+<p>Location: <strong><code>images/gifs/navigation/search-logged-in.gif</code></strong></p>
 <p><img src="images/gifs/navigation/search-logged-in.gif" alt="Logged in search message GIF" /></p>
 <a class="header" href="print.html#navigation-shows-favorites-when-logged-in" id="navigation-shows-favorites-when-logged-in"><h2>Navigation shows Favorites when Logged In</h2></a>
 <ul>
 <li>When the user logs in, the navigation updates correctly</li>
 <li>The favorites section is not shown when a user is not logged in</li>
 </ul>
+<p>Location: <strong><code>images/gifs/navigation/login.gif</code></strong></p>
 <p><img src="images/gifs/navigation/login.gif" alt="Favorites shown on login GIF" /></p>
 <a class="header" href="print.html#favorites-works" id="favorites-works"><h2>Favorites Works</h2></a>
 <ul>
@@ -4530,18 +4548,21 @@ section has a '+' button to add items to the favorites section</li>
 <li>The add and remove button work correctly</li>
 <li>The favorites are sorted correctly (Refer to sort cod below, link)</li>
 </ul>
+<p>Location: <strong><code>images/gifs/navigation/favorites.gif</code></strong></p>
 <p><img src="images/gifs/navigation/favorites.gif" alt="Favorites Works GIF" /></p>
 <a class="header" href="print.html#subforum-page-1" id="subforum-page-1"><h1>Subforum Page</h1></a>
 <a class="header" href="print.html#empty-subforum-message" id="empty-subforum-message"><h2>Empty Subforum Message</h2></a>
 <ul>
 <li>Display a message when a subforum has no posts</li>
 </ul>
+<p>Location: <strong><code>images/gifs/subforum/empty.gif</code></strong></p>
 <p><img src="images/gifs/subforum/empty.gif" alt="Empty subforum message GIF" /></p>
 <a class="header" href="print.html#the-new-post-button" id="the-new-post-button"><h2>The 'New Post' Button</h2></a>
 <ul>
 <li>When a user is logged in, the button is clickable</li>
 <li>When a user is not logged in, the button is greyed out and not clickable</li>
 </ul>
+<p>Location: <strong><code>images/gifs/subforum/new-post-button.gif</code></strong></p>
 <p><img src="images/gifs/subforum/new-post-button.gif" alt="New Post Button GIF" /></p>
 <a class="header" href="print.html#the-post-list" id="the-post-list"><h2>The Post List</h2></a>
 <ul>
@@ -4554,6 +4575,7 @@ section has a '+' button to add items to the favorites section</li>
 </li>
 <li>Each post in the list is a link to the post</li>
 </ul>
+<p>Location: <strong><code>images/gifs/subforum/post-list.gif</code></strong></p>
 <p><img src="images/gifs/subforum/post-list.gif" alt="The post list GIF" /></p>
 <a class="header" href="print.html#sorting-functionality" id="sorting-functionality"><h2>Sorting Functionality</h2></a>
 <ul>
@@ -4562,12 +4584,14 @@ section has a '+' button to add items to the favorites section</li>
 <li>The 'most popular' sort method sorts by vote count</li>
 <li>The 'newest' sort method sorts by created at time and date</li>
 </ul>
+<p>Location: <strong><code>images/gifs/subforum/sorting.gif</code></strong></p>
 <p><img src="images/gifs/subforum/sorting.gif" alt="Sorting Functionality GIF" /></p>
 <a class="header" href="print.html#post-page-2" id="post-page-2"><h1>Post Page</h1></a>
 <a class="header" href="print.html#posts-are-loading-correctly" id="posts-are-loading-correctly"><h2>Posts are Loading Correctly</h2></a>
 <ul>
 <li>Links from subforum pages work and post details are loaded</li>
 </ul>
+<p>Location: <strong><code>images/gifs/post/load.gif</code></strong></p>
 <p><img src="images/gifs/post/load.gif" alt="Post info loading GIF" /></p>
 <a class="header" href="print.html#comments-section" id="comments-section"><h2>Comments Section</h2></a>
 <ul>
@@ -4578,6 +4602,7 @@ section has a '+' button to add items to the favorites section</li>
 <li>The user cannot submit a comment when no text has been entered</li>
 <li>The comment count is updated correctly</li>
 </ul>
+<p>Location: <strong><code>images/gifs/post/comment.gif</code></strong></p>
 <p><img src="images/gifs/post/comment.gif" alt="Comments section GIF" /></p>
 <a class="header" href="print.html#post-voting" id="post-voting"><h2>Post Voting</h2></a>
 <ul>
@@ -4587,6 +4612,7 @@ section has a '+' button to add items to the favorites section</li>
 <li>If a user is logged in, the vote buttons are clickable</li>
 <li>The vote count updates properly (Reference code below, link)</li>
 </ul>
+<p>Location: <strong><code>images/gifs/post/vote.gif</code></strong></p>
 <p><img src="images/gifs/post/vote.gif" alt="Post voting GIF" /></p>
 <a class="header" href="print.html#new-post-page-2" id="new-post-page-2"><h1>New Post Page</h1></a>
 <ul>
@@ -4596,26 +4622,31 @@ section has a '+' button to add items to the favorites section</li>
 <li>The new post is inserted into the subforum from which the user click the 'New
 Post' button</li>
 </ul>
+<p>Location: <strong><code>images/gifs/new-post/index.gif</code></strong></p>
 <p><img src="images/gifs/new-post/index.gif" alt="New post page GIF" /></p>
 <ul>
 <li>If a user tries to visit this page when they are not logged in, an error
 message is displayed with links to either signup or login</li>
 </ul>
+<p>Location: <strong><code>images/gifs/new-post/error.gif</code></strong></p>
 <p><img src="images/gifs/new-post/error.gif" alt="New post page error GIF" /></p>
 <a class="header" href="print.html#new-subforum-page" id="new-subforum-page"><h1>New Subforum Page</h1></a>
 <ul>
 <li>The only way to access this page is through the navigation when a user is
 logged in</li>
 </ul>
+<p>Location: <strong><code>images/gifs/new-subforum/index.gif</code></strong></p>
 <p><img src="images/gifs/new-subforum/index.gif" alt="New subforum page GIF" /></p>
 <ul>
 <li>If the user tries to create a subforum that already exists, an error occurs</li>
 </ul>
+<p>Location: <strong><code>images/gifs/new-subforum/exists.gif</code></strong></p>
 <p><img src="images/gifs/new-subforum/exists.gif" alt="Subforum already exists GIF" /></p>
 <ul>
 <li>If a user tries to visit this page when they are not logged in, an error
 message is displayed with links to either signup or login</li>
 </ul>
+<p>Location: <strong><code>images/gifs/new-subforum/error.gif</code></strong></p>
 <p><img src="images/gifs/new-subforum/error.gif" alt="New subforum page error GIF" /></p>
 <a class="header" href="print.html#usability-features" id="usability-features"><h1>Usability Features</h1></a>
 <ul>

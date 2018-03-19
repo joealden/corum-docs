@@ -187,10 +187,27 @@ correctly communicating with the API. By this stage all of the success criteria
 set out had been met. To find out more about the final build of Corum visit the
 evaluation's testing section where I have recordings for every feature of Corum,
 showing that it all works as expected.</p>
-<a class="header" href="development/3-iterations/3-changes.html#a-detailed-explanation-of-each-iteration-stage" id="a-detailed-explanation-of-each-iteration-stage"><h2>A Detailed Explanation of each Iteration Stage</h2></a>
+<a class="header" href="development/3-iterations/3-changes.html#an-explanation-of-each-iteration-stage" id="an-explanation-of-each-iteration-stage"><h2>An Explanation of each Iteration Stage</h2></a>
 <p>Due to the fact that I cannot show the iterations visually of non visual
-development, this section explains these iterations in detail.</p>
-<a class="header" href="development/3-iterations/3-changes.html#implementing-a-dumb-frontend" id="implementing-a-dumb-frontend"><h3>Implementing a Dumb Frontend</h3></a>
+development, this section explains these iterations in more detail.</p>
+<p>I decided to split up the implementation stage of build Corum up into 3 main
+parts.</p>
+<p>The first stage was to implement the frontend code up to the point until it
+needed to interface with the API. This meant doing things like working out where
+things should go on each page and what they should look like.</p>
+<p>The second stage was to implement the API. This included writing the code for
+the signup and login resolvers. Due to the fact that the API and the frontend
+are independent services I did not need to think that much about the
+implications of the API design might have on the frontend.</p>
+<p>The third stage was to connect the client to the API. This involved writing the
+code that made queries to the API and made mutations to the data. For example on
+the signup page, when the user pressed submit, the frontend needed to send a
+mutation to the API in order to create the account. I also needed to handle how
+the frontend would handle the data returned from the API, for example if there
+was an error (Maybe the email address the user entered is already being used).</p>
+<p>The following three sub sections will describe each of these stages in more
+detail.</p>
+<a class="header" href="development/3-iterations/3-changes.html#implementing-a-dumb-frontend-stage-1" id="implementing-a-dumb-frontend-stage-1"><h3>Implementing a Dumb Frontend (Stage 1)</h3></a>
 <p>First of all I needed to develop a dumb frontend for the site. This would mean
 that I wouldn't have to think about the layout and styling of the site as much
 when this iteration was complete. Instead I could just focus on the logic of
@@ -198,39 +215,32 @@ making the site actually function. The first stages of this iteration can be
 seen in the 1st prototype I made.</p>
 <p>This meant that in the following stages I could easily just connect HTML
 elements such as buttons and links to JavaScript functions.</p>
-<p>In the following sub sections I will explain the goals of this iteration stage
-on a page by page basis.</p>
-<a class="header" href="development/3-iterations/3-changes.html#the-landing-page" id="the-landing-page"><h4>The Landing Page</h4></a>
-<p>placeholder</p>
-<a class="header" href="development/3-iterations/3-changes.html#the-signup-and-login-page" id="the-signup-and-login-page"><h4>The Signup and Login Page</h4></a>
-<p>placeholder</p>
-<a class="header" href="development/3-iterations/3-changes.html#the-subforum-page" id="the-subforum-page"><h4>The Subforum Page</h4></a>
-<p>placeholder</p>
-<a class="header" href="development/3-iterations/3-changes.html#the-post-page" id="the-post-page"><h4>The Post Page</h4></a>
-<p>placeholder</p>
-<a class="header" href="development/3-iterations/3-changes.html#the-new-post-page" id="the-new-post-page"><h4>The New Post Page</h4></a>
-<p>placeholder</p>
-<a class="header" href="development/3-iterations/3-changes.html#the-new-subforum-page" id="the-new-subforum-page"><h4>The New Subforum Page</h4></a>
-<p>placeholder</p>
-<a class="header" href="development/3-iterations/3-changes.html#implementing-the-api" id="implementing-the-api"><h3>Implementing the API</h3></a>
-<p>Next, I needed to implement the API that Corum's client relied on for data.
+<p>There was must to test at this stage, all of the page looked how I wanted them
+to look, and of of the links worked correctly. The majority of the testing for
+Corum needed to be done when implementing the API and connecting it to the
+frontend.</p>
+<a class="header" href="development/3-iterations/3-changes.html#implementing-the-api-stage-2" id="implementing-the-api-stage-2"><h3>Implementing the API (Stage 2)</h3></a>
+<p>Next, I needed to implement the API that Corum's client relies on for data.
 Because I was using Graphcool it meant that I didn't need to worry about setting
-up things like a database and a web sever. Graphcool handled all of that for me.
-Instead I had to think about...</p>
-<p><strong>START HERE</strong></p>
-<ul>
-<li>Implementing the API
-<ul>
-<li>The <code>Subforum</code> datatype</li>
-<li>The <code>Post</code> datatype</li>
-<li>The <code>User</code> datatype</li>
-<li>The <code>Comment</code> datatype</li>
-<li>The <code>Vote</code> datatype</li>
-<li>The <code>Favorite</code> datatype</li>
-</ul>
-</li>
-</ul>
-<a class="header" href="development/3-iterations/3-changes.html#connecting-the-client-to-the-api" id="connecting-the-client-to-the-api"><h3>Connecting the Client to the API</h3></a>
+up things like a database or a web sever, Graphcool handled all of that for me
+by abstracting them away.</p>
+<p>Instead, I had to think about how the data model defined in the design section
+of this report would interface with the JavaScript code I needed to write to get
+functionality like signup and login working. This was done by using hook
+functions and custom resolvers.</p>
+<p>The exact code for this iteration stage can be found in the API code analysis
+section of this report.</p>
+<p>To test the API I used a tool called <code>graphql-playground</code>. This tool is
+available standalone but it also comes bundles with Graphcool. This meant that I
+didn't have to set it up to test the API. When visiting the API endpoint
+returned by Graphcool in a web browser it displays the <code>graphql-playground</code>
+interface. This interface allows you to make queries and mutations to the API
+without writing any code.</p>
+<p>The following GIF shows how it works.</p>
+<p><strong>(images/gifs/iterations/graphql-playground.gif)</strong></p>
+<p><img src="images/gifs/iterations/graphql-playground.gif" alt="graphql-playground example" /></p>
+<a class="header" href="development/3-iterations/3-changes.html#connecting-the-client-to-the-api-stage-3" id="connecting-the-client-to-the-api-stage-3"><h3>Connecting the Client to the API (Stage 3)</h3></a>
+<p>After implementing the API and testing that it</p>
 <ul>
 <li>Implement the logic of the frontend to communicate with the API
 <ul>
@@ -244,10 +254,6 @@ Instead I had to think about...</p>
 <li>The new subforum page creates a new subforum and updates the navigation</li>
 </ul>
 </li>
-</ul>
-<a class="header" href="development/3-iterations/3-changes.html#" id=""><h2>??</h2></a>
-<ul>
-<li>Ensure that the moderator knows that it all works as it should</li>
 </ul>
 
                     </main>
