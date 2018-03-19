@@ -244,22 +244,53 @@ without writing any code.</p>
 <p>The following GIF shows how it works.</p>
 <p>Location: <strong><code>images/gifs/iterations/graphql-playground.gif</code></strong></p>
 <p><img src="images/gifs/iterations/graphql-playground.gif" alt="graphql-playground example" /></p>
+<p>The left hand side of the screen is where you write the query / mutation and the
+right hand side of the screen is the result of that query / mutation that is
+returned from the server. The play button (<code>|&gt;</code>) in the top middle is pressed to
+execute the query / mutation.</p>
+<p>For example, I needed to implement a hook function that set the initial vote
+count of every post to 0 to ensure that the client could fake the amount of
+up-votes a post had.</p>
+<p>To test this I could simply try all of the different cases that the client code
+provide:</p>
+<p>The client doesn't provide a <code>voteCount</code> field:</p>
+<p>Location: <strong><code>images/gifs/iterations/post-test-1.gif</code></strong></p>
+<p><img src="images/gifs/iterations/post-test-1.gif" alt="Post Test 1" /></p>
+<p>The client provides <code>voteCount</code> but it is <code>null</code>:</p>
+<p>Location: <strong><code>images/gifs/iterations/post-test-2.gif</code></strong></p>
+<p><img src="images/gifs/iterations/post-test-2.gif" alt="Post Test 1" /></p>
+<p>The client provides a <code>voteCount</code> field that is not <code>0</code>:</p>
+<p>Location: <strong><code>images/gifs/iterations/post-test-3.gif</code></strong></p>
+<p><img src="images/gifs/iterations/post-test-3.gif" alt="Post Test 1" /></p>
+<p>The client provides a <code>voteCount</code> field that is <code>0</code>:</p>
+<p>Location: <strong><code>images/gifs/iterations/post-test-4.gif</code></strong></p>
+<p><img src="images/gifs/iterations/post-test-4.gif" alt="Post Test 1" /></p>
+<p>As you can see in all of these examples, <code>voteCount</code> is returned as <code>0</code> in all
+cases, as intended.</p>
 <a class="header" href="development/3-iterations/3-changes.html#connecting-the-client-to-the-api-stage-3" id="connecting-the-client-to-the-api-stage-3"><h3>Connecting the Client to the API (Stage 3)</h3></a>
-<p>After implementing the API and testing that it</p>
-<ul>
-<li>Implement the logic of the frontend to communicate with the API
+<p>After implementing the API and testing that it worked at expected I needed to
+connect the frontend and the API together. This meant implementing the
+following:</p>
 <ul>
 <li>The <code>Header</code> component changes state on login</li>
 <li>The <code>Navigation</code> component loads in all subforums and changes on login state</li>
 <li>The signup page creates a user and logs them in (with validation)</li>
-<li>The login page logs a user in if their details are correct (validation)</li>
+<li>The login page logs a user in if their details are correct (with validation)</li>
 <li>The subforum page loads the posts from the correct subforum</li>
 <li>The post page loads post details (name, author, content, comments etc.)</li>
-<li>The new post page creates a new post and redirects the the new post</li>
+<li>The new post page creates a new post and redirects the user to the new post</li>
 <li>The new subforum page creates a new subforum and updates the navigation</li>
 </ul>
-</li>
-</ul>
+<p>This was all made pretty easy because of <code>graphql-playground</code>. It meant that I
+could construct the queries and mutations for the client in
+<code>graphql-playground</code>, then once I knew that they did what I wanted them to do I
+just converted these queries and mutations into JavaScript code. This meant that
+I could be confident that the frontend was fetching the correct data from the
+API.</p>
+<p>As this was the final iteration stage it meant that I could test everything just
+by visiting the site in a web browser and checking that everything worked
+correctly as set out in Corum's success criteria. This testing is shown in great
+detail in the evaluation section of this report.</p>
 
                     </main>
 
