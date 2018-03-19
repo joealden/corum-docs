@@ -14,6 +14,8 @@ short description of what had been achieved.
 
 ### Prototype 1
 
+Location: **`images/gifs/iterations/prototype-1.gif`**
+
 ![Prototype 1](images/gifs/iterations/prototype-1.gif)
 
 This was the first iteration milestone that was reached. The goal of this
@@ -28,6 +30,8 @@ library that I ended up using. At the end of this prototype, as explained
 before, I didn't like how developing Corum in react felt.
 
 ### Prototype 2
+
+Location: **`images/gifs/iterations/prototype-2.gif`**
 
 ![Prototype 2](images/gifs/iterations/prototype-2.gif)
 
@@ -47,6 +51,8 @@ signup and login buttons did nothing.
 
 ### Prototype 3
 
+Location: **`images/gifs/iterations/prototype-3.gif`**
+
 ![Prototype 3](images/gifs/iterations/prototype-3.gif)
 
 In this prototype I worked on the look and feel of the site as a whole. Instead
@@ -63,6 +69,8 @@ the client.
 
 ### Prototype 4
 
+Location: **`images/gifs/iterations/prototype-4.gif`**
+
 ![Prototype 4](images/gifs/iterations/prototype-4.gif)
 
 This prototype has a lot less changes that the previous ones. I removed the
@@ -77,6 +85,8 @@ explained later in the 'problems experienced' section as it was to do with the
 fact I hadn't thought about everything I needed to.
 
 ### Production Build
+
+Location: **`images/gifs/iterations/production.gif`**
 
 ![Production Build](images/gifs/iterations/production.gif)
 
@@ -153,7 +163,7 @@ without writing any code.
 
 The following GIF shows how it works.
 
-**(images/gifs/iterations/graphql-playground.gif)**
+Location: **`images/gifs/iterations/graphql-playground.gif`**
 
 ![graphql-playground example](images/gifs/iterations/graphql-playground.gif)
 
