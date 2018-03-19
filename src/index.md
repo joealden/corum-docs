@@ -5,3 +5,8 @@ This is the project report Corum by Joe Alden.
 * Name: **Joe Alden**
 * Candidate Number: **????**
 * Centre Number: **????**
+
+**NOTE:** If you are viewing this in PDF form the GIFs will not play and will
+instead look like static images. Above each GIF will be a line in the format
+'Location: `PATH`'. `PATH` is the path of where the image can be found relative
+to the PDF document.

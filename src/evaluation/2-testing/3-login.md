@@ -12,18 +12,24 @@ These also show the following:
 * The user is redirected to the page they were on before if successful
 * The logged in state has been changed (Show in navigation and header)
 
+Location: **`images/gifs/login/correct.gif`**
+
 ![Successful Login Attempt GIF](images/gifs/login/correct.gif)
 
 ## Unsuccessful Login Attempt
 
 * The error message is displayed to the user when an attempt is not successful
 * Once the user dismisses the error, (With the button or the enter key) they are
-  free to tr again
+  free to try again
+
+Location: **`images/gifs/login/invalid-credentials.gif`**
 
 ![Unsuccessful Login Attempt GIF](images/gifs/login/invalid-credentials.gif)
 
 ## Navigating to the Signup Page
 
 * The link provided on the login page to the signup page works
+
+Location: **`images/gifs/login/signup-link.gif`**
 
 ![Navigating to the Signup Page GIF](images/gifs/login/signup-link.gif)

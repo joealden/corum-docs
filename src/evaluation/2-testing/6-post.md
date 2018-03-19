@@ -4,6 +4,8 @@
 
 * Links from subforum pages work and post details are loaded
 
+Location: **`images/gifs/post/load.gif`**
+
 ![Post info loading GIF](images/gifs/post/load.gif)
 
 ## Comments Section
@@ -15,6 +17,8 @@
 * The user cannot submit a comment when no text has been entered
 * The comment count is updated correctly
 
+Location: **`images/gifs/post/comment.gif`**
+
 ![Comments section GIF](images/gifs/post/comment.gif)
 
 ## Post Voting
@@ -24,5 +28,7 @@
 * If a user is not logged in, then vote buttons are greyed out and not clickable
 * If a user is logged in, the vote buttons are clickable
 * The vote count updates properly (Reference code below, link)
+
+Location: **`images/gifs/post/vote.gif`**
 
 ![Post voting GIF](images/gifs/post/vote.gif)
