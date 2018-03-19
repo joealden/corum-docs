@@ -86,12 +86,34 @@ set out had been met. To find out more about the final build of Corum visit the
 evaluation's testing section where I have recordings for every feature of Corum,
 showing that it all works as expected.
 
-## A Detailed Explanation of each Iteration Stage
+## An Explanation of each Iteration Stage
 
 Due to the fact that I cannot show the iterations visually of non visual
-development, this section explains these iterations in detail.
+development, this section explains these iterations in more detail.
 
-### Implementing a Dumb Frontend
+I decided to split up the implementation stage of build Corum up into 3 main
+parts.
+
+The first stage was to implement the frontend code up to the point until it
+needed to interface with the API. This meant doing things like working out where
+things should go on each page and what they should look like.
+
+The second stage was to implement the API. This included writing the code for
+the signup and login resolvers. Due to the fact that the API and the frontend
+are independent services I did not need to think that much about the
+implications of the API design might have on the frontend.
+
+The third stage was to connect the client to the API. This involved writing the
+code that made queries to the API and made mutations to the data. For example on
+the signup page, when the user pressed submit, the frontend needed to send a
+mutation to the API in order to create the account. I also needed to handle how
+the frontend would handle the data returned from the API, for example if there
+was an error (Maybe the email address the user entered is already being used).
+
+The following three sub sections will describe each of these stages in more
+detail.
+
+### Implementing a Dumb Frontend (Stage 1)
 
 First of all I needed to develop a dumb frontend for the site. This would mean
 that I wouldn't have to think about the layout and styling of the site as much
@@ -102,51 +124,42 @@ seen in the 1st prototype I made.
 This meant that in the following stages I could easily just connect HTML
 elements such as buttons and links to JavaScript functions.
 
-In the following sub sections I will explain the goals of this iteration stage
-on a page by page basis.
+There was must to test at this stage, all of the page looked how I wanted them
+to look, and of of the links worked correctly. The majority of the testing for
+Corum needed to be done when implementing the API and connecting it to the
+frontend.
 
-#### The Landing Page
+### Implementing the API (Stage 2)
 
-placeholder
-
-#### The Signup and Login Page
-
-placeholder
-
-#### The Subforum Page
-
-placeholder
-
-#### The Post Page
-
-placeholder
-
-#### The New Post Page
-
-placeholder
-
-#### The New Subforum Page
-
-placeholder
-
-### Implementing the API
-
-Next, I needed to implement the API that Corum's client relied on for data.
+Next, I needed to implement the API that Corum's client relies on for data.
 Because I was using Graphcool it meant that I didn't need to worry about setting
-up things like a database and a web sever. Graphcool handled all of that for me.
-Instead I had to think about...
+up things like a database or a web sever, Graphcool handled all of that for me
+by abstracting them away.
 
-**START HERE**
+Instead, I had to think about how the data model defined in the design section
+of this report would interface with the JavaScript code I needed to write to get
+functionality like signup and login working. This was done by using hook
+functions and custom resolvers.
 
-* Implementing the API
-  * The `Subforum` datatype
-  * The `Post` datatype
-  * The `User` datatype
-  * The `Comment` datatype
-  * The `Vote` datatype
-  * The `Favorite` datatype
+The exact code for this iteration stage can be found in the API code analysis
+section of this report.
 
-### Connecting the Client to the API
+To test the API I used a tool called `graphql-playground`. This tool is
+available standalone but it also comes bundles with Graphcool. This meant that I
+didn't have to set it up to test the API. When visiting the API endpoint
+returned by Graphcool in a web browser it displays the `graphql-playground`
+interface. This interface allows you to make queries and mutations to the API
+without writing any code.
+
+The following GIF shows how it works.
+
+**(images/gifs/iterations/graphql-playground.gif)**
+
+![graphql-playground example](images/gifs/iterations/graphql-playground.gif)
+
+### Connecting the Client to the API (Stage 3)
+
+After implementing the API and testing that it
 
 * Implement the logic of the frontend to communicate with the API
   * The `Header` component changes state on login
@@ -157,7 +170,3 @@ Instead I had to think about...
   * The post page loads post details (name, author, content, comments etc.)
   * The new post page creates a new post and redirects the the new post
   * The new subforum page creates a new subforum and updates the navigation
-
-## ??
-
-* Ensure that the moderator knows that it all works as it should
