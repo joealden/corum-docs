@@ -167,16 +167,68 @@ Location: **`images/gifs/iterations/graphql-playground.gif`**
 
 ![graphql-playground example](images/gifs/iterations/graphql-playground.gif)
 
+The left hand side of the screen is where you write the query / mutation and the
+right hand side of the screen is the result of that query / mutation that is
+returned from the server. The play button (`|>`) in the top middle is pressed to
+execute the query / mutation.
+
+For example, I needed to implement a hook function that set the initial vote
+count of every post to 0 to ensure that the client could fake the amount of
+up-votes a post had.
+
+To test this I could simply try all of the different cases that the client code
+provide:
+
+The client doesn't provide a `voteCount` field:
+
+Location: **`images/gifs/iterations/post-test-1.gif`**
+
+![Post Test 1](images/gifs/iterations/post-test-1.gif)
+
+The client provides `voteCount` but it is `null`:
+
+Location: **`images/gifs/iterations/post-test-2.gif`**
+
+![Post Test 1](images/gifs/iterations/post-test-2.gif)
+
+The client provides a `voteCount` field that is not `0`:
+
+Location: **`images/gifs/iterations/post-test-3.gif`**
+
+![Post Test 1](images/gifs/iterations/post-test-3.gif)
+
+The client provides a `voteCount` field that is `0`:
+
+Location: **`images/gifs/iterations/post-test-4.gif`**
+
+![Post Test 1](images/gifs/iterations/post-test-4.gif)
+
+As you can see in all of these examples, `voteCount` is returned as `0` in all
+cases, as intended.
+
 ### Connecting the Client to the API (Stage 3)
 
-After implementing the API and testing that it
+After implementing the API and testing that it worked at expected I needed to
+connect the frontend and the API together. This meant implementing the
+following:
 
-* Implement the logic of the frontend to communicate with the API
-  * The `Header` component changes state on login
-  * The `Navigation` component loads in all subforums and changes on login state
-  * The signup page creates a user and logs them in (with validation)
-  * The login page logs a user in if their details are correct (validation)
-  * The subforum page loads the posts from the correct subforum
-  * The post page loads post details (name, author, content, comments etc.)
-  * The new post page creates a new post and redirects the the new post
-  * The new subforum page creates a new subforum and updates the navigation
+* The `Header` component changes state on login
+* The `Navigation` component loads in all subforums and changes on login state
+* The signup page creates a user and logs them in (with validation)
+* The login page logs a user in if their details are correct (with validation)
+* The subforum page loads the posts from the correct subforum
+* The post page loads post details (name, author, content, comments etc.)
+* The new post page creates a new post and redirects the user to the new post
+* The new subforum page creates a new subforum and updates the navigation
+
+This was all made pretty easy because of `graphql-playground`. It meant that I
+could construct the queries and mutations for the client in
+`graphql-playground`, then once I knew that they did what I wanted them to do I
+just converted these queries and mutations into JavaScript code. This meant that
+I could be confident that the frontend was fetching the correct data from the
+API.
+
+As this was the final iteration stage it meant that I could test everything just
+by visiting the site in a web browser and checking that everything worked
+correctly as set out in Corum's success criteria. This testing is shown in great
+detail in the evaluation section of this report.
