@@ -14,7 +14,7 @@
     "*.md": ["prettier --config ./.prettierrc --write", "git add"]
   },
   "scripts": {
-    "build": "mdbook build",
+    "build": "$HOME/.cargo/bin/mdbook build",
     "precommit": "lint-staged && yarn build",
     "dev":
       "echo '\nIf an error occurs, please ensure you have mdbook installed!\n' && mdbook serve"
