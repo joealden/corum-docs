@@ -1,8 +1,26 @@
 # API Problems
 
-* User account creation and authentication
-* Setting the initial vote count of a post to 0 on creation
-* Ensuring a user could only favorite a subforum once
-* Ensuring a user could only vote once on a post
-* Figuring out permissions
-* Adding extra fields to data types when I realised while developing frontend
+## Creating User Accounts and Later Authenticating them
+
+* The problem -
+* The solution -
+
+## Setting the Initial Vote Count of a Post to 0
+
+* The problem -
+* The solution -
+
+## Ensuring a User could only Favorite a Subforum once
+
+* The problem -
+* The solution -
+
+## Ensuring a User could only Vote once on a Post
+
+* The problem -
+* The solution -
+
+## Figuring out API Permissions
+
+* The problem -
+* The solution -
