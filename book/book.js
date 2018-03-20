@@ -172,7 +172,7 @@ function playpen_text(playpen) {
 
         var buttons = document.createElement('div');
         buttons.className = 'buttons';
-        buttons.innerHTML = "<i class=\"fa fa-expand\" title=\"Show hidden lines\"></i>";
+        buttons.innerHTML = "<button class=\"fa fa-expand\" title=\"Show hidden lines\" aria-label=\"Show hidden lines\"></button>";
 
         // add expand button
         pre_block.prepend(buttons);
@@ -184,6 +184,7 @@ function playpen_text(playpen) {
                 e.target.classList.remove('fa-expand');
                 e.target.classList.add('fa-compress');
                 e.target.title = 'Hide lines';
+                e.target.setAttribute('aria-label', e.target.title);
 
                 Array.from(lines).forEach(function (line) {
                     line.classList.remove('hidden');
@@ -195,6 +196,7 @@ function playpen_text(playpen) {
                 e.target.classList.remove('fa-compress');
                 e.target.classList.add('fa-expand');
                 e.target.title = 'Show hidden lines';
+                e.target.setAttribute('aria-label', e.target.title);
 
                 Array.from(lines).forEach(function (line) {
                     line.classList.remove('unhidden');
@@ -217,6 +219,7 @@ function playpen_text(playpen) {
             var clipButton = document.createElement('button');
             clipButton.className = 'fa fa-copy clip-button';
             clipButton.title = 'Copy to clipboard';
+            clipButton.setAttribute('aria-label', clipButton.title);
             clipButton.innerHTML = '<i class=\"tooltiptext\"></i>';
 
             buttons.prepend(clipButton);
@@ -237,11 +240,13 @@ function playpen_text(playpen) {
         runCodeButton.className = 'fa fa-play play-button';
         runCodeButton.hidden = true;
         runCodeButton.title = 'Run this code';
+        runCodeButton.setAttribute('aria-label', runCodeButton.title);
 
         var copyCodeClipboardButton = document.createElement('button');
         copyCodeClipboardButton.className = 'fa fa-copy clip-button';
         copyCodeClipboardButton.innerHTML = '<i class="tooltiptext"></i>';
         copyCodeClipboardButton.title = 'Copy to clipboard';
+        copyCodeClipboardButton.setAttribute('aria-label', copyCodeClipboardButton.title);
 
         buttons.prepend(runCodeButton);
         buttons.prepend(copyCodeClipboardButton);
@@ -255,6 +260,7 @@ function playpen_text(playpen) {
             var undoChangesButton = document.createElement('button');
             undoChangesButton.className = 'fa fa-history reset-button';
             undoChangesButton.title = 'Undo changes';
+            undoChangesButton.setAttribute('aria-label', undoChangesButton.title);
 
             buttons.prepend(undoChangesButton);
 
@@ -292,11 +298,13 @@ function playpen_text(playpen) {
     function showThemes() {
         themePopup.style.display = 'block';
         themeToggleButton.setAttribute('aria-expanded', true);
+        themePopup.querySelector("button#" + document.body.className).focus();
     }
 
     function hideThemes() {
         themePopup.style.display = 'none';
         themeToggleButton.setAttribute('aria-expanded', false);
+        themeToggleButton.focus();
     }
 
     function set_theme(theme) {
@@ -363,18 +371,50 @@ function playpen_text(playpen) {
         set_theme(theme);
     });
 
-    // Hide theme selector popup when clicking outside of it
-    document.addEventListener('click', function (event) {
-        if (themePopup.style.display === 'block' && !themeToggleButton.contains(event.target) && !themePopup.contains(event.target)) {
+    themePopup.addEventListener('focusout', function(e) {
+        // e.relatedTarget is null in Safari and Firefox on macOS (see workaround below)
+        if (!!e.relatedTarget && !themePopup.contains(e.relatedTarget)) {
+            hideThemes();
+        }
+    });
+
+    // Should not be needed, but it works around an issue on macOS & iOS: https://github.com/rust-lang-nursery/mdBook/issues/628
+    document.addEventListener('click', function(e) {
+        if (themePopup.style.display === 'block' && !themeToggleButton.contains(e.target) && !themePopup.contains(e.target)) {
             hideThemes();
         }
     });
 
     document.addEventListener('keydown', function (e) {
+        if (e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) { return; }
+        if (!themePopup.contains(e.target)) { return; }
+
         switch (e.key) {
             case 'Escape':
                 e.preventDefault();
                 hideThemes();
+                break;
+            case 'ArrowUp':
+                e.preventDefault();
+                var li = document.activeElement.parentElement;
+                if (li && li.previousElementSibling) {
+                    li.previousElementSibling.querySelector('button').focus();
+                }
+                break;
+            case 'ArrowDown':
+                e.preventDefault();
+                var li = document.activeElement.parentElement;
+                if (li && li.nextElementSibling) {
+                    li.nextElementSibling.querySelector('button').focus();
+                }
+                break;
+            case 'Home':
+                e.preventDefault();
+                themePopup.querySelector('li:first-child button').focus();
+                break;
+            case 'End':
+                e.preventDefault();
+                themePopup.querySelector('li:last-child button').focus();
                 break;
         }
     });
@@ -459,6 +499,7 @@ function playpen_text(playpen) {
 (function chapterNavigation() {
     document.addEventListener('keydown', function (e) {
         if (e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) { return; }
+        if (window.search && window.search.hasFocus()) { return; }
 
         switch (e.key) {
             case 'ArrowRight':
@@ -513,6 +554,14 @@ function playpen_text(playpen) {
 
     clipboardSnippets.on('error', function (e) {
         showTooltip(e.trigger, "Clipboard error!");
+    });
+})();
+
+(function scrollToTop () {
+    var menuTitle = document.querySelector('.menu-title');
+
+    menuTitle.addEventListener('click', function () {
+        document.scrollingElement.scrollTo({ top: 0, behavior: 'smooth' });
     });
 })();
 
