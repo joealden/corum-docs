@@ -146,6 +146,12 @@ iteration stages that can be seen during the development process. The following
 sub sections will show what the project looked like at that stage as well as a
 short description of what had been achieved.
 
+Due to the fact that the code base it so large, even in early prototypes, I have
+left out displaying any code in this report from each stage. As mentioned
+before, the entire codebase and all of its history is available to view online
+in Github. I have tagged each prototype in the git repository so that the state
+of the codebase can been viewed exactly how it was.
+
 ### Prototype 1
 
 Location: **`images/gifs/iterations/prototype-1.gif`**
