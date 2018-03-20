@@ -47,7 +47,7 @@ yarn deploy
 
 ### Hardware
 
-As mentioned in the section talking about the projects limitations, Corum will
+As mentioned in the section talking about the projects limitations, Corum will not
 be actively made compatible with mobile devices (Such as tablets and
 smartphones), as it is currently only a prototype version. In the future, Corum
 could be made to work on mobile devices as well. For this reason, it is
