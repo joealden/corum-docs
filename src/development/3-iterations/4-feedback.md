@@ -9,3 +9,6 @@ information from my stakeholders on certain things. For example, I had to
 consult with my stakeholder a lot when deciding how the post page should be
 layed out. This was done by showing them what I had done so far and then getting
 their feedback on what they think might work better.
+
+I also reached out my stakeholders as well as family and friends to help
+validate at each stage that Corum was working properly.
