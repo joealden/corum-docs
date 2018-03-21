@@ -13,7 +13,6 @@ Location: **`images/gifs/navigation/links.gif`**
 
 * The 'All Subforums' list is filtered by the search input
 * The search is case insensitive
-* Mention the filtering code below (Link)
 * When no items match the search term, show a message
 
 Location: **`images/gifs/navigation/search.gif`**
@@ -46,7 +45,7 @@ Location: **`images/gifs/navigation/login.gif`**
   section has a '+' button to add items to the favorites section
 * When the favorites section is empty, a message is shown
 * The add and remove button work correctly
-* The favorites are sorted correctly (Refer to sort cod below, link)
+* The favorites are sorted alphabetically
 
 Location: **`images/gifs/navigation/favorites.gif`**
 

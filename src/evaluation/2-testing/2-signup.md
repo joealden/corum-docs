@@ -1,6 +1,6 @@
 # Signup Page
 
-These also show the following:
+These GIFs also show the following:
 
 * The url can be seen at the top (`/signup`)
 * The Sign Up button in the header is highlighted correctly
@@ -9,7 +9,7 @@ These also show the following:
 ## Successful Signup Attempt
 
 * The user is redirected to the page they were on before if successful
-* The logged in state has been changed (Show in navigation and header)
+* The logged in state has been changed (Shown in navigation and header)
 * It is assumed that the email and username are not already taken
 
 Location: **`images/gifs/signup/correct.gif`**
@@ -18,7 +18,6 @@ Location: **`images/gifs/signup/correct.gif`**
 
 ## Input validation
 
-* Mention that the validation code can be found below (maybe link)
 * The Sign Up button can only be pressed when:
   * All fields have been filled
   * The two passwords fields match

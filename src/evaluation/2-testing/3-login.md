@@ -1,6 +1,6 @@
 # Login Page
 
-These also show the following:
+These GIFs also show the following:
 
 * The url can be seen at the top (`/login`)
 * The login button in the header is highlighted correctly
@@ -10,7 +10,7 @@ These also show the following:
 ## Successful Login Attempt
 
 * The user is redirected to the page they were on before if successful
-* The logged in state has been changed (Show in navigation and header)
+* The logged in state has been changed (Shown in navigation and header)
 
 Location: **`images/gifs/login/correct.gif`**
 

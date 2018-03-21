@@ -34,7 +34,7 @@ Location: **`images/gifs/subforum/post-list.gif`**
 * The default sorting method is by 'most popular' posts
 * Both sort methods sort in descending order
 * The 'most popular' sort method sorts by vote count
-* The 'newest' sort method sorts by created at time and date
+* The 'newest' sort method sorts by creation time and date
 
 Location: **`images/gifs/subforum/sorting.gif`**
 
