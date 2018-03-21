@@ -2,7 +2,7 @@
 
 ## Managing Login State
 
-### The problem
+### The Problem
 
 When the user logs in, a lot of the application has to react to this change in
 state, for example, the buttons that are displayed in the header need to change,
@@ -12,7 +12,7 @@ effected a lot components in the component tree that were not close to each
 other which meant that it was hard to propagate the state change through to all
 parts of the application.
 
-### The solution
+### The Solution
 
 Instead of updating the local state of each component individually when a user
 logged in, I used the global state store that I had already added to Corum's
@@ -30,7 +30,7 @@ available in the global store.
 
 ## Handling Errors Returned from the API
 
-### The problem
+### The Problem
 
 If the API was given incorrect data or duplicate data then it would throw an
 error, for example, if the user gave an incorrect email address or an email
@@ -39,7 +39,7 @@ this was that I had yet to figure out how to detect if the API returned a
 successful response or if it returned an error. This meant that the frontend
 would get into a broken state and not alert the user if an error occurred.
 
-### The solution
+### The Solution
 
 It turns that it is defined in the GraphQL Spec that when an API operation is a
 success it returns a JSON object with a root `data` field. It also defines that
@@ -51,7 +51,7 @@ error occurred.
 
 ## Updating Local State Based on API operations
 
-### The problem
+### The Problem
 
 When the client performs an API operation, the UI has to wait for the API to
 respond before it updates itself. This sounds reasonable as how would the UI
@@ -69,7 +69,7 @@ comments section. It would be good if these predictable API operations didn't
 have to wait for the API response in order to update the local state with data
 it already has.
 
-### The solution
+### The Solution
 
 I figured out that the GraphQL client I am using for Corum (Apollo) has a
 feature called `optimisticResponse`. This allows me to specify an object that
