@@ -8,7 +8,8 @@ following:
 This means that when a user wants to perform a certain action on Corum it needs
 to meet that criteria. It needs to be effective, efficient and satisfying. The
 following sub sections will explain the usability features of Corum and how they
-meet this criteria.
+meet this criteria. Usability testing was included in the previous post
+development testing section.
 
 ## Load Times Between Actions are Small
 
