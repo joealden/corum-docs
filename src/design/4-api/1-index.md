@@ -40,3 +40,24 @@ the data (e.g. Ensure a user can only vote once on a single post).
 
 For more information about graphcool, visit there website here.
 ([graph.cool](https://www.graph.cool/))
+
+## Flow Diagrams of API Actions
+
+Here are two flow diagrams that I have made to help me visualise some of the
+operations that the API will make. I decided to focus on creating flow diagrams
+instead of writing pseudo code because flow diagrams create a clearer picture in
+my head when I go to implement the operation.
+
+### Signup Flow
+
+This flow diagram describes what the API should do depending on the data it
+receives from the client when a user attempts to signup.
+
+![API Signup Flow](images/api-signup-flow.png)
+
+### Login Flow
+
+This flow diagram describes what the API should do depending on the data it
+receives from the client when a user attempts to login.
+
+![API Login Flow](images/api-login-flow.png)
