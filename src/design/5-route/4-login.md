@@ -59,7 +59,8 @@ auto-generated CRUD ones such as `allPosts`, `createPost` etc. To find out more
 about Graphcool resolvers, visit the graphcool docs here.
 ([graph.cool/docs](https://www.graph.cool/docs/reference/functions/resolvers-su6wu3yoo2))
 
-To create a user authentication system, the resolver must do the following:
+To create a user authentication system, the resolver must do the following (This
+is basically the pseudo code for the API login flow):
 
 * Expose a GraphQL mutation called `authenticateUser`
 * This mutation will have the following inputs and outputs:

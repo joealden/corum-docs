@@ -40,7 +40,8 @@ more context of this subsection. (For information about resolvers etc.)
 As well as the `authenticateUser` mutation that is created for the `login` page,
 there will need to be a `signupUser` mutation to create an account.
 
-Here is the algorithm for the `signupUser` resolver:
+Here is the algorithm for the `signupUser` resolver (This is basically the
+pseudo code for the API signup flow):
 
 * Expose a GraphQL mutation called `signupUser`
 * This mutation will have the following inputs and outputs:
