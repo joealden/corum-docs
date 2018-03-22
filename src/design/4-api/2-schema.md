@@ -25,14 +25,14 @@ For example, I could:
   the `@isUnique` directive
 * Tell graphcool to generated the CRUD API for this type using the `@model`
   directive
-* Tell graphcool that there is a relation between two fields (Like relations in
+* Tell graphcool that there is a relation between two fields (like relations in
   SQL) with the `@relation` directive
   * These can be `1-1`, `1-n`, or `n-n` relations
   * In my data, I will only be needing `1-1` and `1-n` mappings
 
 To find out more information about GraphQL schemas, visit
 [graph.cool](https://www.graph.cool/docs/reference/database/data-modelling-eiroozae8u/)
-and search the documentation for the section on 'Data Modelling'
+and search the documentation for the section on 'Data Modelling'.
 
 ## The Schema for Corum
 

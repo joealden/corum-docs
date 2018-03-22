@@ -37,8 +37,8 @@ For example:
   permissions have been changed or the file is locked by another program
 * Database reads and writes require a database to be running, and for it to be
   consistent, it needs to be in the same state for every test
-* The network connection may be disconnected, or it may be really slow, these
-  factors could both effect the outcome of a test
+* The network connection may be disconnected, or it may be really slow, both
+  these factors could effect the outcome of a test
 
 It is evident from the examples above that mocking is about keeping
 uncontrollable / unpredictable state predictable and consistent.
@@ -135,7 +135,7 @@ As suggested by the name, end to end testing (e2e) is where a complete user
 story is tested.
 
 In the case of a website, the following would be considered e2e testing: A
-button is pressed, which sends a message to the server, and the server responses
+button is pressed, which sends a message to the server and the server responses
 with another message.
 
 In this example, the following sub-systems are tested

@@ -29,7 +29,7 @@ use of client-side routing with
 [vue-router](https://nuxtjs.org/api/components-nuxt-link), pattern matching is
 required to direct the user to the correct page. For example, navigating to
 `/subforum/:subforum` will render the subforum page component with the data from
-the path variable `:subforum`
+the path variable `:subforum`.
 
 ## Sorting and searching
 
@@ -40,7 +40,7 @@ will also be used, as the user will be able to select the order in which they
 see posts in the sub-forum. This will most likely be handled on the server side,
 as in the end, I will want the subforum post list to be paginated. This means
 that a sort would require a re-fetch from the server, as the client will not
-have all the data at once. Graphcool provides a 'orderBy' parameter in their
+have all the data at once. Graphcool provides an 'orderBy' parameter in their
 queries, so it will not be too complex to implement.
 
 ## Use of Multiple Programming Paradigms
@@ -63,7 +63,7 @@ Programming in a functional style helps improve code maintainability,
 readability, and [more](https://en.wikipedia.org/wiki/Functional_programming).
 Also, the project will be easier to test (Due to things such as pure functions
 not having side effects, and function composition allows for better testing in
-isolation [Unit testing])
+isolation).
 
 JavaScript provides great tools to build software in a functional paradigm, this
 includes features such as:
@@ -94,10 +94,10 @@ const joinedTextArrow = concatArrow('Hello')('world!') // "Hello, world!"
   * [`Array.prototype.reduce`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce)
 * Immutability
   * [`const`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/const)
-    (Not perfect, reference only so objects + arrays can be mutated, use
-  * [`Object.freeze`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze)
+    (not perfect, reference only so objects + arrays can be mutated, use
+    [`Object.freeze`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze)
     (for both objects and arrays) or something like
-    [Immutable.js](http://facebook.github.io/immutable-js/))
+    [Immutable.js](http://facebook.github.io/immutable-js/)).
 
 ## Real Time Data Processing
 

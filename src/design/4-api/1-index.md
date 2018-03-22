@@ -10,7 +10,7 @@ Some of the reasons I am using GraphQL to develop my API over REST are:
 * It allows the server to define what data the client can access, and then the
   client can choose the information it wants
   * This is unlike REST APIs, as they usually define API endpoints that are for
-    a single client (For example, the mobile site only)
+    a single client (for example, the mobile site only)
 * The way GraphQL is designed allows for a large tooling eco-system to be built
   around it
   * For example, I will be using a GraphQL Client library called Apollo that
@@ -35,8 +35,8 @@ everything works under the hood.
 As well as abstracting away complexity, graphcool allows you to easily extend
 its capabilities. For example, I will extend graphcool to do things such as
 create and authorize users, initialize data so that the client doesn't have to,
-(E.G. Set vote count of a new post to 0 automatically) and do some validation on
-the data. (E.G. Ensure a user can only vote once on a single post)
+(e.g. Set vote count of a new post to 0 automatically) and do some validation on
+the data (e.g. Ensure a user can only vote once on a single post).
 
 For more information about graphcool, visit there website here.
 ([graph.cool](https://www.graph.cool/))

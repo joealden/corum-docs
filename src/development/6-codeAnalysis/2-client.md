@@ -103,7 +103,7 @@ description. Also specified here is the link to the site's favicon.
 This is where you can specify what CSS files you want to be added to the head of
 every page, so these styles will be global to the entire site.
 
-Corum's configuration reference a file called `globals.styl`. It contains a
+Corum's configuration references a file called `globals.styl`. It contains a
 basic CSS reset, as well as globals such as the base font size and font family.
 
 The `.styl` file extension is short for stylus. Stylus is a CSS preprocessor.
@@ -123,7 +123,8 @@ match the overall theme.
 ### `build`
 
 The build property is where Nuxt allows you to extend its functionality. The
-only thing Corum uses this for is to linting to JavaScript and Vue.
+only thing Corum uses this for is to enable linting for JavaScript and Vue
+files.
 
 ### `modules`
 
@@ -161,7 +162,7 @@ export default () => {
     /*
       Due to this being parsed SSR, process.browser must be used to
       make sure localStorage is only attempted to be accessed on the
-      client. This isn't a  n issue as no queries or mutations that
+      client. This isn't an issue as no queries or mutations that
       require authentication are made on an SSR request of the page.
     */
     const token = process.browser
@@ -196,7 +197,7 @@ things to configure now are Apollo Links and Caches.
 Apollo Links allow you to configure how GraphQL queries are handled. A common
 Apollo link is `apollo-link-http` as seen below. This allows you to configure
 how queries are sent over HTTP. The `apollo-link-http` package exposes a class
-called `HttpLink`. As seen below, it expects and object containing the `uri` of
+called `HttpLink`. As seen below, it expects an object containing the `uri` of
 the API server. In Corum's case, the API endpoint address is fetched from the
 `.env` file located in the root directory of the project. This means that
 queries sent through Apollo are now sent to our Graphcool API.
@@ -214,7 +215,7 @@ queries.
 Apollo Caches are used to cache data fetched from the server, so that unneeded
 network requests are not made. How this works is that Apollo checks the cache
 before following the Apollo Link chain. A type of Apollo Cache called
-`apollo-cache-inmemory` is used by corum. This simply means that the cache is
+`apollo-cache-inmemory` is used by Corum. This simply means that the cache is
 kept in memory on the client, so it is deleted when the user goes off of the
 site.
 

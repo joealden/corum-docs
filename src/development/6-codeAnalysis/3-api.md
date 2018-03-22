@@ -225,10 +225,10 @@ export default async event => {
 }
 ```
 
-As mentioned in the comment at the top of this file, This hook function ensures
+As mentioned in the comment at the top of this file, this hook function ensures
 that only 1 favorite of a subforum by a single user can happen, and it is run
 every time before a favorite is created. There is also a hook function called
-`userAndPostIsUnique` is very similar. Instead of ensuring that only unique
+`userAndPostIsUnique` that is very similar. Instead of ensuring that only unique
 favorites can be added, it ensures that only unique votes can be made on a post.
 As this hook function is so similar, I will only analyse this hook function.
 
@@ -399,8 +399,8 @@ request is made to get the post ID using the `voteId` variable. When the API
 responds, the post ID fetched is used to fetch the current vote count on that
 post.
 
-Then, depending on how the user voted, (determined by the contents of the
-`voteType` variable) A new vote count is created. If the user upvoted the post,
+Then, depending on how the user voted (determined by the contents of the
+`voteType` variable), a new vote count is created. If the user upvoted the post,
 the vote count is increment by 1. If the user downvoted the post, the vote count
 is decremented by 1. There is also error handling if they somehow submitted an
 incorrect vote type.
@@ -571,8 +571,8 @@ hash. This mutation will create a new user record with these details.
 After that, we extract the user's ID from the above mutation response. Then we
 generate an authentication token for the user using the `generateAuthToken` on
 the `graphcool` object that was created using the `fromEvent` function earlier.
-This token will allow the user perform protected actions such as creating posts
-etc.
+This token will allow the user to perform protected actions such as creating
+posts etc.
 
 Then finally, we return the data the user wanted.
 
@@ -670,7 +670,7 @@ Variable Reference:
   of this function is described later on.
 * `bcryptjs` is a hashing library implementing the bcrypt hashing function
   design. In this resolver, only the `compare` function exposed by it is used.
-  The use of this function will explained below.
+  The use of this function will be explained below.
 * `userQuery` is a GraphQL query that fetches a users details. (Their account
   ID, username and password)
 
@@ -710,7 +710,8 @@ that we can start to construct the information to return to the user. First, we
 extract the user's ID and username off of the `User` object. Then we generate an
 authentication token for the user using the `generateAuthToken` on the
 `graphcool` object that was created using the `fromEvent` function earlier. This
-token will allow the user perform protected actions such as creating posts etc.
+token will allow the user to perform protected actions such as creating posts
+etc.
 
 Then finally, we return the data the user wanted. Also, if any other error
 occurred in the function, this is caught with the surrounding `try / catch`
@@ -825,5 +826,5 @@ MDN website and search for `Promise.all`.
 
 In this function, the array of vote IDs are mapped to an array of promises that
 will make a request to delete the vote in the database with the corresponding
-ID. This array is used as the argument to `Promise.all`. This means that This
+ID. This array is used as the argument to `Promise.all`. This means that this
 function will resolve when all of the votes in the array have been deleted.

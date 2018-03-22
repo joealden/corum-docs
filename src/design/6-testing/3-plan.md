@@ -3,7 +3,7 @@
 To test that Corum is working as expected, the 'Success Criteria' list found in
 the analysis section of the report needs to be met.
 
-This included the following:
+This includes the following:
 
 * The UI should resemble the layout seen in the
   [GUI Design section](#gui-design)
@@ -20,6 +20,6 @@ This included the following:
 
 If all of these tests pass, then the site is verified to be in working order.
 All of these tests should be done many time during the iterative development
-process, and then once gain once development has finished.
+process, and then once again once development has finished.
 
 I will write automated tests so that I can ensure the site works quickly.

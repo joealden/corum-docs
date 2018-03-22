@@ -52,7 +52,7 @@ the full file can be found at the projects Github repository.
 ##### `types`
 
 This property expects a string containing the relative path of the `.graphql`
-file that contains the API schema. This file must be write in the Schema
+file that contains the API schema. This file must be written in the Schema
 Definition Language (SDL) that is part of the official GraphQL specification.
 
 ##### `functions`
@@ -69,7 +69,7 @@ specify a `schema` string that points to the file that contains what data types
 the resolver should expect and what data types it should return.
 
 If the type of the function is a hook function, the function object should also
-specify a `operation` property. This expect a string that tells Graphcool what
+specify a `operation` property. This expects a string that tells Graphcool what
 data type and what CRUD operation to trigger on. For example, Corum has a simple
 hook function that initializes the vote count of a post to 0 when it is created.
 The operation property of this hook function is `Post.create`.

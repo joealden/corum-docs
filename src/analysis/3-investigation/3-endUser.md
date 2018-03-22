@@ -10,7 +10,7 @@ can.
 As Corum aims to be similar to Reddit, it will likely foster the same type of
 content on it. Unlike forums that are designed for a single topic or purpose,
 Reddit, and therefore Corum, is designed to have anything on it. This means that
-whatever people want to talk about on it, then can. (This could be sharing news,
+whatever people want to talk about on it, they can. (This could be sharing news,
 collaborating on research, or just chatting to each other.)
 
 The reason why an end user would use Corum over a site such as Reddit could be
@@ -37,6 +37,6 @@ to keep the site looking neutral.
 For users that have never visited or rarely visit the site, the UI (User
 Interface) and UX (User Experience) shouldn't be surprising so that this type of
 user can get whatever information they are looking for quickly and efficiently.
-Also, the site should work equally as well for returning, regular users. This
-means that the site should keep a similar structure and look throughout, and
-should not get in the way of the user.
+Also, the site should work equally well for returning, regular users. This means
+that the site should keep a similar structure and look throughout, and should
+not get in the way of the user.

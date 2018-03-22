@@ -32,7 +32,7 @@ Vue provides a way of building UI components in a `.vue` file. These files are
 known as 'Single File Components'. (SFCs) These files allow you to declaratively
 write a components markup (HTML), logic (JavaScript) and styling (CSS). This
 provides excellent DX as you only have to view a single file to understand the
-entire component. This is an abstraction that React doesn't provide, as it one
+entire component. This is an abstraction that React doesn't provide, and is one
 of the contributing factors to why I prefer Vue over React.
 
 When I started developing the client side of Corum, I actually started using
@@ -98,7 +98,7 @@ When configured to run against `.vue` modules, this loader will convert it into
 a module that can be understood by the browser, as no browsers understand the
 `.vue` extension.
 
-Through the concept known as 'plugins', tasks can be ran that are not module
+Through the concept known as 'plugins', tasks can be run that are not module
 specific, such as code optimisation and minification. An example of a plugin
 used commonly is called `DefinePlugin`. This plugin allows you to configure
 global constants at compile time. This could be useful when you need to include
@@ -145,14 +145,13 @@ design section of the report.
 
 `vuex` provides global state management to the application. This is needed for
 an application like Corum where different components (and often pages) need to
-be able to access to the same data. This is made even better by the fact that
-the global data store is reactive. This means that components can subscribe to
-the store and be notified when the data they want changes. This is useful in
-many situations. An example in Corum would be where the login page updates the
-user's login state, and components and pages need to display different
-information depending on if the user is logged in or not. For example, the
-header component of the UI needs to update to display a `logout` button if the
-user logs in.
+be able to access the same data. This is made even better by the fact that the
+global data store is reactive. This means that components can subscribe to the
+store and be notified when the data they want changes. This is useful in many
+situations. An example in Corum would be where the login page updates the user's
+login state, and components and pages need to display different information
+depending on if the user is logged in or not. For example, the header component
+of the UI needs to update to display a `logout` button if the user logs in.
 
 The issue is that if I want to use these plugins in my code, I have to write a
 lot of configuration and boilerplate code to get them working at all. Nuxt
@@ -281,7 +280,7 @@ on the production server.
 ##### `nuxt start`
 
 This starts the production server. Before executing this command, it is
-important that the site has been build with the `nuxt build` command.
+important that the site has been built with the `nuxt build` command.
 
 The following happens in production mode:
 
@@ -344,7 +343,7 @@ pages
 
 This directory acts as a file based router. This means that when Nuxt builds the
 site for either development or production mode, it reads the structure of this
-directory and creates page accordingly. For example, the `index.vue` file would
+directory and creates pages accordingly. For example, the `index.vue` file would
 map to the route `/`, the `signup.vue` file would map to the route `/signup` and
 the `subforum/_subforum/index.vue` would map to the route `/subforum/:subforum`.
 
@@ -560,8 +559,8 @@ describe what the two variable in this file do.
 
 This setting used when setting up Apollo Client. This expect the URL of the API
 endpoint. This has been abstracted up into this file so that if someone else
-wants to run a separate instance of Corum, the can easily change what API server
-it points to.
+wants to run a separate instance of Corum, they can easily change what API
+server it points to.
 
 Example: `API_ENDPOINT=https://api.graph.cool/simple/v1/corum`
 

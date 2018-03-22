@@ -2,7 +2,7 @@
 
 ## An Explanation of each Iteration Stage
 
-I decided to split up the implementation stage of build Corum up into 3 main
+I decided to split up the implementation stage of building Corum up into 3 main
 parts. The reasoning behind this decision was because I thought it would be much
 easier if I could focus on a single part of the application at a time instead of
 switching contexts. Also, it would have been almost impossible to develop the
@@ -38,9 +38,9 @@ seen in the 1st prototype I made.
 This meant that in the following stages I could easily just connect HTML
 elements such as buttons and links to JavaScript functions.
 
-There was must to test at this stage, all of the page looked how I wanted them
-to look, and of of the links worked correctly. The majority of the testing for
-Corum needed to be done when implementing the API and connecting it to the
+There wasn't much to test at this stage, all of the page looked how I wanted
+them to look, and of of the links worked correctly. The majority of the testing
+for Corum needed to be done when implementing the API and connecting it to the
 frontend.
 
 ### Implementing the API (Stage 2)
@@ -59,7 +59,7 @@ The exact code for this iteration stage can be found in the API code analysis
 section of this report.
 
 To test the API I used a tool called `graphql-playground`. This tool is
-available standalone but it also comes bundles with Graphcool. This meant that I
+available standalone but it also comes bundled with Graphcool. This meant that I
 didn't have to set it up to test the API. When visiting the API endpoint
 returned by Graphcool in a web browser it displays the `graphql-playground`
 interface. This interface allows you to make queries and mutations to the API
@@ -149,7 +149,7 @@ short description of what had been achieved.
 Due to the fact that the code base it so large, even in early prototypes, I have
 left out displaying any code in this report from each stage. As mentioned
 before, the entire codebase and all of its history is available to view online
-in Github. I have tagged each prototype in the git repository so that the state
+in Github. I have tagged each prototype in the Git repository so that the state
 of the codebase can been viewed exactly how it was.
 
 ### Prototype 1
@@ -167,7 +167,7 @@ layed out correctly on the page. This stage was very basic, for example the
 
 Also to note is that this prototype was created with React and not Vue, the view
 library that I ended up using. At the end of this prototype, as explained
-before, I didn't like how developing Corum in react felt.
+before, I didn't like how developing Corum in React felt.
 
 ### Prototype 2
 
@@ -222,7 +222,7 @@ Also, although you cannot see it visually, I added a lot of code for the client
 to communicate with the API. The issue at the time was that the API was not
 quite finished, so it wasn't possible to load the data. The reason for this is
 explained later in the 'problems experienced' section as it was to do with the
-fact I hadn't thought about everything I needed to.
+fact that I hadn't thought about everything I needed to.
 
 ### Production Build
 

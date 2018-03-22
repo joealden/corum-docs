@@ -12,7 +12,7 @@ Location: **`images/gifs/post/load.gif`**
 
 * If there are no comments, show a message
 * You cannot comment when not logged in
-* When logged in, add a section at the bottom of the page to add a comment
+* When logged in, add a section to the bottom of the page to add a comment
 * When a comment is submitted, it is added to the comment section of the page
 * The user cannot submit a comment when no text has been entered
 * The comment count is updated correctly

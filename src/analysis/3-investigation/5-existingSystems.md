@@ -30,7 +30,7 @@ online etc. Corum will strive to be a simpler version of Reddit.
 are no sub-forums, as it is a site dedicated only for computer science related
 topics such as programming. The user interface is very simple (and quite dated
 in my opinion), which means that it doesn't get in the users way. However, I
-believe that it is too simple, and too niche (As it is only for programmers).
+believe that it is too simple, and too niche (as it is only for programmers).
 
 I believe that there is space in the forum software landscape for a site that is
 simpler than Reddit, but one with more features than Hacker News. This is where
@@ -49,6 +49,6 @@ at the pages footer.
 phpBB can be themed so that it can fit the style of any website it is being run
 on. This means that the look or layout of phpBB isn't really an issue as it can
 be easily altered. However, as Corum will be a more similar project to Reddit,
-Corum does not need this extra complexity of being able to change its looks. I
-like the simplicity of Solus' forum theme, and Corum will take some inspiration
-from its looks.
+it does not need this extra complexity of being able to change its looks. I like
+the simplicity of Solus' forum theme, and Corum will take some inspiration from
+its looks.

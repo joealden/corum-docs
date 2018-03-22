@@ -10,7 +10,7 @@ This diff is sent along with a message describing the change.
 ## Why Version Control?
 
 Version control systems offers a lot of benefits, although a lot of these
-benefits are only helpful when working on a team. As Corum is developed by me
+benefits are only helpful when working in a team. As Corum is developed by me
 alone, Corum cannot take advantages of these features.
 
 There are three main benefits of using a version control system in the context
@@ -38,12 +38,12 @@ limited amount of state.
 
 ### Documentation
 
-Due to the fact that with every change (commit) made to the repo is accompanied
-by a message, it means that anyone can look at the history of the repo and see
-when and why a change was made. This is extremely useful; for example, if I find
-a bug I can easily look at the history of that file and determine when this
-change was made. This allows me to more easily find more potential bugs that
-might stem from the same commit.
+Due to the fact that every change (commit) made to the repo is accompanied by a
+message, it means that anyone can look at the history of the repo and see when
+and why a change was made. This is extremely useful; for example, if I find a
+bug I can easily look at the history of that file and determine when this change
+was made. This allows me to more easily find other potential bugs that might
+stem from the same commit.
 
 Also, for this project, this is useful because it allows me to examine the
 development process of Corum and more easily comment on it for this report.

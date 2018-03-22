@@ -21,7 +21,7 @@ git clone https://github.com/joealden/corum.git
 ### Development
 
 [Nuxt](https://nuxtjs.org/) provides a pre-configured hot reloading dev server
-(Using webpack-dev-server under the hood), which means I can save a file and see
+(using webpack-dev-server under the hood), which means I can save a file and see
 the resulting change instantly in my browser. This dev server also provides an
 in-browser error overlay, which allows for easier debugging.
 
@@ -47,8 +47,8 @@ yarn deploy
 
 ### Hardware
 
-As mentioned in the section talking about the projects limitations, Corum will not
-be actively made compatible with mobile devices (Such as tablets and
+As mentioned in the section talking about the projects limitations, Corum will
+not be actively made compatible with mobile devices (such as tablets and
 smartphones), as it is currently only a prototype version. In the future, Corum
 could be made to work on mobile devices as well. For this reason, it is
 recommended that Corum is viewed on a desktop or laptop.
@@ -68,8 +68,8 @@ worse, as well as making it a lot harder to develop.
 ### Corum's Backend
 
 I am planning to use [graphcool](https://www.graph.cool/) as my API and user
-authentication backend. Graphcool is a BaaS (Backend as a service) that combines
-'serverless' (A service like AWS Lambda) and GraphQL (An API query language).
+authentication backend. Graphcool is a BaaS (backend as a service) that combines
+'serverless' (A service like AWS Lambda) and GraphQL (an API query language).
 
 This will allow me to easily develop the client side of the application without
 needing to worry about the implementation details of the GraphQL backend that it

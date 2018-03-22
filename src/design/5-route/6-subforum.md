@@ -4,7 +4,7 @@
 
 Like any other page, there are two ways to access this page. The first way is to
 navigate to it via the navigation on the left of the site. The second way is for
-the user to enter the url of a subforum the already know exists (For example,
+the user to enter the url of a subforum they already know exists (For example,
 `'/subforum/test'`)
 
 The way the client knows what subforum to fetch data for is by the path variable
@@ -41,8 +41,8 @@ mutations to perform CRUD operations. One of these exposed queries is called
 `allPosts`. If I provide no parameters to the query, it will return every post
 that exists on the whole site.
 
-Two parameters that will be used to fetch the posts for a specific subforums
-will be the following:
+Two parameters that will be used to fetch the posts for a specific subforum will
+be the following:
 
 * `filter`
   * This expects a data type of 'Subforum'

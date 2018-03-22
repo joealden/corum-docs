@@ -32,7 +32,7 @@ take longer for the whole system to start up, instead of a single micro service.
 
 Deploying micro services means that different parts of the system can be
 provided redundancy independently of each other. This could mean that less
-system resources are wasted, and start up times are likely to be faster, meaning
+system resources are wasted and start up times are likely to be faster, meaning
 that the system is down for a shorter period of time.
 
 For these reasons above, I decided, during the development of the project, that
@@ -69,13 +69,13 @@ browser, an error would be thrown because there is no global called '`require`'.
 Likewise, if I tried to reference the '`document`' browser global in a node
 environment, an error would also be thrown.
 
-This relates to linting because if I was create Corum as a monolith, the ESLint
-config would have to be quite permissive, where syntax and globals valid in both
-environments would be allowed. This would have reduced the effectiveness of the
-linter because if I did make a mistake like the two mentioned above, it wouldn't
-be picked up by the linter. This would mean that I would only find this bug at
-runtime, meaning that I would have wasted time that wouldn't have been wasted if
-I had a stricter linter configuration.
+This relates to linting because if I was creating Corum as a monolith, the
+ESLint config would have to be quite permissive, where syntax and globals valid
+in both environments would be allowed. This would have reduced the effectiveness
+of the linter because if I did make a mistake like the two mentioned above, it
+wouldn't be picked up by the linter. This would mean that I would only find this
+bug at runtime, meaning that I would have wasted time that wouldn't have been
+wasted if I had a stricter linter configuration.
 
 The problem could be mitigated slightly by having separate directories for both
 the client and server, then creating a config file per directory. This would
@@ -94,18 +94,18 @@ I could still have strict configs for the different services.
 
 I am using version control to manage my project, in particular, Git. The reason
 for this is explained in a section later on named 'Version Control'. When using
-git you can create a file called '`.gitignore`' at the root of the repository.
-This file tells git what files not to parse for changes. This means that the
+Git you can create a file called '`.gitignore`' at the root of the repository.
+This file tells Git what files not to parse for changes. This means that the
 files listed in this file are not committed to the repo. It also allows you to
-list directories so that entire directories can be ignore, as well as the use of
-a wildcard character (`*`) for pattern matching file names. For example, if you
-didn't want to commit an files with the `.txt` extension, you could list `*.txt`
-as an entry in the file.
+list directories so that entire directories can be ignored, as well as the use
+of a wildcard character (`*`) for pattern matching file names. For example, if
+you didn't want to commit any files with the `.txt` extension, you could list
+`*.txt` as an entry in the file.
 
 When developing Corum as a monolith, the issue was that I wanted to ignore
 certain types of files in the client but not in the API and vice versa. This
 problem was solved when switching to a micro service architecture because the
-client and the API are completely separate git repos, so they can have separate
+client and the API are completely separate Git repos, so they can have separate
 `.gitignore` files.
 
 ### Editor Configuration Files
@@ -116,7 +116,7 @@ as recommended editor extensions and their settings. These settings can be found
 at the root of the project under a directory called '`.vscode`'. The API and
 client use different libraries, so they would benefit from different editor
 extensions. However it wouldn't make much sense to recommend an extension that
-is not useful for what it being used. For example, it wouldn't make sense to
+is not useful for what is being used. For example, it wouldn't make sense to
 recommend any Vue related extensions for the API code, as it doesn't use Vue. By
 using a micro service architecture I can have separate configurations for each
 service.
@@ -150,7 +150,7 @@ Here is a simple example:
 
 In this contrived example, the usefulness of NPM scripts is not very evident at
 first glance. Here is what each of these scripts do and how they show the
-usefulness of NPM scripts when building coding in JavaScript:
+usefulness of NPM scripts when building software in JavaScript:
 
 #### `"start"`
 
@@ -195,7 +195,7 @@ This issue showed itself when developing Corum as a monolith system as I had
 scripts for both the client and the API in the same file and sometimes I wanted
 to call the scripts by the same name. For example, I wanted a `"start"` script
 for both the client and the API. The client one would start the production ready
-web server and the API one would start a production ready docker cluster running
+web server and the API one would start a production ready Docker cluster running
 the backing database and the graphcool service. Because you can't have multiple
 scripts with the same name for obvious reasons, I had to start prefixing scripts
 with what part of the system it started. For example, I had scripts called
@@ -203,7 +203,7 @@ with what part of the system it started. For example, I had scripts called
 This was fine for a few scripts but it got out of hand as more scripts were
 added.
 
-When switching to a micro service architecture, there was a separate
+When switching to a micro service architecture there was a separate
 `package.json` file for the client and the API. This meant that I could get rid
 of the prefixes that I had given to most scripts. This in turn made it a lot
 easier to understand the file and the scripts that could be run at a glance.
@@ -213,7 +213,7 @@ easier to understand the file and the scripts that could be run at a glance.
 JavaScript handles dependencies in the following way:
 
 * The file `package.json` contains information about the project
-* An important piece of information is the project dependencies
+* An important piece of information contained in it is the project dependencies
 * When installing the dependencies, (with the `yarn` command) they are placed in
   the `node_modules` folder
 
@@ -222,7 +222,7 @@ of the `node_modules` folder with the deployed code. This means that when the
 project was a monolith, all of the dependencies for the client were also being
 bundled with the API code. This was an issue for the following reasons:
 
-* The API would take up more storage space on the deployed server
+* The API would take up more storage space on the server it was deployed to
 * It would take significantly more time to bundle the API before it was
   deployed. This meant that I was wasting time.
 
@@ -230,15 +230,15 @@ By switching to a micro service architecture, the client and the API had
 separate dependencies, and therefore had separate `node_modules` directories.
 This meant that graphcool was only bundling the code that it needed to. This did
 indeed reduce the amount of storage space the API service used as well as
-reduced the built time of the API service considerably. (From about around 30
-seconds to roughly 5 seconds, a 600% decrease) This reduced built time meant
-that I could spend more time coding rather than waiting around.
+reduced the build time of the API service considerably. (From around 30 seconds
+to roughly 5 seconds, a 600% decrease) This reduced build time meant that I
+could spend more time coding rather than waiting around.
 
 ## Downsides Compared to Developing as a Monolith
 
 While developing Corum in a micro service architecture has a lot of benefits,
-there are of course at least some trade offs to be made. Luckily so far, I have
-only encountered one issue so far.
+there are of course at least some trade offs to be made. Luckily I have only
+encountered one issue so far.
 
 ### Repeated Prettier Configuration
 
@@ -250,18 +250,18 @@ there is little you can do to deduplicate and share them.
 The tool that I ran into configuration problems because of this is called
 'prettier'. Prettier is a tool that automatically formats you code to conform to
 an opinionated style guide that they determine. This is incredibly useful as it
-means that code styling is kept consistent and I don't have to spend any time
+means that code style is kept consistent and I don't have to spend any time
 formatting the code manually. Prettier does allow some configuration for
 controversial styling decisions. For example, I like indenting with 2 spaces, I
 prefer writing JavaScript without semicolons, and I prefer strings in JavaScript
-to be written only using single quotes.
+to be written using single quotes.
 
 To keep both projects consistent, I want to have the same styling in both the
 client and the API code. To achieve this consistency I need to have two
 identical configuration files in each service directory. The issue with this is
 that if I want to make a change to my prettier configuration I have to remember
 to change it in both services. This problem could be worse if I had more
-services as it would have to be changed for each of them.
+services as I would have to remember to make the change in each of them.
 
 ## Conclusion
 

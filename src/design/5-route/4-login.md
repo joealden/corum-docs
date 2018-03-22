@@ -3,11 +3,11 @@
 ## Client Side
 
 This is the page that the user will see when they visit the path `'/login'`.
-This page could be accessed in 2 different ways. The first way would be type
+This page could be accessed in 2 different ways. The first way would be to
 physically type the path into the web browser's url bar. The second way would be
 to click on the `login` button located in the header. This page will display a
 form to the user to login. For the user to login, they must have first created
-an account. (Which is done through the `signup` page)
+an account (Which is done through the `signup` page).
 
 The login form will contain the following:
 
@@ -22,7 +22,7 @@ The login button will only be enabled (clickable) if both an email address and a
 password have been supplied.
 
 If the user successfully logs in, they will be redirected back to the page they
-were previously on before visiting the login page. If the user have an
+were previously on before visiting the login page. If the user has an
 unsuccessful login attempt, then the error returned by the GraphQL API will be
 displayed to the user. After the error has been displayed, the user will be free
 to try and login again.

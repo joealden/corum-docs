@@ -16,6 +16,6 @@ Here is a brief summary of what all of the different routes will do.
 
 The following sections will describe each of these routes in more detail. Most
 of the following sections will contains subsections about the design of the
-client and the design of the server/backend. (API) If they do not have these
-subsections, it will because all of the information is about the client, as no
+client and the design of the server/backend (API). If they do not have these
+subsections it will be because all of the information is about the client, as no
 server side processing is required.

@@ -58,7 +58,7 @@ Here is the algorithm for the `signupUser` resolver:
       later used to authenticate the user when making requests such as to create
       a new post. For more information about JWTs, look at the 'Login Page'
       section)
-* It will first verify for that the email address is valid (Using the library
+* It will first verify that the email address is valid (Using the library
   `validator`)
   * If it is not a valid email, return an error to the user that the email is
     invalid
@@ -73,7 +73,7 @@ Here is the algorithm for the `signupUser` resolver:
 * Now that we know a user with either the same email address or username doesn't
   exist, we can start creating the account.
   * First, we need to hash and salt the password before storing it, as storing
-    password in plain text isn't a good idea for obvious reasons.
+    password in plain text isn't a good idea for obvious security reasons.
   * Next, the user details actually need to be stored on the server, so a new
     User type is created.
     * This User type contains the email address, username and hashed password,
