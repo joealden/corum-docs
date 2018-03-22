@@ -1,12 +1,5 @@
 # Implementation
 
-## TODO
-
-* Relate implementation back to design and user requirements
-* Put new subforum page in design
-
----
-
 In this section of the report, I will be doing the following:
 
 * Creating a more detailed description of the structure of Corum as a whole
