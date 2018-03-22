@@ -8,14 +8,14 @@ following:
 This means that when a user wants to perform a certain action on Corum it needs
 to meet that criteria. It needs to be effective, efficient and satisfying. The
 following sub sections will explain the usability features of Corum and how they
-meet this criteria. Usability testing was included in the previous post
-development testing section.
+meet this criteria. Usability testing was included in the post development
+testing section.
 
 ## Load Times Between Actions are Small
 
 Through the effective use of libraries, frameworks, and technologies, Corum is
-able to provide very fast response times between actions such as navigating
-between pages, creating new posts and logging in to the site.
+able to have very fast response times between actions such as navigating between
+pages, creating new posts and logging in to the site.
 
 Here are a few examples of how the frameworks, libraries, and technologies
 chosen allow Corum to achieve this:
@@ -24,12 +24,12 @@ chosen allow Corum to achieve this:
 * Nuxt - Performs server side rendering of pages as well as automatically
   optimising, minifying and compressing code sent to the user's browser
 * GraphQL - Allows a client to specify exactly the data it needs from an API and
-  no more, meaning that unneeded data is not sent to the user for no reason
+  no more, meaning that unneeded data is not sent to the user
 * Apollo - Responses from the API are cached which means data load times are
   reduced
 
 These fast response times mean that a user's visit is effective, efficient and
-satisfying because they do not have to wait around for data and pages to load.
+satisfying because they do not have to wait around for data or pages to load.
 
 ## Search Results are Shown Almost Instantaneously
 
@@ -42,29 +42,28 @@ have to wait for search results to appear.
 
 ## Optimistic UI updates
 
-Optimistic UI updates are were the client creates a placeholder piece of data
+Optimistic UI updates are where the client creates a placeholder piece of data
 while it waits for a response from the API and updates the UI to show that
-instead of just waiting for the data response, which could be a while depending
-on the user's current network connection. This feature provided by Apollo has
-already been discussed in detail in the development section of this report. The
-reason this is good is because it means the user is provided with near instant
-feedback from the application. When an application is slow to update the UI in
-response to a user's action it feels clunky. This can lead to an unsatisfactory
-experience using the application. Also, if the client can predict the data that
-the API is going to return then it would be inefficient to wait for the API to
-respond.
+instead of waiting for the data response, which could be a while depending on
+the user's network connection. This feature provided by Apollo has already been
+discussed in detail in the development section of this report. The reason this
+is good is because it means the user is provided with near instant feedback from
+the application. When an application is slow to update the UI in response to a
+user's action it feels clunky. This can lead to an unsatisfactory experience
+using the application. Also, if the client can predict the data that the API is
+going to return then it would be inefficient to wait for the API to respond.
 
 ## Loading States
 
 When a user is on a low end device or on a poor internet connection, loading
 times for data can be noticeable (can be multiple seconds). It is important that
-if data is taking quite a long time to load, the user knows that something is
-still happening and the application hasn't just crashed or frozen. This is
-usually done by displaying a loading message or icon. When application do not
-provide this kind of feedback it can be frustrating as you don't know if the
-program has crashed or not. When this happens frequently it can lead to an
-unsatisfactory experience using the application. This is why was important that
-Corum provided feedback to the user when data was being loaded from the API.
+if the data is taking quite a long time to load, the user knows that something
+is still happening and the application hasn't just crashed. This is usually done
+by displaying a loading message or animation. When applications do not provide
+this kind of feedback it can be frustrating as you don't know if the program has
+crashed or not. When this happens frequently it can lead to an unsatisfactory
+experience using the application. This is why it was important that Corum
+provided feedback to the user when data was being loaded from the API.
 
 Here is a list of where loading states are displayed to the user:
 
@@ -85,8 +84,8 @@ they typed something in wrong instead of nothing happening or the program
 crashing.
 
 It is also important that users are given helpful error messages when
-appropriate, for example on the signup page, if a user attempted to sign up with
-a username that already existed it wouldn't be a good user experience to be told
+appropriate, for example on the signup page, if a user attempts to sign up with
+a username that already exists it wouldn't be a good user experience to be told
 that an error occurred but not what caused it. If the user wasn't told that the
 username was the issue then they might think its another issue like their email
 address has already been used or their passwords don't match. For this reason it

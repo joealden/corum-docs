@@ -7,8 +7,8 @@
 For a user to perform protected actions such as creating a post, creating a
 comment, or voting on a post, the user must have an account and be logged into
 it. When implementing a login system it is important to consider carefully how
-the user's password is stored due to its sensitive nature. I wanted hash and
-salt the password before storing them in the database, however I was not sure
+the user's password is stored due to its sensitive nature. I wanted to hash and
+salt the passwords before storing them in the database, however I was not sure
 how to do so.
 
 ### The Solution
@@ -29,11 +29,11 @@ safely store the user's password.
 When an authenticated user creates a post, the client sends a GraphQL
 `createPost` mutation to the API and the post gets saved to the database. In
 this case, the values that the client sends are predictable, as the code was
-written by me. However it is possible for a malicious user to attempt to send
-mutations to the server that are not predictable. In the case of creating a
+written by myself. However, it is possible for a malicious user to attempt to
+send mutations to the server that are not predictable. In the case of creating a
 post, this was an issue because it meant that if the API did not validate the
 mutation it received, a malicious user could initialise a post with an arbitrary
-amount of votes. This is a big issue as the whole point of Corum's vote system
+amount of votes. This was a big issue as the whole point of Corum's vote system
 is that it is democratic. If a malicious user was allowed to perform such an
 action then it would break this system.
 
@@ -54,17 +54,18 @@ all posts retain their integrity.
 
 The API schema contains a data type named `Favorite` that is created when a user
 favorites a subforum. This data type contains a `user` field and a `subforum`
-field to keep track of what user favorited what subforum. In the context of
+field to keep track of what user favorited which subforum. In the context of
 Corum it only makes sense for a user to be able to favorite a subforum once.
 Graphcool provides a way to specify that a field should be unique in the current
 data set. For example in Corum, this is used to ensure that the same username or
 email address is not used by more than a single user. The issue is that
-Graphcool doesn't currently provide a way to specific that two fields need to be
-unique which is required in this scenario. For example, a user should be able to
-favorite multiple subforums, and a subforum should be able to be favorited by
-more than a single user, however a user should not be able to favorite the same
-subforum more than once. The fact that this feature isn't available in Graphcool
-means that I needed to find another way to achieve this functionality.
+Graphcool doesn't currently provide a way to specify that two fields need to be
+unique together which is required in this scenario. For example, a user should
+be able to favorite multiple subforums, and a subforum should be able to be
+favorited by more than a single user, however a user should not be able to
+favorite the same subforum more than once. The fact that this feature isn't
+available in Graphcool means that I needed to find another way to achieve this
+functionality.
 
 ### The Solution
 

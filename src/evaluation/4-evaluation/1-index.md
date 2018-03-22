@@ -49,20 +49,20 @@ evidence.
   threshold will be something like when the votes reaches -10
   * This criterion has been met and the evidence for this can be seen in the
     final testing section. For testing purposes I set the threshold to -1
-    instead of -10 so that I could see that the system was working whilst only
-    having to be logged into a single user. In production this threshold would
-    be changed back to -10.
+    instead of -10 so that I could see that the system was working while only
+    having to be logged into a single user account. In production this threshold
+    should be changed back to -10.
 
 ## Potential Limitations
 
 While I met all of the success criteria for the project, it does not mean that
-the solution does not have some limitations. The following sub section will
+the solution does not have some limitations. The following sub sections will
 outline some of the potential limitations of the solution:
 
 ### Scalability
 
 Corum has only been tested with a relatively small amount of data, for example
-during the testing I only had a data set this large:
+during the testing I only had a data set this big:
 
 * 4 user accounts
 * 10 subforums
@@ -78,7 +78,9 @@ username or email address has already been used. Another example would be if
 there are many posts (hundreds or thousands) that belong to a single subforum,
 the solution in its current form would attempt to fetch all of these posts at
 once which would be hugely inefficient. This could be fixed by implementing a
-feature known as pagination.
+feature known as pagination, where data is loaded in small chunks. For example,
+only 50 posts will be loaded at a time and the user can request for more by
+clicking on a button.
 
 The takeaway here is that if Corum was planned to be deployed to production, it
 would be wise to think about how it would scale in the long term.
@@ -89,16 +91,17 @@ As mentioned in the analysis section of this report, I did not focus on the
 functionality of the site on mobile devices. However, as this is just a
 prototype version of the site, it doesn't matter as much. If Corum was to be
 deployed to production it would be wise to think about how it works on mobile
-devices. This is because as more and more people are consuming the web on their
-mobile devices, less of the traffic to the site will be coming from traditional
-means like desktops and laptops.
+devices. This is because as more and more people are consuming web content on
+their mobile devices, less of the traffic to the site will be coming from
+traditional means like desktops and laptops.
 
 ### Account Recovery
 
 With the solution in its current state, if a user forgets their login details
 there is no way for them to recover or change them. As mentioned above, this
 solution is only a prototype of the final site, and implementing this
-functionality wasn't as important as implementing the more core features.
+functionality wasn't as important as implementing the features that are more
+core to the site.
 
 Implementing this feature could be done by creating a recovery page that allowed
 you to enter the username of the lost account, then an email would be sent to
@@ -107,7 +110,7 @@ the email address stored in the database with a way to reset the password.
 ## Maintenance
 
 Throughout my code I made good use of code comments that will be useful to both
-be and anyone else reading the source code. This would help with maintenance as
+me and anyone else reading the source code. This would help with maintenance as
 it means that people reading the code are able to get a better understanding of
 it. Also, this report itself serves as good documentation for why the system is
 designed in the way it is and how everything that is used in it works.
@@ -124,15 +127,15 @@ Unfortunately I was not able to implement these automated tests. This would have
 made the implementation stage of Corum much easier as it would have reduced the
 amount of time I had to spend testing the system manually after each iteration.
 The reason I didn't implement these tests is because Nuxt, the client framework
-I am using, makes it hard to build robust tests at the moment. In future version
-of the framework they have said that they will address this issue, and it will
-be easier to create robust tests. This means that when this new version comes
-out, it would be smart to add these tests to make the project more maintainable.
+I am using, makes it hard to build robust tests at the moment. In future
+versions of the framework they have said that they will address this issue, and
+it will be easier to create robust tests. This means that when this new version
+comes out, it would be smart to add these tests to make the project more
+maintainable.
 
 ## Possible Improvements
 
-If I were to spend more time developing Corum, I would likely implement the
-following features:
+If I were to spend more time developing Corum, I would likely do the following:
 
 ### Migrate the API to a Newer Graphcool Version
 
@@ -155,8 +158,8 @@ smart to build the API using this new version.
 GraphQL subscriptions provide a way for the client to create a connection to the
 API server and 'subscribe' to a GraphQL query. When a client subscribes to a
 query it means that if that data on the server changes, the client is
-automatically sent the new data. This makes it relatively easier to implement
-real time functionality in a client application.
+automatically sent the new data. This makes it relatively easy to implement real
+time functionality in a client application.
 
 Here are a few cases of where this would be useful in the context of Corum:
 
